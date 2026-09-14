@@ -315,6 +315,7 @@ export const SUBJECT_DATA = [
     name: 'HOMO SAPIENS #01 (DEWASA)',
     model: 'assets/human_model.glb',
     targetHeight: 1.75, // Scale adjustment
+    internalScale: { x: 1, y: 1, z: 1 },
     organs: [
       { id: 'lungs', cx: 150, cy: 185 },
       { id: 'bloodstream', cx: 188, cy: 152 },
@@ -327,6 +328,7 @@ export const SUBJECT_DATA = [
     name: 'HOMO SAPIENS #02 (ANAK)',
     model: 'assets/michelle.glb',
     targetHeight: 1.5,
+    internalScale: { x: 0.65, y: 0.86, z: 0.65 },
     organs: [
       { id: 'brain', cx: 150, cy: 65 },
       { id: 'stomach', cx: 165, cy: 230 },

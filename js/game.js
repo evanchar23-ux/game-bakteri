@@ -812,7 +812,7 @@ export class Game {
     if (nameDisplay) nameDisplay.innerText = `SUBJECT: ${subject.name}`;
 
     if (this.hologram3d) {
-      this.hologram3d.changeModel(subject.model, subject.targetHeight);
+      this.hologram3d.changeModel(subject.model, subject.targetHeight, subject.internalScale);
       this.hologram3d.showOrgans(subject.organs.map(o => o.id));
     }
     

@@ -338,7 +338,7 @@ export class Hologram3DViewer {
     this.humanGroup.add(ribGroup);
   }
 
-  changeModel(modelUrl, targetHeight) {
+  changeModel(modelUrl, targetHeight, internalScale = null) {
     if (this.humanModelWrapper) {
       this.humanGroup.remove(this.humanModelWrapper);
       this.humanModelWrapper = null;
@@ -354,8 +354,13 @@ export class Hologram3DViewer {
       childrenToMove.forEach(c => this.internalOrgansGroup.add(c));
       this.humanGroup.add(this.internalOrgansGroup);
     }
-    const ratio = targetHeight / 1.75;
-    this.internalOrgansGroup.scale.set(ratio, ratio, ratio);
+    
+    if (internalScale) {
+      this.internalOrgansGroup.scale.set(internalScale.x, internalScale.y, internalScale.z);
+    } else {
+      const ratio = targetHeight / 1.75;
+      this.internalOrgansGroup.scale.set(ratio, ratio, ratio);
+    }
 
     this.loadHumanModel(modelUrl, targetHeight);
   }
