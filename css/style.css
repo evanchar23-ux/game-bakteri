@@ -4,28 +4,28 @@
    ========================================================================== */
 
 :root {
-  --bg-dark: #040814;
-  --bg-deep: #060c1c;
-  --bg-card: rgba(8, 16, 32, 0.78);
-  --bg-card-hover: rgba(16, 30, 60, 0.9);
+  --bg-dark: #f0f4f8;
+  --bg-deep: #e1e8ed;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
   
-  --primary-cyan: #00d2ff;
-  --cyan-bright: #3a86ff;
-  --cyan-glow: rgba(0, 210, 255, 0.45);
-  --accent-magenta: #ff007f;
-  --bio-green: #00ff88;
-  --green-glow: rgba(0, 255, 136, 0.4);
-  --alert-red: #ff3366;
-  --energy-amber: #ffaa00;
+  --primary-cyan: #3498db;
+  --cyan-bright: #2980b9;
+  --cyan-glow: rgba(52, 152, 219, 0.2);
+  --accent-magenta: #e74c3c;
+  --bio-green: #2ecc71;
+  --green-glow: rgba(46, 204, 113, 0.2);
+  --alert-red: #e74c3c;
+  --energy-amber: #f39c12;
   
-  --text-main: #f0f6fc;
-  --text-muted: #8b9eb7;
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(0, 210, 255, 0.15);
+  --text-main: #2c3e50;
+  --text-muted: #7f8c8d;
+  --border-glass: rgba(0, 0, 0, 0.05);
+  --border-glow: rgba(52, 152, 219, 0.15);
 
   --font-body: 'Outfit', sans-serif;
-  --font-display: 'Rajdhani', sans-serif;
-  --font-logo: 'Teko', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --font-logo: 'Outfit', sans-serif;
 }
 
 * {
@@ -108,9 +108,9 @@ canvas#gameCanvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('../assets/cyber_bio_bg.jpg') center center / cover no-repeat;
+  background: url('../assets/edu_clean_bg.jpg') center center / cover no-repeat;
   z-index: 1;
-  filter: brightness(0.9) contrast(1.1);
+  filter: brightness(1.0) contrast(1.0);
   will-change: transform;
   transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -131,16 +131,8 @@ canvas#gameCanvas {
   width: 100%;
   height: 100%;
   z-index: 3;
-  background: radial-gradient(circle at center, rgba(3, 7, 18, 0.15) 0%, rgba(2, 5, 14, 0.88) 100%),
-              linear-gradient(180deg, rgba(3, 7, 18, 0.75) 0%, transparent 22%, transparent 78%, rgba(2, 5, 14, 0.92) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.4) 100%);
   pointer-events: none;
-  animation: vascularHeartbeatPulse 4.5s ease-in-out infinite alternate;
-}
-
-@keyframes vascularHeartbeatPulse {
-  0% { opacity: 0.85; }
-  50% { opacity: 1.0; }
-  100% { opacity: 0.85; }
 }
 
 /* Top Navigation Bar */
@@ -187,24 +179,31 @@ canvas#gameCanvas {
   opacity: 0.7;
 }
 
-/* Two-Column Hero Layout */
+/* Centered Layout for Main Menu */
 .main-menu-body {
   position: relative;
   z-index: 5;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 40px;
+  gap: 30px;
   flex: 1;
 }
 
-/* Left Hero Column: Logo & Action Buttons */
+/* Hide the Biomonitor on the main menu */
+.hero-right-col {
+  display: none;
+}
+
+/* Left Hero Column: Centered Logo & Buttons */
 .hero-left-col {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 26px;
-  max-width: 440px;
+  max-width: 500px;
 }
 
 .hero-logo-container {
@@ -260,6 +259,7 @@ canvas#gameCanvas {
 .logo-text-block {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .logo-title-row {
@@ -272,8 +272,7 @@ canvas#gameCanvas {
 .logo-v {
   font-size: 64px;
   font-weight: 900;
-  color: #ffffff;
-  text-shadow: 0 0 20px rgba(0, 210, 255, 0.8), 0 0 40px rgba(0, 210, 255, 0.4);
+  color: var(--primary-cyan);
   letter-spacing: -2px;
 }
 
@@ -281,7 +280,7 @@ canvas#gameCanvas {
   font-size: 52px;
   font-weight: 900;
   letter-spacing: 3px;
-  color: #ffffff;
+  color: var(--text-main);
   margin-right: 12px;
 }
 
@@ -289,115 +288,78 @@ canvas#gameCanvas {
   font-size: 52px;
   font-weight: 900;
   letter-spacing: 4px;
-  background: linear-gradient(90deg, #00d2ff, #3a86ff, #00ff88);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.6));
+  color: var(--bio-green);
 }
 
 .logo-subtitle {
   font-family: var(--font-display);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #72b9ff;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: capitalize;
   margin-top: 6px;
+  text-align: center;
 }
 
-/* High-Tech Tactical Action Buttons */
+/* Edu-Tech Solid Action Buttons */
 .hero-action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  width: 290px;
+  gap: 14px;
+  width: 320px;
 }
 
 .action-btn-pill {
   font-family: var(--font-body);
-  border-radius: 12px;
-  padding: 10px 16px;
+  border-radius: 16px;
+  padding: 14px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 14px;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid transparent;
+  gap: 16px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
   user-select: none;
 }
 
-.btn-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-  transition: transform 0.25s ease;
-}
-
-.btn-text-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex: 1;
-}
-
-.btn-main-label {
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.btn-sub-badge {
-  font-family: var(--font-display);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  opacity: 0.7;
-}
-
 .primary-glow-pill {
-  background: linear-gradient(90deg, #0088cc 0%, #00b4d8 60%, #00f2fe 100%);
+  background: var(--primary-cyan);
   color: #ffffff;
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 6px 0 var(--cyan-bright);
+}
+
+.primary-glow-pill:active, .primary-glow-pill:hover:active {
+  transform: translateY(6px);
+  box-shadow: 0 0 0 var(--cyan-bright);
 }
 
 .primary-glow-pill:hover {
-  background: linear-gradient(90deg, #0099e6 0%, #00c8f0 60%, #33ffff 100%);
-  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
-  transform: translateY(-2px) translateX(4px);
-}
-
-.primary-glow-pill:hover .btn-icon-wrap {
-  transform: scale(1.18);
+  filter: brightness(1.1);
+  transform: translateY(2px);
+  box-shadow: 0 4px 0 var(--cyan-bright);
 }
 
 .glass-pill {
-  background: rgba(8, 18, 38, 0.5);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: #d1e2f7;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  color: var(--text-main);
+  box-shadow: 0 4px 0 #d1d8e0;
 }
 
 .glass-pill:hover {
-  background: rgba(14, 30, 64, 0.75);
-  border-color: rgba(0, 242, 254, 0.5);
-  color: #ffffff;
-  transform: translateY(-2px) translateX(4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 210, 255, 0.15);
+  background: #f8f9fa;
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #d1d8e0;
+}
+
+.glass-pill:active, .glass-pill:hover:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 #d1d8e0;
 }
 
 .glass-pill:hover .btn-icon-wrap {
-  transform: scale(1.15);
+  transform: scale(1.1);
   color: var(--primary-cyan);
-}
-
-.glass-pill:hover .btn-sub-badge {
-  color: var(--primary-cyan);
-  opacity: 1;
 }
 
 /* Right Column: Tactical Bio-Monitor Center */
@@ -698,15 +660,16 @@ canvas#gameCanvas {
    ========================================================================== */
 
 .glass-card {
-  background: rgba(6, 12, 24, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1);
-  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
   padding: 30px;
   position: relative;
   overflow: hidden;
+  color: var(--text-main);
 }
 
 .glass-card::before {
@@ -741,16 +704,20 @@ button {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+  background: var(--primary-cyan);
   color: #ffffff;
-  box-shadow: 0 4px 18px rgba(0, 180, 216, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 0 var(--cyan-bright);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #00f2fe 0%, #0096c7 100%);
-  box-shadow: 0 6px 25px rgba(0, 242, 254, 0.5);
-  transform: translateY(-2px);
+  background: #3eb0ff;
+  box-shadow: 0 2px 0 var(--cyan-bright);
+  transform: translateY(2px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 var(--cyan-bright);
 }
 
 .btn-primary:disabled {
