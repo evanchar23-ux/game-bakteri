@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viral Slayer: The Microscopic Immune Defense</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@500;600;700;800&family=Teko:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/libs/three.min.js"></script>
+  <script src="js/libs/GLTFLoader.js"></script>
+  <script src="js/libs/OrbitControls.js"></script>
+</head>
+<body>
+  <div id="game-container">
+    <!-- Game Canvas (Active during gameplay) -->
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- CINEMATIC STAGE ENTRANCE OVERLAY -->
+    <div id="entrance-cinematic" class="entrance-cinematic-overlay hidden">
+      <!-- Widescreen Letterbox Bars -->
+      <div class="letterbox-bar letterbox-top"></div>
+      <div class="letterbox-bar letterbox-bottom"></div>
+
+      <!-- Holographic Scanline Grid -->
+      <div class="cinematic-scanlines"></div>
+
+      <!-- Center Holographic Organ Deployment Banner -->
+      <div class="entrance-banner-container">
+        <div class="entrance-banner-content">
+          <!-- Top Telemetry Protocol Tag -->
+          <div class="entrance-protocol-tag">
+            <span class="pulse-beacon"></span>
+            <span id="entrance-protocol-text">PROTOKOL PENYEBARAN SITOKIN // FASE 01: PENETRASI JARINGAN</span>
+          </div>
+
+          <!-- Main Organ Headline with Icon -->
+          <div class="entrance-title-row">
+            <span class="entrance-organ-icon" id="entrance-organ-icon">🫁</span>
+            <div class="entrance-title-texts">
+              <h1 class="entrance-organ-title" id="entrance-organ-title">PARU-PARU (PULMO)</h1>
+              <span class="entrance-organ-subtitle" id="entrance-organ-subtitle">ZONA INFEKSI ALVEOLAR & SALURAN MUKOSILIAR</span>
+            </div>
+          </div>
+
+          <!-- Bio Threat / Mission Directives Cards -->
+          <div class="entrance-meta-grid">
+            <div class="entrance-meta-pill danger">
+              <span class="meta-label">STATUS ANCAMAN</span>
+              <span class="meta-value" id="entrance-threat-level">BIO-HAZARD TINGKAT TINGGI</span>
+            </div>
+            <div class="entrance-meta-pill unit">
+              <span class="meta-label">UNIT TEMPUR</span>
+              <span class="meta-value" id="entrance-cell-unit">MAKROFAG ALVEOLAR</span>
+            </div>
+            <div class="entrance-meta-pill directive">
+              <span class="meta-label">DIREKTIF MISI</span>
+              <span class="meta-value" id="entrance-mission-directive">Eliminasi patogen & jaga integritas organ</span>
+            </div>
+          </div>
+
+          <!-- Subtle Skip Hint -->
+          <div class="entrance-skip-hint">
+            <span>[ TEKAN <kbd>SPASI</kbd> / KLIK UNTUK TERJUN LANGSUNG ]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IN-GAME HUD OVERLAY -->
+    <div id="hud" class="hud-overlay hidden">
+      <!-- Top Left: Player Vitals -->
+      <div class="hud-panel vitals-panel">
+        <div class="character-badge">
+          <div class="cell-avatar" id="hud-avatar"></div>
+          <div class="vitals-info">
+            <div class="cell-title-row">
+              <span class="cell-name" id="hud-cell-name">Makrofag</span>
+              <span class="cell-lvl-badge">LVL <span id="hud-level">1</span></span>
+            </div>
+            <!-- HP Bar -->
+            <div class="bar-container hp-bar-wrap">
+              <div class="bar-fill hp-fill" id="hud-hp-bar" style="width: 100%;"></div>
+              <span class="bar-label" id="hud-hp-text">800 / 800 HP</span>
+            </div>
+            <!-- ATP / Energy Bar -->
+            <div class="bar-container atp-bar-wrap">
+              <div class="bar-fill atp-fill" id="hud-atp-bar" style="width: 100%;"></div>
+              <span class="bar-label" id="hud-atp-text">100 / 100 ATP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cytokine EXP Bar -->
+        <div class="cytokine-exp-container">
+          <div class="exp-bar-fill" id="hud-exp-bar" style="width: 0%;"></div>
+          <span class="exp-text">Diferensiasi Sitokin: <span id="hud-exp-percent">0%</span></span>
+        </div>
+      </div>
+
+      <!-- Top Center: Organ Status & Wave Info -->
+      <div class="hud-panel organ-panel">
+        <div class="organ-header">
+          <span class="organ-icon" id="hud-organ-icon">🫁</span>
+          <span class="organ-name" id="hud-organ-name">Paru-paru (Pulmo)</span>
+        </div>
+        <div class="bar-container organ-integrity-wrap">
+          <div class="bar-fill organ-integrity-fill" id="hud-organ-bar" style="width: 100%;"></div>
+          <span class="bar-label">Integritas Jaringan: <span id="hud-organ-text">100%</span></span>
+        </div>
+        <div class="wave-info-badge">
+          <span class="wave-label">GELOMBANG <span id="hud-wave-num">1</span>/3</span>
+          <span class="pathogen-count">Patogen Aktif: <span id="hud-enemy-count">0</span></span>
+        </div>
+
+        <!-- Progres Sterilisasi & Tanda Mau Menang -->
+        <div class="mission-clearance-wrap" id="hud-clearance-wrap">
+          <div class="clearance-meta-row">
+            <span class="clearance-label">PROGRES STERILISASI:</span>
+            <span class="clearance-percent" id="hud-clearance-percent">0%</span>
+          </div>
+          <div class="clearance-bar-track">
+            <div class="clearance-bar-fill" id="hud-clearance-bar" style="width: 0%;"></div>
+          </div>
+          <!-- Impending Victory Live Alert Badge (Tanda Mau Menang) -->
+          <div class="impending-victory-badge hidden" id="hud-victory-countdown">
+            <span class="pulse-beacon-gold"></span>
+            <span id="hud-victory-countdown-text">🎯 5 PATOGEN LAGI MENUJU REMISI TOTAL!</span>
+          </div>
+        </div>
+
+        <!-- Tactical Biological Identifier Legend -->
+        <div class="hud-bio-sensor" id="hud-bio-sensor">
+          <span class="bio-sensor-pill virus" title="VIRUS: Partikel aseluler cepat, menembak duri spike, inti RNA berdenyut, tanpa dinding sel">
+            <span class="bio-sensor-dot virus-dot"></span> 🧬 VIRUS: Cepat & Duri
+          </span>
+          <span class="bio-sensor-pill bacteria" title="BAKTERI: Organisme seluler (Gram±), dinding peptidoglikan keras, koloni rantai/anggur/flagela">
+            <span class="bio-sensor-dot bacteria-dot"></span> 🦠 BAKTERI: Dinding Sel 🛡️
+          </span>
+        </div>
+      </div>
+
+      <!-- Top Right: Score & Telemetry Feed -->
+      <div class="hud-panel telemetry-panel">
+        <div class="stats-counter">
+          <div class="stat-pill">
+            <span class="stat-icon">🦠</span>
+            <span class="stat-val" id="hud-cfu-cleared">0</span>
+            <span class="stat-lbl">CFU Dibasmi</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-icon">🧬</span>
+            <span class="stat-val" id="hud-antigen-titer">0</span>
+            <span class="stat-lbl">Titer Memori</span>
+          </div>
+        </div>
+
+        <!-- Real-Time Immunology Telemetry Log -->
+        <div class="telemetry-box" id="telemetry-box">
+          <div class="telemetry-line">[SISTEM] Sel imun dikerahkan ke lokasi invasi.</div>
+        </div>
+      </div>
+
+      <!-- Bottom Center: Skills Hotbar -->
+      <div class="skills-hotbar">
+        <!-- Basic Attack Indicator -->
+        <div class="skill-slot passive">
+          <div class="skill-icon" id="skill-basic-icon">💥</div>
+          <div class="skill-meta">
+            <span class="skill-key">L-CLICK</span>
+            <span class="skill-title" id="skill-basic-name">Serangan Utama</span>
+          </div>
+        </div>
+
+        <!-- Tactical Skill (Space / Right-Click) -->
+        <div class="skill-slot active" id="slot-tactical">
+          <div class="skill-cooldown-overlay" id="cd-tactical"></div>
+          <div class="skill-icon" id="skill-tactical-icon">🛡️</div>
+          <div class="skill-meta">
+            <span class="skill-key">SPACE / R-CLICK</span>
+            <span class="skill-title" id="skill-tactical-name">Skill Taktis</span>
+          </div>
+        </div>
+
+        <!-- Ultimate Bio-Skill (Key Q / E) -->
+        <div class="skill-slot ultimate" id="slot-ultimate">
+          <div class="skill-cooldown-overlay" id="cd-ultimate"></div>
+          <div class="skill-icon" id="skill-ultimate-icon">⚡</div>
+          <div class="skill-meta">
+            <span class="skill-key">Q / E</span>
+            <span class="skill-title" id="skill-ultimate-name">Respons Sitokin</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Buffs / Vitamins Bar -->
+      <div class="buffs-dock" id="hud-buffs-dock"></div>
+
+      <!-- Mid-Screen Biohazard Swarm Surge Banner -->
+      <div id="hud-swarm-banner" class="hud-swarm-banner hidden">
+        <span class="pulse-beacon-red"></span>
+        <span id="hud-swarm-banner-text" class="swarm-banner-text">⚠️ PERINGATAN BIOHAZARD: SERBUAN PATOGEN MASIF! ⚠️</span>
+      </div>
+
+      <!-- In-Game Celebratory Victory Banner Animation (Animasi Pas Menang) -->
+      <div id="hud-victory-banner" class="hud-victory-banner hidden">
+        <div class="victory-banner-box">
+          <div class="victory-banner-badge">🏆 STERILISASI JARINGAN TOTAL TERCAPAI 🏆</div>
+          <h1 class="victory-banner-title">REMISI KLINIS 100% SUKSES!</h1>
+          <p class="victory-banner-sub">Organ tubuh telah berhasil diamankan dari kolonisasi patogen. Membuka laporan evaluasi & reward...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVAGE 3D CINEMATIC BIOSKOP DIVE INTRO (FULL 60 FPS CANVAS MOVIE) -->
+    <div id="prologue-overlay" class="prologue-overlay active">
+      <!-- Fullscreen 60FPS 3D Cinematic Canvas -->
+      <canvas id="cinematicIntroCanvas" class="cinematic-intro-canvas"></canvas>
+
+      <!-- Real-time Sci-Fi Pathology HUD -->
+      <div id="cine-hud-layer" class="cine-hud-layer">
+        <div class="cine-hud-corner top-left">
+          <div class="cine-hud-tag"><span class="pulse-beacon-cyan"></span> HEMODINAMIKA IN-VIVO // BIO-TELEMETRI</div>
+          <div id="cine-hud-telemetry" class="cine-hud-val">MEMINDAI ALIRAN ARTERI...</div>
+        </div>
+
+        <div class="cine-hud-corner top-right">
+          <div class="cine-vitals-row">
+            <span class="cine-vitals-label">SATURASI O2</span>
+            <span id="cine-hud-o2" class="cine-vitals-val">98.5%</span>
+          </div>
+          <div class="cine-vitals-bar-wrap">
+            <div id="cine-hud-o2-bar" class="cine-vitals-bar" style="width: 98%;"></div>
+          </div>
+        </div>
+
+        <!-- Dynamic Target Lock Bracket on Mutated Virus -->
+        <div id="cine-target-bracket" class="cine-target-bracket hidden">
+          <div class="bracket-edge tl"></div>
+          <div class="bracket-edge tr"></div>
+          <div class="bracket-edge bl"></div>
+          <div class="bracket-edge br"></div>
+          <div class="target-radar-ring"></div>
+          <div id="cine-target-label" class="target-threat-label">⚠️ MUTASI ANCAMAN TINGKAT V // APEX PATHOGEN</div>
+        </div>
+
+        <!-- Tactical Biohazard Emergency Alert (No Clunky Pertahanan Seluler) -->
+        <div id="cine-title-slam" class="cine-title-slam hidden">
+          <div class="cine-slam-badge">☣️ DARURAT BIOHAZARD // TINGKAT KRITIS</div>
+          <h1 class="cine-slam-headline">
+            <span class="slam-prefix">ZONA INFEKSI TERDETEKSI</span>
+            <span class="slam-highlight">RESPON IMUN DIAKTIFKAN</span>
+          </h1>
+          <div class="cine-slam-divider"></div>
+          <div class="cine-slam-sub">MENYIAPKAN PANGKALAN DEPLOYMENT...</div>
+        </div>
+      </div>
+
+      <!-- Atmospheric Scanlines & Vignette -->
+      <div class="prologue-crt-scanlines"></div>
+      <div class="prologue-vignette"></div>
+
+      <!-- Minimalist Touch Prompt (Disappears instantly on first click anywhere) -->
+      <div id="cinematic-start-prompt" class="cinematic-start-prompt">
+        <div class="prompt-pulse-beacon">
+          <span class="beacon-ring"></span>
+          <span class="beacon-core">🫀</span>
+        </div>
+        <div class="prompt-text-group">
+          <span class="prompt-tag">● SINEMATIK 3D MIKROSKOPIK // HEMODINAMIKA BIO-AUDIO</span>
+          <h2 class="prompt-head">SENTUH / KLIK UNTUK MENYELAM</h2>
+          <p class="prompt-desc">Penyelaman pembuluh darah 3D, desiran aliran darah & monitor ICU in-vivo [🔊 GUNAKAN HEADPHONE UNTUK BASS MENDALAM]</p>
+        </div>
+      </div>
+
+      <!-- Top Skip Button -->
+      <button type="button" id="btn-skip-prologue" class="btn-skip-prologue" title="Lewati Intro Sinematik">
+        <span>LEWATI INTRO</span> ⏭
+      </button>
+    </div>
+
+    <!-- AAA MAIN MENU SCREEN (EXACT LAYOUT OF SCREENSHOT 2) -->
+    <div id="main-menu" class="screen-overlay full-screen-theme active">
+      <!-- Full cinematic background image with overlay glow & canvas -->
+      <div class="main-menu-artwork" id="main-menu-artwork"></div>
+      <canvas id="menuAmbientCanvas" class="menu-ambient-canvas"></canvas>
+      <div class="main-menu-vignette"></div>
+
+      <!-- Top Navigation Header -->
+      <header class="top-nav-bar">
+        <div class="brand-mini">
+          <svg class="nav-shield-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="rgba(0, 242, 254, 0.15)" stroke="#00f2fe"/>
+          </svg>
+          <span class="brand-text">VIRAL SLAYER</span>
+        </div>
+        <div class="nav-taglines">
+          <span>EDUKASI</span>
+          <span class="nav-sep">//</span>
+          <span>AKSI</span>
+          <span class="nav-sep">//</span>
+          <span>IMUNOLOGI</span>
+        </div>
+      </header>
+
+      <!-- Main Two-Column Content Area -->
+      <div class="main-menu-body">
+        <!-- Left Column: Title Logo & Action Buttons -->
+        <div class="hero-left-col">
+          <div class="hero-logo-container">
+            <div class="stylized-logo">
+              <div class="logo-shield-emblem">
+                <svg viewBox="0 0 44 44" class="emblem-svg">
+                  <polygon points="22,2 40,11 40,29 22,42 4,29 4,11" class="emblem-hex"/>
+                  <circle cx="22" cy="22" r="7" class="emblem-core"/>
+                  <circle cx="22" cy="22" r="13" class="emblem-ring"/>
+                </svg>
+              </div>
+              <div class="logo-text-block">
+                <div class="logo-title-row">
+                  <span class="logo-v">V</span><span class="logo-iral">IRAL</span>
+                  <span class="logo-slayer">SLAYER</span>
+                </div>
+                <div class="logo-subtitle">SISTEM PERTAHANAN SELULAR // EDUKASI IMUNOLOGI INTERAKTIF</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- High-Tech Cyber-Bio Action Buttons -->
+          <div class="hero-action-buttons">
+            <button id="btn-start-expedition" class="action-btn-pill primary-glow-pill">
+              <div class="btn-icon-wrap">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <polygon points="6,4 20,12 6,20"/>
+                </svg>
+              </div>
+              <div class="btn-text-wrap">
+                <span class="btn-main-label">Mulai Pertempuran</span>
+                <span class="btn-sub-badge">[DEPLOY]</span>
+              </div>
+            </button>
+
+            <button id="btn-menu-char-select" class="action-btn-pill glass-pill">
+              <div class="btn-icon-wrap">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="4"/>
+                  <path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
+                  <circle cx="12" cy="8" r="1.5" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="btn-text-wrap">
+                <span class="btn-main-label">Pilih Sel Imun</span>
+                <span class="btn-sub-badge">[4 KELAS]</span>
+              </div>
+            </button>
+
+            <button id="btn-open-immunopedia" class="action-btn-pill glass-pill">
+              <div class="btn-icon-wrap">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                  <line x1="8" y1="7" x2="16" y2="7"/>
+                  <line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </div>
+              <div class="btn-text-wrap">
+                <span class="btn-main-label">Ensiklopedia Imun</span>
+                <span class="btn-sub-badge">[PEDIA]</span>
+              </div>
+            </button>
+
+            <button id="btn-open-howtoplay" class="action-btn-pill glass-pill">
+              <div class="btn-icon-wrap">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="9"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="btn-text-wrap">
+                <span class="btn-main-label">Doktrin & Kontrol</span>
+                <span class="btn-sub-badge">[TAKTIK]</span>
+              </div>
+            </button>
+
+            <button id="btn-menu-settings" class="action-btn-pill glass-pill">
+              <div class="btn-icon-wrap">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              </div>
+              <div class="btn-text-wrap">
+                <span class="btn-main-label">Konfigurasi Sistem</span>
+                <span class="btn-sub-badge">[AUDIO]</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Tactical Bio-Monitor Center & Sensor Feed -->
+        <div class="hero-right-col">
+          <div class="tactical-biomonitor-card">
+            <!-- Header with Status Beacon -->
+            <div class="biomonitor-header">
+              <div class="biomonitor-status-pill">
+                <span class="pulse-beacon"></span>
+                <span>STATUS INANG // INFLAMASI AKUT TERDETEKSI</span>
+              </div>
+              <span class="biomonitor-clock">BIO-RADAR AKTIF</span>
+            </div>
+
+            <!-- Host Physiological Biomarkers -->
+            <div class="biomarkers-grid">
+              <div class="biomarker-box alert">
+                <span class="bm-label">SUHU INTI</span>
+                <span class="bm-val">38.8 °C</span>
+                <span class="bm-sub">Demam Pirogenik</span>
+              </div>
+              <div class="biomarker-box active">
+                <span class="bm-label">LEUKOSIT TOTAL</span>
+                <span class="bm-val">14.800 <small>/µL</small></span>
+                <span class="bm-sub">Leukositosis Aktif</span>
+              </div>
+              <div class="biomarker-box warning">
+                <span class="bm-label">RESPONS IMUN</span>
+                <span class="bm-val">FASE AKUT</span>
+                <span class="bm-sub">Sitokin Pro-Inflamasi</span>
+              </div>
+            </div>
+
+            <!-- Interactive Organ Threat Matrix -->
+            <div class="organ-threat-strip">
+              <div class="threat-strip-header">STATUS ANCAMAN PATOLOGIS ORGAN TUBUH</div>
+              <div class="organ-pills-row">
+                <span class="organ-threat-pill critical" title="Invasi Droplet SARS-CoV-2">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v8M12 7c-2-2-5-1-6 2s0 7 2 9 4 1 4 1M12 7c2-2 5-1 6 2s0 7-2 9-4 1-4 1"/></svg>
+                  Pulmo [Aerosol]
+                </span>
+                <span class="organ-threat-pill warning" title="Kolonisasi Toksin Enterik">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 7c0-2 2-3 4-3s4 1.5 4 3.5c0 3-4 3-4 5.5s4 2.5 4 5c0 2-2 3-4 3s-4-1.5-4-3.5"/></svg>
+                  Usus [Toksin]
+                </span>
+                <span class="organ-threat-pill caution" title="Bakteremia & Risiko Sepsis">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                  Vaskular [Sepsis]
+                </span>
+                <span class="organ-threat-pill alert" title="Trauma Robekan Epidermis">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                  Dermis [Luka]
+                </span>
+              </div>
+            </div>
+
+            <!-- Live Electron Microscope Sensor Feed (Educational Animation Trigger) -->
+            <div class="sensor-feed-box" id="trailer-box" title="Klik untuk memutar Video Animasi Edukasi Imunologi (70 Detik - Multi Voice Over)">
+              <div class="sensor-header-tag">
+                <span>● BIOSKOP EDUKASI // ANIMASI MIKROBA & SEL IMUN (70s)</span>
+                <span class="rec-badge">MULTI-VOICE</span>
+              </div>
+              <div class="trailer-preview-box">
+                <div class="trailer-thumb-img"></div>
+                <div class="trailer-overlay-tint"></div>
+                <div class="sensor-reticle"></div>
+                <div class="trailer-play-btn">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#00f2fe">
+                    <polygon points="6,4 20,12 6,20"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="sensor-footer-tag">
+                <span>🎬 PUTAR VIDEO ANIMASI EDUKASI (KAK ARYA & CIA)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Status & Cyber-Line Footer -->
+      <footer class="bottom-nav-bar">
+        <div class="footer-motto">
+          <span class="footer-dot-live"></span>
+          <span>HOST: HOMO SAPIENS // 10¹² LIMFOSIT AKTIF // STATUS: SIAP TEMPUR</span>
+        </div>
+        <div class="footer-cyber-line">
+          <div class="cyber-glow-line"></div>
+          <span class="cyber-slashes">/////</span>
+        </div>
+      </footer>
+    </div>
+
+    <!-- CHARACTER SELECTION OVERLAY (3D HOLOGRAPHIC BIO-CHAMBER) -->
+    <div id="character-select" class="screen-overlay hidden">
+      <div class="modal-content glass-card wide-card bio-chamber-modal">
+        <div class="modal-header bio-chamber-header">
+          <div class="bio-chamber-header-left">
+            <div class="scanner-status-tag">
+              <span class="pulse-beacon"></span>
+              <span>BIO-CONTAINMENT POD // REKAYASA SELULAR 3D</span>
+            </div>
+            <h2>PILIH SEL IMUN PEMBELA</h2>
+            <p>Pilih sel imun untuk menginspeksi struktur membran 3D, organel biologis, dan kemampuan tempur.</p>
+          </div>
+          <div class="bio-chamber-header-right">
+            <div class="bio-chamber-id-tag">KONTENSI BIOLOGIS: STERIL // LEVEL 4</div>
+          </div>
+        </div>
+
+        <!-- Two-Column Bio-Chamber Layout -->
+        <div class="bio-chamber-layout">
+          <!-- Left Column: 3D Holographic Cell Pod Viewport -->
+          <div class="cell-3d-pod-viewport">
+            <div class="pod-grid-bg"></div>
+            <div class="pod-scan-laser"></div>
+
+            <!-- Top Telemetry Pill -->
+            <div class="cell-telemetry-top">
+              <span class="telemetry-live-dot"></span>
+              <span id="cell-telemetry-status">MIKROSKOPI 3D AKTIF // 12,500X MAGNIFIKASI</span>
+            </div>
+
+            <!-- 3D WebGL Canvas Container -->
+            <div class="cell-3d-pod" id="cell-3d-pod">
+              <canvas id="cell3dCanvas" class="cell-3d-canvas"></canvas>
+            </div>
+
+            <!-- Bottom Interaction Hint -->
+            <div class="cell-3d-hint">
+              <span class="hint-icon">🖱️</span>
+              <span>Putar 360° dengan mouse / sentuh untuk melihat struktur membran & organel</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Cell Selector Roster & Detailed Dossier -->
+          <div class="cell-roster-dossier-col">
+            <!-- 4 Quick Cell Selector Tiles -->
+            <div class="cell-quick-selector" id="cell-selector-chips">
+              <!-- Injected dynamically via JS -->
+            </div>
+
+            <!-- Active Cell Dossier Panel -->
+            <div class="cell-dossier-card" id="cell-active-dossier">
+              <!-- Injected dynamically via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions bio-chamber-actions">
+          <button id="btn-back-to-main" class="btn-outline">KEMBALI</button>
+          <button id="btn-proceed-to-organ" class="btn-primary glow-btn">PILIH ORGAN TUBUH ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORGAN SELECTION OVERLAY (HOLOGRAPHIC HUMAN BODY SCANNER) -->
+    <div id="organ-select" class="screen-overlay hidden">
+      <div class="modal-content glass-card wide-card human-scanner-modal">
+        <div class="modal-header scanner-header">
+          <div class="scanner-header-left">
+            <div class="scanner-status-tag">
+              <span class="pulse-beacon"></span>
+              <span>TOPOGRAFI ANATOMI INANG // PEMINDAI BIOMETRIK 3D</span>
+            </div>
+            <h2>PILIH AREA ORGAN TUBUH</h2>
+            <p>Klik titik organ pada tubuh manusia atau pilih chip di bawah untuk menganalisis invasi & mengerahkan unit pertahanan.</p>
+          </div>
+          <div class="scanner-header-right">
+            <span class="scanner-host-id">SUBJECT: HOMO SAPIENS #01</span>
+          </div>
+        </div>
+
+        <!-- Two-Column Biometric Body Scanner Viewport -->
+        <div class="scanner-layout">
+          <!-- Left Column: Holographic Human Silhouette & Anatomical Hotspots -->
+          <div class="scanner-body-viewport">
+            <div class="scanner-grid-bg"></div>
+            <div class="scanner-radar-line"></div>
+            
+            <!-- Biometric 3D Human Hologram Display -->
+            <!-- Biometric 3D Human Hologram Display -->
+            <div class="mannequin-container" id="mannequin-container">
+              <!-- True 3D WebGL Hologram Canvas -->
+              <canvas id="hologram3dCanvas" class="hologram-3d-canvas"></canvas>
+
+              <!-- Interactive Anatomical Hotspots SVG Layer (Clean & Sleek) -->
+              <svg class="human-mannequin-svg" id="human-mannequin-svg" viewBox="0 0 340 600" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <filter id="hotspotGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feMerge>
+                      <feMergeNode in="blur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <!-- Interactive Hotspot Nodes on the Human Body -->
+                <!-- 1. PULMO / PARU-PARU (Chest / Thoracic Cavity: cx=150, cy=185) -->
+                <g class="organ-hotspot-node" id="hotspot-lungs" data-organ="lungs" transform="translate(150, 185)">
+                  <circle class="hotspot-pulse-ring" r="23"/>
+                  <circle class="hotspot-pulse-ring-outer" r="34"/>
+                  <circle class="hotspot-core" r="14"/>
+                  <g transform="translate(-7, -7) scale(0.6)">
+                    <path d="M12 4v8M12 7c-2-2-5-1-6 2s0 7 2 9 4 1 4 1M12 7c2-2 5-1 6 2s0 7-2 9-4 1-4 1" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                  </g>
+                  <text class="hotspot-label" x="-28" y="22">PULMO</text>
+                </g>
+
+                <!-- 2. VASKULATUR / PEMBULUH DARAH & JANTUNG (Cardiac Region: cx=188, cy=152) -->
+                <g class="organ-hotspot-node" id="hotspot-bloodstream" data-organ="bloodstream" transform="translate(188, 152)">
+                  <circle class="hotspot-pulse-ring" r="22"/>
+                  <circle class="hotspot-pulse-ring-outer" r="33"/>
+                  <circle class="hotspot-core" r="13"/>
+                  <g transform="translate(-7, -7) scale(0.6)">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="none" stroke="#ffffff" stroke-width="2.4"/>
+                  </g>
+                  <text class="hotspot-label" x="32" y="-4">VASKULAR</text>
+                </g>
+
+                <!-- 3. USUS / SALURAN PENCERNAAN (Abdomen / Gastrointestinal: cx=170, cy=258) -->
+                <g class="organ-hotspot-node" id="hotspot-gut" data-organ="gut" transform="translate(170, 258)">
+                  <circle class="hotspot-pulse-ring" r="24"/>
+                  <circle class="hotspot-pulse-ring-outer" r="35"/>
+                  <circle class="hotspot-core" r="14"/>
+                  <g transform="translate(-7, -7) scale(0.6)">
+                    <path d="M6 7c0-2 2-3 4-3s4 1.5 4 3.5c0 3-4 3-4 5.5s4 2.5 4 5c0 2-2 3-4 3s-4-1.5-4-3.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+                  </g>
+                  <text class="hotspot-label" x="32" y="16">USUS</text>
+                </g>
+
+                <!-- 4. DERMIS / KULIT (Forearm / Dermal Barrier: cx=100, cy=290) -->
+                <g class="organ-hotspot-node" id="hotspot-skin" data-organ="skin" transform="translate(100, 290)">
+                  <circle class="hotspot-pulse-ring" r="22"/>
+                  <circle class="hotspot-pulse-ring-outer" r="33"/>
+                  <circle class="hotspot-core" r="13"/>
+                  <g transform="translate(-7, -7) scale(0.6)">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="#ffffff" stroke-width="2.4"/>
+                  </g>
+                  <text class="hotspot-label" x="-28" y="18">DERMIS</text>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Full 3D Multi-Axis Rotation & Orbit Dock -->
+            <div class="hologram-orbit-dock">
+              <button type="button" id="btn-holo-rotate-left" class="holo-orbit-btn" title="Putar Kiri">
+                <span>↺</span> KIRI
+              </button>
+              <button type="button" id="btn-holo-rotate-up" class="holo-orbit-btn" title="Lihat dari Atas (Tilt Up)">
+                <span>▲</span> ATAS
+              </button>
+              <button type="button" id="btn-holo-auto-orbit" class="holo-orbit-btn active" title="Nyalakan / Matikan Auto Orbit 360°">
+                <span class="orbit-spin-icon">🔄</span> AUTO
+              </button>
+              <button type="button" id="btn-holo-rotate-down" class="holo-orbit-btn" title="Lihat dari Bawah (Tilt Down)">
+                <span>▼</span> BAWAH
+              </button>
+              <button type="button" id="btn-holo-rotate-right" class="holo-orbit-btn" title="Putar Kanan">
+                KANAN <span>↻</span>
+              </button>
+              <button type="button" id="btn-holo-reset" class="holo-orbit-btn" title="Reset Sudut Pandang Depan">
+                <span>⌂</span> RESET
+              </button>
+            </div>
+
+            <!-- Mannequin Footnote, 3D Angle Readout & Drag Hint -->
+            <div class="scanner-body-hint">
+              <span class="hint-pulse-dot"></span>
+              <span id="holo-angle-display">SUDUT: 0° (DEPAN)</span>
+              <span class="drag-hint-pill">🖱️ DRAG 3D BEBAS</span>
+            </div>
+          </div>
+
+          <!-- Right Column: Tactical Organ Dossier & Deployment Briefing -->
+          <div class="organ-dossier-panel" id="organ-dossier-panel">
+            <!-- Dynamically populated via JS renderOrganSelectionCards() -->
+          </div>
+        </div>
+
+        <!-- Quick Selector Organ Chips Row -->
+        <div class="organ-quick-chips-wrap">
+          <span class="quick-chips-title">SELEKSI CEPAT TARGET ORGAN:</span>
+          <div class="organ-quick-chips" id="organ-quick-chips">
+            <!-- Chips injected via JS -->
+          </div>
+        </div>
+
+        <!-- Footer Modal Actions -->
+        <div class="modal-actions scanner-modal-actions">
+          <button id="btn-back-to-char" class="btn-outline">◀ KEMBALI KE PILIH SEL</button>
+          <button id="btn-deploy-mission" class="btn-primary glow-btn btn-deploy-large">KERAHKAN SEL IMUN KE ARENA! ⚔️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL UP / CYTOKINE MUTATION MODAL -->
+    <div id="upgrade-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card">
+        <div class="modal-header upgrade-header">
+          <div class="upgrade-tag">DIFERENSIASI IMUN TERCAPAI!</div>
+          <h2>PILIH SINYAL SITOKIN / MUTASI</h2>
+          <p>Pilih salah satu adaptasi imunologik untuk memperkuat sel dalam pertempuran ini:</p>
+        </div>
+
+        <div class="upgrade-choices-grid" id="upgrade-choices-container">
+          <!-- 3 Upgrade options injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDICAL DEBRIEFING / VICTORY OVERLAY WITH REWARDS & MEDAL -->
+    <div id="victory-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card debrief-card victory-reward-card">
+        <div class="debrief-header victory">
+          <span class="debrief-badge victory-glory-badge">✨ EVALUASI MEDIS // REMISI KLINIS TOTAL ✨</span>
+          <h2>LAPORAN STERILISASI & PENGHARGAAN</h2>
+          <p class="debrief-organ-cleared" id="deb-organ-name">Organ Tubuh Berhasil Disterilkan Sepenuhnya</p>
+        </div>
+
+        <!-- Grade & Medal Honorary Section -->
+        <div class="victory-honor-section">
+          <!-- Grade Stamp -->
+          <div class="honor-grade-box" id="deb-grade-box">
+            <div class="grade-letter" id="deb-grade-letter">S+</div>
+            <div class="grade-title" id="deb-grade-title">APEX CYTOKINE COMMANDER</div>
+          </div>
+
+          <!-- Medical Medal of Honor -->
+          <div class="honor-medal-box">
+            <div class="medal-icon-wrap" id="deb-medal-icon">🏅</div>
+            <div class="medal-info">
+              <span class="medal-tag">MEDALI KEHORMATAN IMUNOLOGI</span>
+              <h4 class="medal-name" id="deb-medal-name">Bintang Kehormatan Sterilisasi Jaringan</h4>
+              <p class="medal-desc" id="deb-medal-desc">Dianugerahkan atas keberhasilan eliminasi total invasi patogen tanpa komplikasi sepsis.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performance Stats Grid -->
+        <div class="debrief-stats-grid">
+          <div class="debrief-stat-box">
+            <span class="debrief-val" id="deb-cfu">0</span>
+            <span class="debrief-lbl">Total Patogen Dimusnahkan (CFU)</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="debrief-val highlight-green" id="deb-tissue">0%</span>
+            <span class="debrief-lbl">Integritas Jaringan Terselamatkan</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="debrief-val highlight-cyan" id="deb-titer">+0</span>
+            <span class="debrief-lbl">Titer Antibodi & Memori Imun</span>
+          </div>
+          <div class="debrief-stat-box">
+            <span class="debrief-val" id="deb-time">0:00</span>
+            <span class="debrief-lbl">Durasi Klirens Patogen</span>
+          </div>
+        </div>
+
+        <!-- Clinical Victory Reward Loot Stash -->
+        <div class="victory-rewards-container">
+          <div class="rewards-section-title">
+            <span>🎁 REWARD & HADIAH KELULUSAN MISI:</span>
+            <span class="reward-claimable-tag">SIAP DIKLAIM</span>
+          </div>
+          <div class="rewards-grid">
+            <div class="reward-item-card">
+              <div class="reward-icon">🧬</div>
+              <div class="reward-details">
+                <span class="reward-qty" id="deb-reward-titer">+1,500 Titer Memori</span>
+                <span class="reward-sub">Kapasitas Antibodi Permanen</span>
+              </div>
+            </div>
+            <div class="reward-item-card">
+              <div class="reward-icon">📜</div>
+              <div class="reward-details">
+                <span class="reward-qty">Sertifikat Remisi Organ</span>
+                <span class="reward-sub">Terakreditasi Laboratorium Inang</span>
+              </div>
+            </div>
+            <div class="reward-item-card highlight">
+              <div class="reward-icon">🔓</div>
+              <div class="reward-details">
+                <span class="reward-qty" id="deb-reward-unlock">Akses Organ Terbuka!</span>
+                <span class="reward-sub">Blueprint Sel & Stage Baru</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="medical-fun-fact-box">
+          <div class="fact-title">💡 FAKTA MEDIS & IMUNOLOGI:</div>
+          <div class="fact-content" id="deb-fun-fact"></div>
+        </div>
+
+        <div class="modal-actions victory-actions">
+          <button id="btn-victory-retry" class="btn-outline">MAIN ULANG ORGAN INI 🔄</button>
+          <button id="btn-victory-home" class="btn-primary glow-btn btn-claim-rewards">
+            <span>🎉</span> KLAIM SEMUA REWARD & KE MENU
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER / ORGAN FAILURE OVERLAY -->
+    <div id="gameover-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card debrief-card failure">
+        <div class="debrief-header failure">
+          <span class="debrief-badge alert-badge">SEPSIS & KEGAGALAN ORGAN</span>
+          <h2>RESPONS IMUN KEWALAHAN</h2>
+          <p id="gameover-cause">Patogen berkembang biak melampaui kapasitas fungsional sel imun.</p>
+        </div>
+
+        <div class="medical-fun-fact-box">
+          <div class="fact-title">⚠️ REFLEKSI PATOGENESIS:</div>
+          <div class="fact-content" id="gameover-fact">
+            Ketika respons imun terlambat atau patogen melepaskan toksin pekat, nekrosis jaringan dan badai sitokin destruktif dapat memicu kegagalan organ fatal.
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="btn-retry" class="btn-primary glow-btn">COBA LAGI STRATEGI INI 🔄</button>
+          <button id="btn-gameover-home" class="btn-outline">KEMBALI KE MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMMUNOPEDIA (KOLEKSI) MODAL -->
+    <div id="immunopedia-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card encyclopedia-card">
+        <div class="modal-header">
+          <div class="header-split">
+            <div>
+              <h2>IMMUNOPEDIA: ENSIKLOPEDIA MIKROSKOPIK</h2>
+              <p>Materi kuliah interaktif Virologi, Bakteriologi, dan Mekanisme Sel Imun.</p>
+            </div>
+            <button id="btn-close-immunopedia" class="btn-icon-close">✕</button>
+          </div>
+          <!-- Tab navigation -->
+          <div class="pedia-tabs">
+            <button class="pedia-tab active" data-category="cells">🛡️ Sel-Sel Imun</button>
+            <button class="pedia-tab" data-category="viruses">🦠 Virologi</button>
+            <button class="pedia-tab" data-category="bacteria">🧫 Bakteriologi</button>
+            <button class="pedia-tab" data-category="nutrients">💊 Nutrisi & Adjuvan</button>
+          </div>
+        </div>
+
+        <div class="pedia-body" id="pedia-content-view"></div>
+      </div>
+    </div>
+
+    <!-- HOW TO PLAY / PANDUAN MODAL -->
+    <div id="howtoplay-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card guide-card">
+        <div class="modal-header">
+          <div class="header-split">
+            <h2>PANDUAN BERMAIN & KONTROL</h2>
+            <button id="btn-close-howtoplay" class="btn-icon-close">✕</button>
+          </div>
+        </div>
+        <div class="guide-body">
+          <div class="guide-col">
+            <h3>🎮 Kontrol Permainan</h3>
+            <ul class="guide-list">
+              <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> / Panah: Menggerakkan sel imun dalam cairan organ.</li>
+              <li><kbd>Mouse Aim</kbd>: Mengarahkan pseudopodia atau proyektil antibodi.</li>
+              <li><kbd>Klik Kiri</kbd>: Serangan dasar (Fagositosis / Tembakan Granula / Pelepasan Antibodi).</li>
+              <li><kbd>Spasi</kbd> / <kbd>Klik Kanan</kbd>: Skill Taktis (Contoh: NETosis Neutrofil, Antigen Presentation Makrofag).</li>
+              <li><kbd>Q</kbd> atau <kbd>E</kbd>: Respons Sitokin Darurat (Menghabiskan ATP).</li>
+            </ul>
+          </div>
+          <div class="guide-col">
+            <h3>🔬 Konsep Biologi dalam Game</h3>
+            <ul class="guide-list">
+              <li><strong>Opsonisasi:</strong> Serang musuh berulang untuk menandainya dengan molekul komplemen/antibodi agar damage berlipat ganda!</li>
+              <li><strong>Integritas Jaringan:</strong> Jangan biarkan patogen menumpuk di organ, atau organ akan mengalami nekrosis/gagal fungsi.</li>
+              <li><strong>Koleksi Nutrisi:</strong> Ambil Vitamin C, Zinc, dan ATP yang melayang untuk mempercepat cooldown dan regenerasi membran.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-ok-howtoplay" class="btn-primary glow-btn">SAYA MENGERTI!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EDUCATIONAL CINEMA THEATER MODAL (70S ANIMASI DENGAN MULTI-VOICE OVER) -->
+    <div id="teaser-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card edu-cinema-card">
+        <div class="modal-header">
+          <div class="header-split">
+            <div>
+              <span class="teaser-live-tag">🔬 ANIMASI SAINS EDUKASI MIKROSKOPIK</span>
+              <h2 id="edu-main-title">PERTEMPURAN SISTEM IMUN VS BAKTERI & VIRUS</h2>
+            </div>
+            <button id="btn-close-teaser" class="btn-icon-close" title="Tutup Bioskop Edukasi">✕</button>
+          </div>
+        </div>
+
+        <div class="edu-video-container">
+          <!-- Widescreen 16:9 60FPS Canvas -->
+          <canvas id="teaserCanvas" width="880" height="495"></canvas>
+
+          <!-- Top Chapter Tag -->
+          <div class="edu-chapter-tag-pill" id="edu-chapter-tag">
+            BABAK 1/7 • INVASI KUMAN: BAKTERI VS VIRUS
+          </div>
+
+          <!-- Interactive 2D Host Avatar Studio Stage (Kak Arya & Cia) -->
+          <div class="edu-hosts-stage" id="edu-hosts-stage">
+            <div class="host-avatar-card active-arya" id="card-host-arya" title="Kak Arya (Host Sains & Dokter)">
+              <canvas id="canvas-host-arya" width="140" height="175"></canvas>
+              <span class="host-name-tag arya">👦 KAK ARYA</span>
+            </div>
+            <div class="host-avatar-card" id="card-host-cia" title="Cia (Adik Cewek Ceria)">
+              <canvas id="canvas-host-cia" width="140" height="175"></canvas>
+              <span class="host-name-tag cia">👧 CIA</span>
+            </div>
+          </div>
+
+          <!-- Interactive Multi-Voice Subtitle Box -->
+          <div class="edu-subtitle-box" id="edu-subtitle-box">
+            <div class="edu-speaker-badge">
+              <span class="edu-speaker-avatar" id="edu-speaker-avatar">👦</span>
+              <span class="edu-speaker-name" id="edu-speaker-name">Kak Arya</span>
+              <span class="edu-sound-wave">
+                <span></span><span></span><span></span><span></span>
+              </span>
+            </div>
+            <p class="edu-subtitle-text" id="edu-subtitle-text">
+              Halo dek! Pernah mikir gak sih, pas kamu luka gores atau kena bersin orang di jalan, apa yang sebenernya terjadi di dalem tubuh kita?
+            </p>
+          </div>
+        </div>
+
+        <!-- Video Player Controls Bar -->
+        <div class="edu-player-controls">
+          <div class="edu-timeline-row">
+            <span class="edu-time-display" id="edu-time-display">0:00 / 2:15</span>
+            <div class="edu-progress-track" id="edu-progress-track" title="Klik untuk melompat ke babak tertentu">
+              <div class="edu-progress-bar" id="edu-progress-bar" style="width: 0%;"></div>
+              <!-- 7 Chapter markers -->
+              <span class="ch-marker" style="left: 0%;" title="Babak 1: Bakteri vs Virus"></span>
+              <span class="ch-marker" style="left: 12.5%;" title="Babak 2: Makrofag & Neutrofil"></span>
+              <span class="ch-marker" style="left: 29.1%;" title="Babak 3: Sel B & Antibodi"></span>
+              <span class="ch-marker" style="left: 41.6%;" title="Babak 4: Sel T & Apoptosis"></span>
+              <span class="ch-marker" style="left: 54.1%;" title="Babak 5: Vaksin & Memori"></span>
+              <span class="ch-marker" style="left: 66.6%;" title="Babak 6: Antibiotik & Bakteri Baik"></span>
+              <span class="ch-marker" style="left: 79.1%;" title="Babak 7: Pola Hidup & Main Game"></span>
+            </div>
+          </div>
+
+          <div class="edu-buttons-row">
+            <div class="edu-left-btns">
+              <button type="button" id="edu-btn-playpause" class="btn-secondary edu-ctrl-btn" title="Jeda / Lanjutkan">
+                <span id="edu-playpause-icon">⏸</span>
+              </button>
+              <button type="button" id="btn-replay-teaser" class="btn-secondary edu-ctrl-btn" title="Ulangi dari Awal">
+                <span>🔄</span>
+              </button>
+              <button type="button" id="edu-btn-mute" class="btn-secondary edu-ctrl-btn" title="Bisukan / Nyalakan Suara">
+                <span id="edu-mute-icon">🔊</span>
+              </button>
+            </div>
+
+            <div class="edu-right-btns">
+              <button type="button" id="btn-play-from-teaser" class="btn-primary glow-btn">
+                <span>⚔️</span> Terjunkan Sel Imun ke Pertempuran!
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card" style="max-width: 480px; width: 90%;">
+        <div class="modal-header">
+          <div class="header-split">
+            <h2>PENGATURAN SUARA & TAMPILAN</h2>
+            <button id="btn-close-settings" class="btn-icon-close">✕</button>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin: 20px 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Efek Suara Bio-Akustik (SFX)</span>
+            <button id="btn-toggle-sound-settings" class="btn-secondary" style="padding: 8px 16px;">🔊 AKTIF</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Resolusi Partikel Darah</span>
+            <span style="color: var(--primary-cyan); font-weight: 700;">TINGGI (60 FPS)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Mode Edukasi Telemetri</span>
+            <span style="color: var(--bio-green); font-weight: 700;">AKTIF (Real-Time)</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-ok-settings" class="btn-primary glow-btn">SIMPAN</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUDIO TOGGLE FLOATING BUTTON -->
+    <button id="audio-toggle" class="btn-audio-toggle" title="Toggle Suara Biologis">
+      <span id="audio-icon">🔊</span>
+    </button>
+  </div>
+
+  <!-- Game Scripts (ES6 Modules) -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
