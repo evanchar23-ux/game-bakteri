@@ -6,7 +6,7 @@
 
 import { IMMUNE_CELLS } from './data/cells.js';
 import { PATHOGENS } from './data/pathogens.js';
-import { ORGAN_STAGES } from './data/organs.js';
+import { ORGAN_STAGES, SUBJECT_DATA } from './data/organs.js';
 import { CYTOKINE_UPGRADES } from './data/upgrades.js';
 import { PICKUP_TYPES } from './data/items.js';
 import { IMMUNOPEDIA_DATA } from './data/immunopediaData.js';
@@ -55,6 +55,7 @@ export class Game {
     this.pickups = [];
 
     // Stage & Wave Metrics
+    this.currentSubjectIndex = 0;
     this.organDef = ORGAN_STAGES.lungs;
     this.currentWaveIdx = 0;
     this.spawnTimer = 0;
@@ -405,10 +406,25 @@ export class Game {
     };
     document.getElementById('btn-proceed-to-organ').onclick = () => {
       this.showScreen(this.uiOrganSelect);
-      this.renderOrganSelectionCards();
+      this.renderSubjectUI();
       if (this.hologram3d) {
         setTimeout(() => this.hologram3d.handleResize(), 60);
       }
+    };
+
+    // Subject Selection
+    document.getElementById('btn-prev-subject').onclick = () => {
+      this.currentSubjectIndex--;
+      if (this.currentSubjectIndex < 0) this.currentSubjectIndex = SUBJECT_DATA.length - 1;
+      this.renderSubjectUI();
+      if (window.sound) window.sound.playClick();
+    };
+    
+    document.getElementById('btn-next-subject').onclick = () => {
+      this.currentSubjectIndex++;
+      if (this.currentSubjectIndex >= SUBJECT_DATA.length) this.currentSubjectIndex = 0;
+      this.renderSubjectUI();
+      if (window.sound) window.sound.playClick();
     };
 
     // Organ Select navigation
@@ -790,6 +806,62 @@ export class Game {
     selectCell(this.selectedCellKey, false);
   }
 
+  renderSubjectUI() {
+    const subject = SUBJECT_DATA[this.currentSubjectIndex];
+    const nameDisplay = document.getElementById('subject-name-display');
+    if (nameDisplay) nameDisplay.innerText = `SUBJECT: ${subject.name}`;
+
+    if (this.hologram3d) {
+      this.hologram3d.changeModel(subject.model, subject.targetHeight);
+    }
+    
+    // Clear dynamic hotspots
+    const svgGroup = document.getElementById('dynamic-hotspots');
+    if (svgGroup) {
+      svgGroup.innerHTML = '';
+      subject.organs.forEach(orgDef => {
+        const organKey = orgDef.id;
+        const organData = ORGAN_STAGES[organKey];
+        if (!organData) return;
+        
+        let svgIcon = '';
+        if (organKey === 'lungs') {
+          svgIcon = `<path d="M12 4v8M12 7c-2-2-5-1-6 2s0 7 2 9 4 1 4 1M12 7c2-2 5-1 6 2s0 7-2 9-4 1-4 1" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>`;
+        } else if (organKey === 'bloodstream') {
+          svgIcon = `<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="none" stroke="#ffffff" stroke-width="2.4"/>`;
+        } else if (organKey === 'gut') {
+          svgIcon = `<path d="M6 7c0-2 2-3 4-3s4 1.5 4 3.5c0 3-4 3-4 5.5s4 2.5 4 5c0 2-2 3-4 3s-4-1.5-4-3.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>`;
+        } else if (organKey === 'skin') {
+          svgIcon = `<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="#ffffff" stroke-width="2.4"/>`;
+        } else if (organKey === 'brain') {
+          svgIcon = `<path d="M12 4c-3.3 0-6 2.7-6 6 0 1.9 1 3.6 2.4 4.6.4.3.6.8.6 1.4v2c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2v-2c0-.5.2-1.1.6-1.4 1.4-1 2.4-2.7 2.4-4.6 0-3.3-2.7-6-6-6z" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>`;
+        } else if (organKey === 'stomach') {
+          svgIcon = `<path d="M7 6c0-2.2 1.8-4 4-4s4 1.8 4 4c0 3.3-2 6-4 9-2-3-4-5.7-4-9z" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>`;
+        }
+
+        const labelText = organData.name.split(' ')[0].toUpperCase();
+        const alignLeft = orgDef.cx < 160;
+
+        const nodeHtml = `
+          <g class="organ-hotspot-node" id="hotspot-${organKey}" data-organ="${organKey}" transform="translate(${orgDef.cx}, ${orgDef.cy})">
+            <circle class="hotspot-pulse-ring" r="23"/>
+            <circle class="hotspot-pulse-ring-outer" r="34"/>
+            <circle class="hotspot-core" r="14"/>
+            <g transform="translate(-7, -7) scale(0.6)">
+              ${svgIcon}
+            </g>
+            <text class="hotspot-label" x="${alignLeft ? -28 : 32}" y="${orgDef.cy > 180 ? 22 : -4}">${labelText}</text>
+          </g>
+        `;
+        svgGroup.insertAdjacentHTML('beforeend', nodeHtml);
+      });
+    }
+
+    // Default select first organ of this subject
+    this.selectedOrganKey = subject.organs[0].id;
+    this.renderOrganSelectionCards();
+  }
+
   renderOrganSelectionCards() {
     const dossierPanel = document.getElementById('organ-dossier-panel');
     const chipsContainer = document.getElementById('organ-quick-chips');
@@ -911,9 +983,14 @@ export class Game {
       updateDossier(organKey);
     };
 
-    // Render Quick Selector Chips
+    // Render Quick Selector Chips for CURRENT SUBJECT ONLY
     chipsContainer.innerHTML = '';
-    Object.values(ORGAN_STAGES).forEach((organ) => {
+    const currentSubject = SUBJECT_DATA[this.currentSubjectIndex];
+    
+    currentSubject.organs.forEach((orgDef) => {
+      const organ = ORGAN_STAGES[orgDef.id];
+      if (!organ) return;
+      
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = `organ-chip-btn ${organ.id === this.selectedOrganKey ? 'active' : ''}`;
@@ -935,7 +1012,7 @@ export class Game {
       chipsContainer.appendChild(chip);
     });
 
-    // Attach click and hover to Mannequin SVG Hotspots
+    // Attach click and hover to Mannequin SVG Hotspots (now dynamically rendered)
     document.querySelectorAll('.organ-hotspot-node').forEach((node) => {
       const organKey = node.dataset.organ;
       node.onclick = () => selectOrgan(organKey, true);

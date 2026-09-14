@@ -318,14 +318,22 @@ export class Hologram3DViewer {
     this.humanGroup.add(ribGroup);
   }
 
-  loadHumanModel() {
+  changeModel(modelUrl, targetHeight) {
+    if (this.humanModelWrapper) {
+      this.humanGroup.remove(this.humanModelWrapper);
+      this.humanModelWrapper = null;
+    }
+    this.loadHumanModel(modelUrl, targetHeight);
+  }
+
+  loadHumanModel(modelUrl = 'assets/human_model.glb', targetHeight = 1.75) {
     if (!THREE.GLTFLoader) {
       return;
     }
 
     const loader = new THREE.GLTFLoader();
     loader.load(
-      'assets/human_model.glb',
+      modelUrl,
       (gltf) => {
         const model = gltf.scene;
 
@@ -343,7 +351,6 @@ export class Hologram3DViewer {
         model.position.z = -center.z;
         model.position.y = -box.min.y;
 
-        const targetHeight = 1.75;
         const scale = targetHeight / (size.y > 0 ? size.y : 1.8);
         wrapper.scale.set(scale, scale, scale);
 

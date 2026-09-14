@@ -565,8 +565,10 @@
             <h2>PILIH AREA ORGAN TUBUH</h2>
             <p>Klik titik organ pada tubuh manusia atau pilih chip di bawah untuk menganalisis invasi & mengerahkan unit pertahanan.</p>
           </div>
-          <div class="scanner-header-right">
-            <span class="scanner-host-id">SUBJECT: HOMO SAPIENS #01</span>
+          <div class="scanner-header-right" style="display: flex; align-items: center; gap: 10px;">
+            <button id="btn-prev-subject" class="btn-outline" style="padding: 5px 10px; font-size: 14px;">◀</button>
+            <span class="scanner-host-id" id="subject-name-display">SUBJECT: HOMO SAPIENS #01 (DEWASA)</span>
+            <button id="btn-next-subject" class="btn-outline" style="padding: 5px 10px; font-size: 14px;">▶</button>
           </div>
         </div>
 
@@ -593,52 +595,8 @@
                       <feMergeNode in="SourceGraphic"/>
                     </feMerge>
                   </filter>
-                </defs>
-
-                <!-- Interactive Hotspot Nodes on the Human Body -->
-                <!-- 1. PULMO / PARU-PARU (Chest / Thoracic Cavity: cx=150, cy=185) -->
-                <g class="organ-hotspot-node" id="hotspot-lungs" data-organ="lungs" transform="translate(150, 185)">
-                  <circle class="hotspot-pulse-ring" r="23"/>
-                  <circle class="hotspot-pulse-ring-outer" r="34"/>
-                  <circle class="hotspot-core" r="14"/>
-                  <g transform="translate(-7, -7) scale(0.6)">
-                    <path d="M12 4v8M12 7c-2-2-5-1-6 2s0 7 2 9 4 1 4 1M12 7c2-2 5-1 6 2s0 7-2 9-4 1-4 1" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
-                  </g>
-                  <text class="hotspot-label" x="-28" y="22">PULMO</text>
-                </g>
-
-                <!-- 2. VASKULATUR / PEMBULUH DARAH & JANTUNG (Cardiac Region: cx=188, cy=152) -->
-                <g class="organ-hotspot-node" id="hotspot-bloodstream" data-organ="bloodstream" transform="translate(188, 152)">
-                  <circle class="hotspot-pulse-ring" r="22"/>
-                  <circle class="hotspot-pulse-ring-outer" r="33"/>
-                  <circle class="hotspot-core" r="13"/>
-                  <g transform="translate(-7, -7) scale(0.6)">
-                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" fill="none" stroke="#ffffff" stroke-width="2.4"/>
-                  </g>
-                  <text class="hotspot-label" x="32" y="-4">VASKULAR</text>
-                </g>
-
-                <!-- 3. USUS / SALURAN PENCERNAAN (Abdomen / Gastrointestinal: cx=170, cy=258) -->
-                <g class="organ-hotspot-node" id="hotspot-gut" data-organ="gut" transform="translate(170, 258)">
-                  <circle class="hotspot-pulse-ring" r="24"/>
-                  <circle class="hotspot-pulse-ring-outer" r="35"/>
-                  <circle class="hotspot-core" r="14"/>
-                  <g transform="translate(-7, -7) scale(0.6)">
-                    <path d="M6 7c0-2 2-3 4-3s4 1.5 4 3.5c0 3-4 3-4 5.5s4 2.5 4 5c0 2-2 3-4 3s-4-1.5-4-3.5" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
-                  </g>
-                  <text class="hotspot-label" x="32" y="16">USUS</text>
-                </g>
-
-                <!-- 4. DERMIS / KULIT (Forearm / Dermal Barrier: cx=100, cy=290) -->
-                <g class="organ-hotspot-node" id="hotspot-skin" data-organ="skin" transform="translate(100, 290)">
-                  <circle class="hotspot-pulse-ring" r="22"/>
-                  <circle class="hotspot-pulse-ring-outer" r="33"/>
-                  <circle class="hotspot-core" r="13"/>
-                  <g transform="translate(-7, -7) scale(0.6)">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="#ffffff" stroke-width="2.4"/>
-                  </g>
-                  <text class="hotspot-label" x="-28" y="18">DERMIS</text>
-                </g>
+                <!-- Dynamic Interactive Hotspot Nodes will be injected here via JS -->
+                <g id="dynamic-hotspots"></g>
               </svg>
             </div>
 

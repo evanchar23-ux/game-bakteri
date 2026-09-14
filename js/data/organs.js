@@ -207,5 +207,130 @@ export const ORGAN_STAGES = {
       }
     ],
     funFact: 'Total panjang seluruh pembuluh darah dalam satu tubuh manusia dewasa jika dibentangkan mencapai 100.000 kilometer, cukup mengitari bumi 2,5 kali!'
+  },
+
+  brain: {
+    id: 'brain',
+    name: 'Sistem Saraf (Otak)',
+    icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#b388ff" stroke-width="2" stroke-linecap="round"><path d="M12 4c-3.3 0-6 2.7-6 6 0 1.9 1 3.6 2.4 4.6.4.3.6.8.6 1.4v2c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2v-2c0-.5.2-1.1.6-1.4 1.4-1 2.4-2.7 2.4-4.6 0-3.3-2.7-6-6-6z"/></svg>`,
+    subtitle: 'Blood-Brain Barrier (BBB)',
+    colorTheme: '#b388ff',
+    bgColor: '#080112',
+    fluidTint: 'rgba(179, 136, 255, 0.1)',
+    themeType: 'brain',
+    hazard: {
+      name: 'Gelombang Elektromagnetik Sinapsis',
+      description: 'Loncatan sinyal listrik antar neuron kadang menyetrum mikroba di sekitarnya.',
+      driftX: 5,
+      driftY: -5
+    },
+    lore: 'Blood-Brain Barrier (BBB) adalah benteng pertahanan terakhir. Sangat sedikit patogen yang bisa menembusnya. Bakteri Meningococcus yang lolos bisa menyebabkan radang selaput otak (Meningitis) yang fatal.',
+    waves: [
+      {
+        waveNum: 1,
+        title: 'Penetrasi Mikroglia',
+        enemies: [
+          { type: 'streptococcus', count: 12 },
+          { type: 'influenza', count: 5 }
+        ],
+        spawnInterval: 1.0
+      },
+      {
+        waveNum: 2,
+        title: 'Infeksi Cairan Serebrospinal',
+        enemies: [
+          { type: 'streptococcus', count: 18 },
+          { type: 'staph_aureus', count: 10 }
+        ],
+        spawnInterval: 0.9
+      },
+      {
+        waveNum: 3,
+        title: 'Ancaman Meningitis Akut',
+        enemies: [
+          { type: 'streptococcus', count: 20 },
+          { type: 'sars_cov_2', count: 8 }
+        ],
+        boss: 'boss_mrsa', 
+        spawnInterval: 0.8
+      }
+    ],
+    funFact: 'Otak manusia menggunakan sekitar 20% dari total oksigen dan energi tubuh, meskipun beratnya hanya 2% dari berat badan!'
+  },
+
+  stomach: {
+    id: 'stomach',
+    name: 'Lambung (Gastrik)',
+    icon: `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#ffeb3b" stroke-width="2" stroke-linecap="round"><path d="M7 6c0-2.2 1.8-4 4-4s4 1.8 4 4c0 3.3-2 6-4 9-2-3-4-5.7-4-9z"/></svg>`,
+    subtitle: 'Lautan Asam Klorida (HCl)',
+    colorTheme: '#ffeb3b',
+    bgColor: '#1a1600',
+    fluidTint: 'rgba(255, 235, 59, 0.12)',
+    themeType: 'stomach',
+    hazard: {
+      name: 'Erupsi Asam Lambung',
+      description: 'Lingkungan sangat asam secara konstan merusak dinding patogen biasa (pH 1.5 - 3.5).',
+      driftX: 0,
+      driftY: 25
+    },
+    lore: 'Lambung bagaikan kawah mematikan bagi 99% bakteri karena cairan asamnya (HCl). Namun, bakteri Heliobacter pylori (H. Pylori) berevolusi dengan enzim urease untuk menetralkan asam dan menetap di lambung.',
+    waves: [
+      {
+        waveNum: 1,
+        title: 'Bakteri Kontaminan Makanan',
+        enemies: [
+          { type: 'escherichia_coli', count: 10 },
+          { type: 'staph_aureus', count: 5 }
+        ],
+        spawnInterval: 1.2
+      },
+      {
+        waveNum: 2,
+        title: 'Pertahanan Urease',
+        enemies: [
+          { type: 'escherichia_coli', count: 15 },
+          { type: 'streptococcus', count: 10 }
+        ],
+        spawnInterval: 1.0
+      },
+      {
+        waveNum: 3,
+        title: 'Kolonisasi H. Pylori',
+        enemies: [
+          { type: 'escherichia_coli', count: 18 },
+          { type: 'staph_aureus', count: 12 },
+          { type: 'streptococcus', count: 8 }
+        ],
+        boss: 'boss_sars_cov_2', // Ganti dengan boss yg relevan
+        spawnInterval: 0.85
+      }
+    ],
+    funFact: 'Asam lambung manusia sangat kuat hingga cukup korosif untuk melarutkan seng! Namun lapisan mukus melindungi perut dari mencerna dirinya sendiri.'
   }
 };
+
+export const SUBJECT_DATA = [
+  {
+    id: 0,
+    name: 'HOMO SAPIENS #01 (DEWASA)',
+    model: 'assets/human_model.glb',
+    targetHeight: 1.75, // Scale adjustment
+    organs: [
+      { id: 'lungs', cx: 150, cy: 185 },
+      { id: 'bloodstream', cx: 188, cy: 152 },
+      { id: 'gut', cx: 155, cy: 260 },
+      { id: 'skin', cx: 102, cy: 290 }
+    ]
+  },
+  {
+    id: 1,
+    name: 'HOMO SAPIENS #02 (ANAK)',
+    model: 'assets/michelle.glb',
+    targetHeight: 1.5,
+    organs: [
+      { id: 'brain', cx: 150, cy: 65 },
+      { id: 'stomach', cx: 165, cy: 230 },
+      { id: 'lungs', cx: 150, cy: 175 }
+    ]
+  }
+];
