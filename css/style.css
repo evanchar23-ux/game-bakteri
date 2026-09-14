@@ -4,28 +4,28 @@
    ========================================================================== */
 
 :root {
-  --bg-dark: #f0f4f8;
-  --bg-deep: #e1e8ed;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --bg-dark: #040814;
+  --bg-deep: #060c1c;
+  --bg-card: rgba(8, 16, 32, 0.78);
+  --bg-card-hover: rgba(16, 30, 60, 0.9);
   
-  --primary-cyan: #3498db;
-  --cyan-bright: #2980b9;
-  --cyan-glow: rgba(52, 152, 219, 0.2);
-  --accent-magenta: #e74c3c;
-  --bio-green: #2ecc71;
-  --green-glow: rgba(46, 204, 113, 0.2);
-  --alert-red: #e74c3c;
-  --energy-amber: #f39c12;
+  --primary-cyan: #00d2ff;
+  --cyan-bright: #3a86ff;
+  --cyan-glow: rgba(0, 210, 255, 0.45);
+  --accent-magenta: #ff007f;
+  --bio-green: #00ff88;
+  --green-glow: rgba(0, 255, 136, 0.4);
+  --alert-red: #ff3366;
+  --energy-amber: #ffaa00;
   
-  --text-main: #2c3e50;
-  --text-muted: #7f8c8d;
-  --border-glass: rgba(0, 0, 0, 0.05);
-  --border-glow: rgba(52, 152, 219, 0.15);
+  --text-main: #f0f6fc;
+  --text-muted: #8b9eb7;
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(0, 210, 255, 0.15);
 
   --font-body: 'Outfit', sans-serif;
-  --font-display: 'Outfit', sans-serif;
-  --font-logo: 'Outfit', sans-serif;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-logo: 'Teko', sans-serif;
 }
 
 * {
@@ -108,9 +108,9 @@ canvas#gameCanvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('../assets/pro_edu_bg.jpg') center center / cover no-repeat;
+  background: url('../assets/cyber_bio_bg.jpg') center center / cover no-repeat;
   z-index: 1;
-  filter: brightness(1.0) contrast(1.0);
+  filter: brightness(0.9) contrast(1.1);
   will-change: transform;
   transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -131,8 +131,16 @@ canvas#gameCanvas {
   width: 100%;
   height: 100%;
   z-index: 3;
-  background: radial-gradient(circle at center, transparent 0%, rgba(255, 255, 255, 0.4) 100%);
+  background: radial-gradient(circle at center, rgba(3, 7, 18, 0.15) 0%, rgba(2, 5, 14, 0.88) 100%),
+              linear-gradient(180deg, rgba(3, 7, 18, 0.75) 0%, transparent 22%, transparent 78%, rgba(2, 5, 14, 0.92) 100%);
   pointer-events: none;
+  animation: vascularHeartbeatPulse 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes vascularHeartbeatPulse {
+  0% { opacity: 0.85; }
+  50% { opacity: 1.0; }
+  100% { opacity: 0.85; }
 }
 
 /* Top Navigation Bar */
@@ -179,41 +187,24 @@ canvas#gameCanvas {
   opacity: 0.7;
 }
 
-/* Centered 2-Column Layout for Main Menu */
+/* Two-Column Hero Layout */
 .main-menu-body {
   position: relative;
   z-index: 5;
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 80px;
+  gap: 40px;
   flex: 1;
 }
 
-/* Right Column */
-.hero-right-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 380px;
-  width: 100%;
-}
-
-/* Hide the complex Biomonitor to keep it clean */
-.tactical-biomonitor-card {
-  display: none;
-}
-
-/* Left Hero Column: Centered Logo & Buttons */
+/* Left Hero Column: Logo & Action Buttons */
 .hero-left-col {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 26px;
-  max-width: 500px;
+  max-width: 440px;
 }
 
 .hero-logo-container {
@@ -269,7 +260,6 @@ canvas#gameCanvas {
 .logo-text-block {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .logo-title-row {
@@ -282,7 +272,8 @@ canvas#gameCanvas {
 .logo-v {
   font-size: 64px;
   font-weight: 900;
-  color: var(--primary-cyan);
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(0, 210, 255, 0.8), 0 0 40px rgba(0, 210, 255, 0.4);
   letter-spacing: -2px;
 }
 
@@ -290,7 +281,7 @@ canvas#gameCanvas {
   font-size: 52px;
   font-weight: 900;
   letter-spacing: 3px;
-  color: var(--text-main);
+  color: #ffffff;
   margin-right: 12px;
 }
 
@@ -298,78 +289,115 @@ canvas#gameCanvas {
   font-size: 52px;
   font-weight: 900;
   letter-spacing: 4px;
-  color: var(--bio-green);
+  background: linear-gradient(90deg, #00d2ff, #3a86ff, #00ff88);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.6));
 }
 
 .logo-subtitle {
   font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  text-transform: capitalize;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #72b9ff;
+  text-transform: uppercase;
   margin-top: 6px;
-  text-align: center;
 }
 
-/* Modern Professional Action Buttons */
+/* High-Tech Tactical Action Buttons */
 .hero-action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  width: 320px;
+  gap: 11px;
+  width: 290px;
 }
 
 .action-btn-pill {
   font-family: var(--font-body);
-  border-radius: 10px;
-  padding: 14px 20px;
+  border-radius: 12px;
+  padding: 10px 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 16px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid rgba(0,0,0,0.05);
+  gap: 14px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
   user-select: none;
 }
 
-.primary-glow-pill {
-  background: var(--primary-cyan);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+.btn-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
 }
 
-.primary-glow-pill:active, .primary-glow-pill:hover:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
+.btn-text-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.btn-main-label {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.btn-sub-badge {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.primary-glow-pill {
+  background: linear-gradient(90deg, #0088cc 0%, #00b4d8 60%, #00f2fe 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .primary-glow-pill:hover {
-  filter: brightness(1.05);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+  background: linear-gradient(90deg, #0099e6 0%, #00c8f0 60%, #33ffff 100%);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+  transform: translateY(-2px) translateX(4px);
+}
+
+.primary-glow-pill:hover .btn-icon-wrap {
+  transform: scale(1.18);
 }
 
 .glass-pill {
-  background: #ffffff;
-  color: var(--text-main);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: rgba(8, 18, 38, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #d1e2f7;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-pill:hover {
-  background: #fdfdfd;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-}
-
-.glass-pill:active, .glass-pill:hover:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: rgba(14, 30, 64, 0.75);
+  border-color: rgba(0, 242, 254, 0.5);
+  color: #ffffff;
+  transform: translateY(-2px) translateX(4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 210, 255, 0.15);
 }
 
 .glass-pill:hover .btn-icon-wrap {
-  transform: scale(1.05);
+  transform: scale(1.15);
   color: var(--primary-cyan);
+}
+
+.glass-pill:hover .btn-sub-badge {
+  color: var(--primary-cyan);
+  opacity: 1;
 }
 
 /* Right Column: Tactical Bio-Monitor Center */
@@ -511,57 +539,54 @@ canvas#gameCanvas {
 .organ-threat-pill.caution { border-left: 2px solid #e76f51; }
 .organ-threat-pill.alert { border-left: 2px solid var(--primary-cyan); }
 
-/* Educational Video Box (Trailer) */
+/* Live Optical Electron Sensor Box */
 .sensor-feed-box {
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 16px;
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: 12px;
   overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background: #020610;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  width: 100%;
-  max-width: 320px; /* Match button width */
+  transition: all 0.3s ease;
 }
 
 .sensor-feed-box:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(52, 152, 219, 0.15);
+  border-color: var(--primary-cyan);
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
 }
 
 .sensor-header-tag, .sensor-footer-tag {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
+  padding: 5px 10px;
   font-family: var(--font-display);
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  background: #f8f9fa;
-  color: var(--text-main);
+  letter-spacing: 1px;
+  background: rgba(0, 20, 45, 0.7);
+  color: var(--primary-cyan);
 }
 
 .sensor-footer-tag {
   justify-content: center;
-  background: #f0f4f8;
-  color: var(--text-muted);
+  background: rgba(0, 15, 35, 0.85);
+  color: #8fa5c4;
 }
 
 .sensor-feed-box:hover .sensor-footer-tag {
   color: #ffffff;
-  background: var(--primary-cyan);
+  background: rgba(0, 45, 85, 0.85);
 }
 
 .rec-badge {
-  color: #e74c3c;
+  color: #ff0055;
   animation: beaconBlink 0.8s infinite alternate;
 }
 
 .trailer-preview-box {
   position: relative;
   width: 100%;
-  height: 140px;
+  height: 110px;
   overflow: hidden;
 }
 
@@ -575,13 +600,15 @@ canvas#gameCanvas {
 .trailer-overlay-tint {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(3, 8, 20, 0.4);
   transition: background 0.3s ease;
 }
 
 .sensor-reticle {
   position: absolute;
   inset: 0;
+  background: radial-gradient(circle at center, transparent 40%, rgba(2, 6, 16, 0.6) 100%),
+              repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.18) 1px, transparent 1px, transparent 3px);
   pointer-events: none;
 }
 
@@ -590,15 +617,16 @@ canvas#gameCanvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: #ffffff;
+  background: rgba(8, 20, 45, 0.85);
+  border: 1.5px solid var(--primary-cyan);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s ease;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.6);
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
 .sensor-feed-box:hover .trailer-thumb-img {
@@ -611,7 +639,7 @@ canvas#gameCanvas {
 }
 
 .sensor-feed-box:hover .trailer-play-btn svg {
-  fill: #ffffff;
+  fill: #020610;
 }
 
 /* Footer Bottom Bar */
@@ -670,16 +698,15 @@ canvas#gameCanvas {
    ========================================================================== */
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(6, 12, 24, 0.65);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
-  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
   padding: 30px;
   position: relative;
   overflow: hidden;
-  color: var(--text-main);
 }
 
 .glass-card::before {
@@ -714,20 +741,16 @@ button {
 }
 
 .btn-primary {
-  background: var(--primary-cyan);
+  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 18px rgba(0, 180, 216, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #3eb0ff;
-  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+  background: linear-gradient(135deg, #00f2fe 0%, #0096c7 100%);
+  box-shadow: 0 6px 25px rgba(0, 242, 254, 0.5);
   transform: translateY(-2px);
-}
-
-.btn-primary:active:not(:disabled) {
-  transform: translateY(2px);
-  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
 }
 
 .btn-primary:disabled {

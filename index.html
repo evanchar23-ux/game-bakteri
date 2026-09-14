@@ -396,11 +396,63 @@
                 <span class="btn-sub-badge">[AUDIO]</span>
               </div>
             </button>
+          </div>
         </div>
 
-        <!-- Right Column: Educational Sensor Feed -->
+        <!-- Right Column: Tactical Bio-Monitor Center & Sensor Feed -->
         <div class="hero-right-col">
-            
+          <div class="tactical-biomonitor-card">
+            <!-- Header with Status Beacon -->
+            <div class="biomonitor-header">
+              <div class="biomonitor-status-pill">
+                <span class="pulse-beacon"></span>
+                <span>STATUS INANG // INFLAMASI AKUT TERDETEKSI</span>
+              </div>
+              <span class="biomonitor-clock">BIO-RADAR AKTIF</span>
+            </div>
+
+            <!-- Host Physiological Biomarkers -->
+            <div class="biomarkers-grid">
+              <div class="biomarker-box alert">
+                <span class="bm-label">SUHU INTI</span>
+                <span class="bm-val">38.8 °C</span>
+                <span class="bm-sub">Demam Pirogenik</span>
+              </div>
+              <div class="biomarker-box active">
+                <span class="bm-label">LEUKOSIT TOTAL</span>
+                <span class="bm-val">14.800 <small>/µL</small></span>
+                <span class="bm-sub">Leukositosis Aktif</span>
+              </div>
+              <div class="biomarker-box warning">
+                <span class="bm-label">RESPONS IMUN</span>
+                <span class="bm-val">FASE AKUT</span>
+                <span class="bm-sub">Sitokin Pro-Inflamasi</span>
+              </div>
+            </div>
+
+            <!-- Interactive Organ Threat Matrix -->
+            <div class="organ-threat-strip">
+              <div class="threat-strip-header">STATUS ANCAMAN PATOLOGIS ORGAN TUBUH</div>
+              <div class="organ-pills-row">
+                <span class="organ-threat-pill critical" title="Invasi Droplet SARS-CoV-2">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v8M12 7c-2-2-5-1-6 2s0 7 2 9 4 1 4 1M12 7c2-2 5-1 6 2s0 7-2 9-4 1-4 1"/></svg>
+                  Pulmo [Aerosol]
+                </span>
+                <span class="organ-threat-pill warning" title="Kolonisasi Toksin Enterik">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 7c0-2 2-3 4-3s4 1.5 4 3.5c0 3-4 3-4 5.5s4 2.5 4 5c0 2-2 3-4 3s-4-1.5-4-3.5"/></svg>
+                  Usus [Toksin]
+                </span>
+                <span class="organ-threat-pill caution" title="Bakteremia & Risiko Sepsis">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                  Vaskular [Sepsis]
+                </span>
+                <span class="organ-threat-pill alert" title="Trauma Robekan Epidermis">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                  Dermis [Luka]
+                </span>
+              </div>
+            </div>
+
             <!-- Live Electron Microscope Sensor Feed (Educational Animation Trigger) -->
             <div class="sensor-feed-box" id="trailer-box" title="Klik untuk memutar Video Animasi Edukasi Imunologi (70 Detik - Multi Voice Over)">
               <div class="sensor-header-tag">
@@ -412,7 +464,7 @@
                 <div class="trailer-overlay-tint"></div>
                 <div class="sensor-reticle"></div>
                 <div class="trailer-play-btn">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#3498db">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#00f2fe">
                     <polygon points="6,4 20,12 6,20"/>
                   </svg>
                 </div>
@@ -421,7 +473,7 @@
                 <span><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 8l6 4-6 4z"/></svg> PUTAR VIDEO ANIMASI EDUKASI (KAK ARYA & CIA)</span>
               </div>
             </div>
-
+          </div>
         </div>
       </div>
 
