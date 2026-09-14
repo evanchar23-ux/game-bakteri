@@ -1,4 +1,4 @@
-/**
+﻿/**
  * pathogens.js
  * Database Patogen: Virus, Bakteri, dan Boss Penyakit
  * Dilengkapi morfologi mikroskopik, mekanisme biologis nyata, dan visualisasi canvas.
@@ -200,3 +200,4 @@ export const PATHOGENS = {
     lore: 'Bakteri enterohemoragik yang menghasilkan Toksin Shiga (Stx), menghambat sintesis protein sel endotel dan memicu sindrom uremik hemolitik.'
   }
 };
+

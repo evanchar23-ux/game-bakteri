@@ -20,8 +20,8 @@
   
   --text-main: #f0f6fc;
   --text-muted: #8b9eb7;
-  --border-glass: rgba(255, 255, 255, 0.14);
-  --border-glow: rgba(0, 210, 255, 0.35);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(0, 210, 255, 0.15);
 
   --font-body: 'Outfit', sans-serif;
   --font-display: 'Rajdhani', sans-serif;
@@ -75,7 +75,17 @@ canvas#gameCanvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+.screen-overlay:not(.hidden) > .modal-content {
+  animation: modalPopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalPopIn {
+  0% { transform: scale(0.96) translateY(10px); opacity: 0; filter: blur(4px); }
+  100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
 }
 
 .screen-overlay.hidden {
@@ -350,14 +360,14 @@ canvas#gameCanvas {
 .primary-glow-pill {
   background: linear-gradient(90deg, #0088cc 0%, #00b4d8 60%, #00f2fe 100%);
   color: #ffffff;
-  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .primary-glow-pill:hover {
   background: linear-gradient(90deg, #0099e6 0%, #00c8f0 60%, #33ffff 100%);
-  box-shadow: 0 6px 30px rgba(0, 242, 254, 0.75);
-  transform: translateX(6px);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+  transform: translateY(-2px) translateX(4px);
 }
 
 .primary-glow-pill:hover .btn-icon-wrap {
@@ -365,19 +375,19 @@ canvas#gameCanvas {
 }
 
 .glass-pill {
-  background: rgba(8, 18, 38, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(8, 18, 38, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   color: #d1e2f7;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-pill:hover {
-  background: rgba(14, 30, 64, 0.9);
-  border-color: var(--primary-cyan);
+  background: rgba(14, 30, 64, 0.75);
+  border-color: rgba(0, 242, 254, 0.5);
   color: #ffffff;
-  transform: translateX(6px);
-  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.3);
+  transform: translateY(-2px) translateX(4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 210, 255, 0.15);
 }
 
 .glass-pill:hover .btn-icon-wrap {
@@ -397,11 +407,11 @@ canvas#gameCanvas {
 }
 
 .tactical-biomonitor-card {
-  background: rgba(6, 15, 30, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 242, 254, 0.3);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.75), inset 0 0 30px rgba(0, 242, 254, 0.05);
+  background: rgba(6, 15, 30, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.02);
   border-radius: 18px;
   padding: 20px 22px;
   display: flex;
@@ -688,11 +698,11 @@ canvas#gameCanvas {
    ========================================================================== */
 
 .glass-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-glass);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 0 1px rgba(255, 255, 255, 0.2);
+  background: rgba(6, 12, 24, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   padding: 30px;
   position: relative;
@@ -717,12 +727,12 @@ button {
   font-family: var(--font-display);
   font-size: 15px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  border-radius: 12px;
+  letter-spacing: 1px;
+  text-transform: capitalize;
+  border-radius: 8px;
   padding: 12px 24px;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   border: none;
   display: inline-flex;
   align-items: center;

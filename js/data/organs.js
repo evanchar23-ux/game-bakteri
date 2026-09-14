@@ -1,4 +1,4 @@
-/**
+﻿/**
  * organs.js
  * Definisi Area Organ Tubuh sebagai Level Stage Game
  * Setiap organ memiliki identitas visual, struktur anatomis, hazard mikroskopik, gelombang patogen berimbang, dan boss yang unik.
@@ -336,3 +336,4 @@ export const SUBJECT_DATA = [
     ]
   }
 ];
+

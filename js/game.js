@@ -1,4 +1,4 @@
-/**
+﻿/**
  * game.js
  * Inti Game Loop & State Manager Viral Slayer
  * Mengatur siklus permainan, gelombang patogen, collision, HUD, modal debriefing, dan telemetri imunologi.
@@ -738,7 +738,7 @@ export class Game {
               <span class="cell-skill-desc">${cell.basicAttack.description || ''}</span>
             </div>
             <div class="cell-skill-row">
-              <span class="cell-skill-tag">🛡️ <strong>Taktis:</strong> ${cell.tacticalSkill.name}</span>
+              <span class="cell-skill-tag"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <strong>Taktis:</strong> ${cell.tacticalSkill.name}</span>
               <span class="cell-skill-desc">${cell.tacticalSkill.description || ''}</span>
             </div>
             <div class="cell-skill-row">
@@ -1591,7 +1591,7 @@ export class Game {
           desc: 'Dianugerahkan atas pembersihan total endotoksin Salmonella & Shigella pada epitel vili.'
         },
         bloodstream: {
-          icon: '🛡️',
+          icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
           name: 'Salib Emas Proteksi Vaskular & Anti-Sepsis',
           desc: 'Dianugerahkan atas eliminasi bakteremia Staphylococcus sebelum memicu badai sepsis.'
         },
@@ -1783,7 +1783,7 @@ export class Game {
 
             // Visual biological feedback: Bacteria peptidoglycan armor absorption
             if (res.blocked > 3 && p.def.type === 'bacteria' && Math.random() < 0.4) {
-              this.particles.spawnDamageText(p.x, p.y - 14, `🛡️ DINDING SEL -${res.blocked}`, false, false);
+              this.particles.spawnDamageText(p.x, p.y - 14, `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> DINDING SEL -${res.blocked}`, false, false);
             }
 
             if (res.dead) {
@@ -1994,3 +1994,4 @@ export class Game {
     }
   }
 }
+

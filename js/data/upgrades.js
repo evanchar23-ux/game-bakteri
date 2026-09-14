@@ -1,4 +1,4 @@
-/**
+﻿/**
  * upgrades.js
  * Pilihan Peningkatan Diferensiasi Sitokin / Mutasi Imunologis
  * Muncul saat pemain naik level di dalam run (3 pilihan acak).
@@ -8,7 +8,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'interferon_alpha',
     title: 'Interferon Tipe I (IFN-α/β)',
-    icon: '🛡️',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
     type: 'antiviral',
     effectDesc: '+25% Damage vs Virus & Mengurangi Kecepatan Virus 20%',
     lore: 'Sitokin antivirus krusial yang menginduksi status antiviral pada sel-sel inang di sekitarnya.',
@@ -44,7 +44,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'hypermutation',
     title: 'Hipermutasi Somatik (SHM)',
-    icon: '🧬',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M4 22c3.5-1.5 6.5-6.5 9-11 2.5-4.5 5.5-9 9-10.5"/><path d="M4 2c3.5 1.5 6.5 6.5 9 11 2.5 4.5 5.5 9 9 10.5"/><path d="M7.5 12.5l9-9"/><path d="M10.5 15.5l7-7"/><path d="M4.5 6.5l4-4"/><path d="M6 9.5l6-6"/><path d="M18 14.5l-6 6"/><path d="M15 17.5l-4 4"/><path d="M19.5 11.5l-9 9"/></svg>',
     type: 'crit',
     effectDesc: '+15% Critical Chance & +50% Critical Damage',
     lore: 'Mekanisme seluler adaptif yang memodifikasi gen antibodi untuk menghasilkan afinitas antigen maksimal.',
@@ -102,3 +102,4 @@ export const CYTOKINE_UPGRADES = [
     }
   }
 ];
+
