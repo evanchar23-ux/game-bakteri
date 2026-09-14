@@ -753,27 +753,187 @@
       </div>
     </div>
 
-    <!-- IMMUNOPEDIA (KOLEKSI) MODAL -->
+    <!-- IMMUNOPEDIA INTERACTIVE E-BOOK MODAL (ATLAS IMUNOLOGI & MIKROSKOPIK DIGITAL) -->
     <div id="immunopedia-modal" class="screen-overlay hidden">
-      <div class="modal-content glass-card encyclopedia-card">
-        <div class="modal-header">
-          <div class="header-split">
-            <div>
-              <h2>IMMUNOPEDIA: ENSIKLOPEDIA MIKROSKOPIK</h2>
-              <p>Materi kuliah interaktif Virologi, Bakteriologi, dan Mekanisme Sel Imun.</p>
-            </div>
-            <button id="btn-close-immunopedia" class="btn-icon-close">✕</button>
+      <div class="ebook-outer-wrapper">
+        
+        <!-- Top Toolbar & Bookmark Ribbon Tabs -->
+        <div class="ebook-toolbar">
+          <div class="ebook-brand-tag">
+            <svg class="ebook-brand-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+            <span>IMMUNOPEDIA // ATLAS MIKROSKOPIK V2.0</span>
           </div>
-          <!-- Tab navigation -->
-          <div class="pedia-tabs">
-            <button class="pedia-tab active" data-category="cells"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Sel-Sel Imun</button>
-            <button class="pedia-tab" data-category="viruses"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22A10 10 0 1 0 12 2a10 10 0 0 0 0 20z"/><path d="M12 6v1"/><path d="M12 17v1"/><path d="M6 12h1"/><path d="M17 12h1"/><path d="M7.75 7.75l.75.75"/><path d="M15.5 15.5l.75.75"/><path d="M7.75 16.25l.75-.75"/><path d="M15.5 8.5l.75-.75"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg> Virologi</button>
-            <button class="pedia-tab" data-category="bacteria"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="7"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Bakteriologi</button>
-            <button class="pedia-tab" data-category="nutrients"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="7" width="18" height="10" rx="5"/><line x1="12" y1="7" x2="12" y2="17"/></svg> Nutrisi & Adjuvan</button>
+
+          <!-- Chapter Bookmark Ribbons -->
+          <div class="ebook-ribbons">
+            <button type="button" class="ebook-ribbon active" data-chapter="cells" title="Bab I: Sel-Sel Imun">
+              <span class="ribbon-marker"></span>
+              <span class="ribbon-txt">🧬 BAB I: SEL IMUN</span>
+            </button>
+            <button type="button" class="ebook-ribbon" data-chapter="viruses" title="Bab II: Virologi">
+              <span class="ribbon-marker"></span>
+              <span class="ribbon-txt">🦠 BAB II: VIROLOGI</span>
+            </button>
+            <button type="button" class="ebook-ribbon" data-chapter="bacteria" title="Bab III: Bakteriologi">
+              <span class="ribbon-marker"></span>
+              <span class="ribbon-txt">🧫 BAB III: BAKTERI</span>
+            </button>
+            <button type="button" class="ebook-ribbon" data-chapter="nutrients" title="Bab IV: Nutrisi & Adjuvan">
+              <span class="ribbon-marker"></span>
+              <span class="ribbon-txt">💊 BAB IV: NUTRISI</span>
+            </button>
+          </div>
+
+          <!-- Close Book Button -->
+          <button id="btn-close-immunopedia" class="ebook-close-btn" title="Tutup Atlas E-Book">✕</button>
+        </div>
+
+        <!-- The 3D Book Stage (Hardcover Binder with Center Spine & Two-Page Spread) -->
+        <div class="ebook-stage" id="ebook-stage">
+          <div class="ebook-binder-cover">
+            
+            <!-- Book Spine Shadow (Center crease) -->
+            <div class="ebook-spine-crease"></div>
+
+            <!-- Two-Page Open Spread Container -->
+            <div class="ebook-spread" id="ebook-spread">
+              
+              <!-- LEFT PAGE: Visual Specimen & Microscope Viewport -->
+              <div class="ebook-page ebook-page-left" id="ebook-page-left">
+                <!-- Page Header: Specimen Code & Microscopic Telemetry -->
+                <div class="page-header-strip">
+                  <span class="specimen-id-badge" id="ebook-left-code">SPEC-IMM-01</span>
+                  <span class="page-classification" id="ebook-left-tag">ZONA OBSERVASI MIKROSKOP</span>
+                  <span class="page-num-tag" id="ebook-left-pagenum">02</span>
+                </div>
+
+                <!-- Microscope Specimen Lens Frame -->
+                <div class="specimen-lens-frame">
+                  <div class="specimen-lens-reticle"></div>
+                  <div class="specimen-svg-container" id="ebook-specimen-art">
+                    <!-- Dynamic SVG generated here -->
+                  </div>
+                  <div class="lens-scale-bar">
+                    <span class="scale-ruler"></span>
+                    <span class="scale-label" id="ebook-scale-label">SKALA: 10 µm</span>
+                  </div>
+                  <div class="lens-active-tag">
+                    <span class="lens-dot"></span> OBSERVASI IN-VIVO
+                  </div>
+                </div>
+
+                <!-- Specimen Quick Telemetry Matrix -->
+                <div class="specimen-matrix-card">
+                  <div class="matrix-title">METRIK & MORFOLOGI SPESIMEN:</div>
+                  <div class="matrix-grid">
+                    <div class="matrix-item">
+                      <span class="m-k">DIAMETER / UKURAN:</span>
+                      <span class="m-v" id="ebook-spec-diameter">21 – 25 µm</span>
+                    </div>
+                    <div class="matrix-item">
+                      <span class="m-k">BENTUK / MORFOLOGI:</span>
+                      <span class="m-v" id="ebook-spec-morphology">Amoeboid Pleomorfik</span>
+                    </div>
+                    <div class="matrix-item">
+                      <span class="m-k">RESEPTOR / TARGET:</span>
+                      <span class="m-v" id="ebook-spec-target">Patogen Asing & Debris</span>
+                    </div>
+                    <div class="matrix-item">
+                      <span class="m-k">KLASIFIKASI:</span>
+                      <span class="m-v" id="ebook-spec-taxonomy">Leukosit Agranulosit</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Page Left Footer Seal -->
+                <div class="page-footer-strip">
+                  <span>🔬 DOKUMEN BIO-MEDIS RESMI // VIRAL SLAYER</span>
+                  <span class="page-folio" id="ebook-folio-left">HAL. 02</span>
+                </div>
+              </div>
+
+              <!-- RIGHT PAGE: Scientific Monograph & Biological Mechanism -->
+              <div class="ebook-page ebook-page-right" id="ebook-page-right">
+                <!-- Page Header: Chapter Title & Page Number -->
+                <div class="page-header-strip">
+                  <span class="chapter-badge" id="ebook-right-chapter">BAB I: SEL-SEL IMUN</span>
+                  <span class="page-num-tag" id="ebook-right-pagenum">03</span>
+                </div>
+
+                <!-- Monograph Article Content -->
+                <div class="monograph-article">
+                  <div class="monograph-title-group">
+                    <h2 class="monograph-title" id="ebook-right-title">Makrofag (Macrophage)</h2>
+                    <span class="monograph-latin" id="ebook-right-latin">Macrophagocytus Humanus</span>
+                  </div>
+
+                  <!-- General Physiological Description -->
+                  <div class="monograph-desc" id="ebook-right-desc">
+                    Berasal dari diferensiasi monosit darah yang bermigrasi ke jaringan. Makrofag bertindak sebagai sel fagositik profesional pembersih debris seluler dan patogen asing.
+                  </div>
+
+                  <!-- Molecular Biological Mechanism Box -->
+                  <div class="mechanism-callout-box">
+                    <div class="mechanism-box-header">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                      </svg>
+                      <span>MEKANISME BIOLOGIS & AKSI TEMPUR:</span>
+                    </div>
+                    <p class="mechanism-text" id="ebook-right-mechanism">
+                      Melakukan penelanan patogen melalui pembentukan fagosom yang berfusi dengan lisosom (fagolisosom) yang ber-pH asam dan kaya enzim hidrolitik.
+                    </p>
+                  </div>
+
+                  <!-- Clinical Fun Fact / Notes Sticker -->
+                  <div class="clinical-note-sticker">
+                    <div class="note-pin"></div>
+                    <span class="note-tag">💡 CATATAN KLINIS & FAKTA IMUNOLOGI:</span>
+                    <p class="note-content" id="ebook-right-funfact">
+                      Makrofag juga berperan sebagai Antigen-Presenting Cell (APC) yang memproses fragmen antigen dan menyajikannya via molekul MHC-II kepada Limfosit T Helper.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Page Right Footer -->
+                <div class="page-footer-strip right-strip">
+                  <span class="book-name-tag">ATLAS IMUNOLOGI MIKROSKOPIK</span>
+                  <span class="page-folio" id="ebook-folio-right">HAL. 03</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Floating Book Navigation Paddles -->
+          <button type="button" class="ebook-nav-paddle paddle-prev" id="ebook-btn-prev" title="Halaman Sebelumnya (Panah Kiri)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          <button type="button" class="ebook-nav-paddle paddle-next" id="ebook-btn-next" title="Halaman Berikutnya (Panah Kanan)">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- E-Book Footer Slider & Progress Tracker -->
+        <div class="ebook-footer-bar">
+          <div class="ebook-page-counter" id="ebook-page-counter">
+            SPESIMEN <span id="ebook-cur-num">1</span> DARI <span id="ebook-total-num">13</span>
+          </div>
+          <div class="ebook-progress-track">
+            <div class="ebook-progress-fill" id="ebook-progress-fill" style="width: 7.7%;"></div>
+          </div>
+          <div class="ebook-keys-hint">
+            <span>NAVIGASI: <kbd>◀</kbd> <kbd>▶</kbd> ATAU KLIK HALAMAN</span>
           </div>
         </div>
 
-        <div class="pedia-body" id="pedia-content-view"></div>
       </div>
     </div>
 

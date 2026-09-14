@@ -323,6 +323,37 @@ class SoundEngine {
     osc.stop(t + 0.07);
   }
 
+  playPageTurn() {
+    if (!this.isInitialized || this.isMuted) return;
+    this.resume();
+    try {
+      const t = this.ctx.currentTime;
+      const dur = 0.24;
+      const bufSize = Math.floor(this.ctx.sampleRate * dur);
+      const buf = this.ctx.createBuffer(1, bufSize, this.ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufSize * 0.45));
+      }
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = buf;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1600, t);
+      filter.frequency.exponentialRampToValueAtTime(800, t + dur);
+      filter.Q.setValueAtTime(1.8, t);
+      const gain = this.ctx.createGain();
+      gain.gain.setValueAtTime(0.24, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(this.masterGain);
+      noise.start(t);
+    } catch (e) {
+      console.warn('Page turn audio fallback:', e);
+    }
+  }
+
   playHeartbeat() {
     if (!this.isInitialized || this.isMuted) return;
     this.resume();

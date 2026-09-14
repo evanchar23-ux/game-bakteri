@@ -2271,88 +2271,689 @@ button {
    IMMUNOPEDIA ENCYCLOPEDIA MODAL
    ========================================================================== */
 
-.encyclopedia-card {
-  max-width: 920px;
-  width: 92%;
-  max-height: 85vh;
+/* ==========================================================================
+   IMMUNOPEDIA INTERACTIVE E-BOOK (DIGITAL ATLAS & BIOLOGICAL FIELD GUIDE)
+   ========================================================================== */
+
+.ebook-outer-wrapper {
+  width: 96%;
+  max-width: 1080px;
+  height: 88vh;
+  max-height: 740px;
+  min-height: 520px;
+  background: linear-gradient(135deg, #0a111c 0%, #060a12 100%);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 242, 254, 0.15);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
 }
 
-.header-split {
+/* --- Top Toolbar & Ribbon Bookmarks --- */
+.ebook-toolbar {
+  height: 50px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
+  padding: 0 20px;
+  background: rgba(8, 14, 25, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  z-index: 20;
 }
 
-.pedia-tabs {
+.ebook-brand-tag {
   display: flex;
+  align-items: center;
   gap: 10px;
-  margin-top: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 10px;
-}
-
-.pedia-tab {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  padding: 8px 16px;
+  font-family: var(--font-display);
   font-size: 13px;
-  border-radius: 8px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #00f2fe;
 }
 
-.pedia-tab.active {
-  background: rgba(0, 242, 254, 0.15);
-  border-color: var(--primary-cyan);
+.ebook-brand-icon {
+  stroke: #00f2fe;
+}
+
+.ebook-ribbons {
+  display: flex;
+  gap: 8px;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.ebook-ribbon {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: none;
+  color: var(--text-muted);
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+  position: relative;
+  top: 1px;
+}
+
+.ebook-ribbon:hover {
+  background: rgba(0, 242, 254, 0.12);
   color: #fff;
+  border-color: rgba(0, 242, 254, 0.3);
 }
 
-.pedia-body {
-  overflow-y: auto;
-  padding: 16px 4px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+.ebook-ribbon.active {
+  background: linear-gradient(180deg, rgba(0, 242, 254, 0.2) 0%, rgba(14, 24, 42, 0.95) 100%);
+  color: #00f2fe;
+  border-color: rgba(0, 242, 254, 0.6);
+  box-shadow: 0 -4px 12px rgba(0, 242, 254, 0.2);
+  transform: translateY(-2px);
 }
 
-.pedia-card-entry {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-glass);
+.ebook-close-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.ebook-close-btn:hover {
+  background: rgba(255, 71, 87, 0.25);
+  border-color: #ff4757;
+  color: #ff4757;
+  transform: scale(1.08);
+}
+
+/* --- The 3D Book Stage --- */
+.ebook-stage {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  perspective: 2000px;
+  overflow: hidden;
+}
+
+.ebook-binder-cover {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  background: #090e17;
   border-radius: 12px;
-  padding: 18px;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 15px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+/* Spine shadow (center crease between left and right pages) */
+.ebook-spine-crease {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 40px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.85) 45%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(0, 0, 0, 0.85) 55%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* Two-Page Spread Grid */
+.ebook-spread {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+/* Individual Book Page */
+.ebook-page {
+  position: relative;
+  background: linear-gradient(135deg, #0e1726 0%, #0b121e 100%);
+  padding: 22px 28px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  justify-content: space-between;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 254, 0.3) transparent;
 }
 
-.pedia-card-entry h4 {
-  font-family: var(--font-display);
-  font-size: 18px;
-  color: #fff;
+.ebook-page-left {
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  box-shadow: inset -20px 0 35px -10px rgba(0, 0, 0, 0.65);
+}
+
+.ebook-page-right {
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: inset 20px 0 35px -10px rgba(0, 0, 0, 0.65);
+}
+
+/* Page Header and Footer Strips */
+.page-header-strip {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+  font-family: var(--font-display);
 }
 
-.pedia-meta-tag {
+.specimen-id-badge {
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  color: #00f2fe;
   font-size: 11px;
-  color: var(--primary-cyan);
-  font-weight: 600;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
 }
 
-.pedia-card-entry p {
-  font-size: 12px;
+.page-classification {
+  font-size: 10px;
   color: var(--text-muted);
-  line-height: 1.5;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 }
 
-.pedia-highlight {
-  background: rgba(0, 242, 254, 0.06);
-  border-left: 2px solid var(--primary-cyan);
-  padding: 6px 10px;
+.page-num-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.chapter-badge {
+  color: #ff9f43;
   font-size: 11px;
-  color: #bce5ff;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.page-footer-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 8px;
+  margin-top: 14px;
+  font-size: 10px;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+.page-folio {
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+/* --- Left Page: Specimen Lens & Metrics --- */
+.specimen-lens-frame {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.06) 0%, rgba(4, 9, 16, 0.95) 75%);
+  border: 2px solid rgba(0, 242, 254, 0.35);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+  margin-bottom: 12px;
+}
+
+/* Microscope crosshair reticle overlay */
+.specimen-lens-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 242, 254, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.specimen-lens-frame::after {
+  content: '';
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px dashed rgba(0, 242, 254, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.specimen-svg-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+.specimen-svg-container svg {
+  width: 170px;
+  height: 170px;
+  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.specimen-svg-container:hover svg {
+  transform: scale(1.06) rotate(3deg);
+}
+
+.lens-scale-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scale-ruler {
+  display: inline-block;
+  width: 40px;
+  height: 3px;
+  background: #00f2fe;
+  position: relative;
+}
+
+.scale-ruler::before, .scale-ruler::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 9px;
+  background: #00f2fe;
+}
+
+.scale-ruler::before { left: 0; }
+.scale-ruler::after { right: 0; }
+
+.scale-label {
+  font-size: 9px;
+  color: #00f2fe;
+  font-family: monospace;
+  letter-spacing: 0.8px;
+  font-weight: bold;
+}
+
+.lens-active-tag {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  z-index: 3;
+  font-size: 9px;
+  font-weight: 700;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.8px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.lens-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulseBeacon 1.5s infinite;
+}
+
+/* Specimen Matrix Card */
+.specimen-matrix-card {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.matrix-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 4px;
+}
+
+.matrix-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+.matrix-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.matrix-item .m-k {
+  font-size: 9px;
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.matrix-item .m-v {
+  font-size: 11px;
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+/* --- Right Page: Scientific Monograph --- */
+.monograph-article {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.monograph-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.monograph-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.monograph-latin {
+  font-style: italic;
+  font-size: 12px;
+  color: #00f2fe;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.monograph-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+/* Mechanism Callout Box */
+.mechanism-callout-box {
+  background: rgba(0, 242, 254, 0.05);
+  border-left: 3px solid #00f2fe;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mechanism-box-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #00f2fe;
+  letter-spacing: 1px;
+}
+
+.mechanism-text {
+  font-size: 12px;
+  line-height: 1.55;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+/* Clinical Fun Fact Sticker */
+.clinical-note-sticker {
+  background: rgba(255, 159, 67, 0.08);
+  border: 1px dashed rgba(255, 159, 67, 0.4);
+  border-radius: 8px;
+  padding: 10px 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.clinical-note-sticker .note-tag {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ff9f43;
+  letter-spacing: 0.8px;
+}
+
+.clinical-note-sticker .note-content {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #f1f5f9;
+  margin: 0;
+}
+
+/* --- Floating Book Navigation Paddles --- */
+.ebook-nav-paddle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(6, 12, 22, 0.85);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  border-radius: 50%;
+  color: #00f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.2);
+  transition: all 0.25s ease;
+}
+
+.ebook-nav-paddle:hover:not(:disabled) {
+  background: rgba(0, 242, 254, 0.2);
+  border-color: #00f2fe;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.ebook-nav-paddle:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #64748b;
+  box-shadow: none;
+}
+
+.paddle-prev {
+  left: 6px;
+}
+
+.paddle-next {
+  right: 6px;
+}
+
+/* --- E-Book Footer Bar & Progress Tracker --- */
+.ebook-footer-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(6, 10, 18, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 20;
+}
+
+.ebook-page-counter {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 1.2px;
+}
+
+.ebook-page-counter span {
+  color: #00f2fe;
+}
+
+.ebook-progress-track {
+  flex: 0.6;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 20px;
+}
+
+.ebook-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  border-radius: 10px;
+  transition: width 0.35s ease;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+}
+
+.ebook-keys-hint {
+  font-size: 10px;
+  color: #64748b;
+  letter-spacing: 1px;
+}
+
+.ebook-keys-hint kbd {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  padding: 1px 5px;
+  font-family: monospace;
+  color: #e2e8f0;
+}
+
+/* --- Realistic 3D Page Turn Keyframes & Animations --- */
+.ebook-spread.turning-next .ebook-page-right {
+  animation: pageTurnNext 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  transform-origin: left center;
+}
+
+.ebook-spread.turning-prev .ebook-page-left {
+  animation: pageTurnPrev 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  transform-origin: right center;
+}
+
+@keyframes pageTurnNext {
+  0% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+    box-shadow: inset 20px 0 35px -10px rgba(0, 0, 0, 0.65);
+  }
+  50% {
+    transform: rotateY(-40deg) scale(0.97);
+    filter: brightness(0.65);
+    box-shadow: inset 60px 0 50px -10px rgba(0, 0, 0, 0.85);
+  }
+  100% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+    box-shadow: inset 20px 0 35px -10px rgba(0, 0, 0, 0.65);
+  }
+}
+
+@keyframes pageTurnPrev {
+  0% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+    box-shadow: inset -20px 0 35px -10px rgba(0, 0, 0, 0.65);
+  }
+  50% {
+    transform: rotateY(40deg) scale(0.97);
+    filter: brightness(0.65);
+    box-shadow: inset -60px 0 50px -10px rgba(0, 0, 0, 0.85);
+  }
+  100% {
+    transform: rotateY(0deg);
+    filter: brightness(1);
+    box-shadow: inset -20px 0 35px -10px rgba(0, 0, 0, 0.65);
+  }
+}
+
+/* Responsive adjustment for tablets / narrow screens */
+@media (max-width: 820px) {
+  .ebook-outer-wrapper {
+    height: 94vh;
+    max-height: 94vh;
+  }
+  .ebook-spread {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  .ebook-spine-crease {
+    display: none;
+  }
+  .ebook-page-left {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .ebook-ribbons .ribbon-txt {
+    display: none;
+  }
 }
 
 /* ==========================================================================

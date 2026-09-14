@@ -10,6 +10,7 @@ import { ORGAN_STAGES, SUBJECT_DATA } from './data/organs.js';
 import { CYTOKINE_UPGRADES } from './data/upgrades.js';
 import { PICKUP_TYPES } from './data/items.js';
 import { IMMUNOPEDIA_DATA } from './data/immunopediaData.js';
+import { getSpecimenIllustrationSVG } from './engine/specimenVisualizer.js';
 
 import { Player } from './entities/Player.js';
 import { Pathogen } from './entities/Pathogen.js';
@@ -251,7 +252,7 @@ export class Game {
     this.renderCharacterSelectionCards();
     this.renderOrganSelectionCards();
     this.initHologram3DRotator();
-    this.renderImmunopediaTab('cells');
+    this.initEBookData();
   }
 
   showSwarmBanner(text) {
@@ -379,14 +380,23 @@ export class Game {
       };
     }
 
-    // Open Immunopedia
-    document.getElementById('btn-open-immunopedia').onclick = () => {
-      sound.init();
-      this.showScreen(this.uiImmunopedia);
-    };
-    document.getElementById('btn-close-immunopedia').onclick = () => {
-      this.hideScreen(this.uiImmunopedia);
-    };
+    // Open Immunopedia E-Book
+    const btnOpenImmunopedia = document.getElementById('btn-open-immunopedia');
+    if (btnOpenImmunopedia) {
+      btnOpenImmunopedia.onclick = () => {
+        sound.init();
+        this.showScreen(this.uiImmunopedia);
+        this.renderEBookPage(this.currentEbookIndex);
+        if (sound.playPageTurn) sound.playPageTurn();
+      };
+    }
+    const btnCloseImmunopedia = document.getElementById('btn-close-immunopedia');
+    if (btnCloseImmunopedia) {
+      btnCloseImmunopedia.onclick = () => {
+        this.hideScreen(this.uiImmunopedia);
+        if (window.sound) window.sound.playClick();
+      };
+    }
 
     // Open How To Play
     document.getElementById('btn-open-howtoplay').onclick = () => {
@@ -468,13 +478,59 @@ export class Game {
       document.getElementById('audio-icon').innerText = muted ? '🔇' : '🔊';
     };
 
-    // Immunopedia tab switching
-    document.querySelectorAll('.pedia-tab').forEach((tab) => {
-      tab.onclick = () => {
-        document.querySelectorAll('.pedia-tab').forEach((t) => t.classList.remove('active'));
-        tab.classList.add('active');
-        this.renderImmunopediaTab(tab.dataset.category);
+    // Immunopedia E-Book Ribbon Bookmark navigation
+    document.querySelectorAll('.ebook-ribbon').forEach((ribbon) => {
+      ribbon.onclick = () => {
+        sound.init();
+        const chapter = ribbon.dataset.chapter;
+        if (this.ebookRibbonIndices && this.ebookRibbonIndices[chapter] !== undefined) {
+          const targetIdx = this.ebookRibbonIndices[chapter];
+          if (targetIdx !== this.currentEbookIndex) {
+            const dir = targetIdx > this.currentEbookIndex ? 1 : -1;
+            this.currentEbookIndex = targetIdx;
+            this.renderEBookPage(this.currentEbookIndex, dir);
+          }
+        }
       };
+    });
+
+    // E-Book Paddles
+    const btnEbookPrev = document.getElementById('ebook-btn-prev');
+    const btnEbookNext = document.getElementById('ebook-btn-next');
+    if (btnEbookPrev) {
+      btnEbookPrev.onclick = () => this.turnEBookPage(-1);
+    }
+    if (btnEbookNext) {
+      btnEbookNext.onclick = () => this.turnEBookPage(1);
+    }
+
+    // Direct page click navigation
+    const pageLeft = document.getElementById('ebook-page-left');
+    const pageRight = document.getElementById('ebook-page-right');
+    if (pageLeft) {
+      pageLeft.onclick = (e) => {
+        if (e.target.closest('button, a, input, select')) return;
+        this.turnEBookPage(-1);
+      };
+    }
+    if (pageRight) {
+      pageRight.onclick = (e) => {
+        if (e.target.closest('button, a, input, select')) return;
+        this.turnEBookPage(1);
+      };
+    }
+
+    // E-Book Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (this.uiImmunopedia && !this.uiImmunopedia.classList.contains('hidden')) {
+        if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+          this.turnEBookPage(-1);
+        } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+          this.turnEBookPage(1);
+        } else if (e.key === 'Escape') {
+          this.hideScreen(this.uiImmunopedia);
+        }
+      }
     });
   }
 
@@ -1093,25 +1149,134 @@ export class Game {
     }
   }
 
-  renderImmunopediaTab(categoryKey) {
-    const container = document.getElementById('pedia-content-view');
-    container.innerHTML = '';
-    const items = IMMUNOPEDIA_DATA[categoryKey] || [];
+  initEBookData() {
+    this.ebookEntries = [];
+    this.ebookRibbonIndices = { cells: 0, viruses: 0, bacteria: 0, nutrients: 0 };
+    let idx = 0;
+    for (const [catKey, list] of Object.entries(IMMUNOPEDIA_DATA)) {
+      this.ebookRibbonIndices[catKey] = idx;
+      for (const item of list) {
+        this.ebookEntries.push({ ...item, categoryKey: catKey });
+        idx++;
+      }
+    }
+    this.currentEbookIndex = 0;
+    this.isEbookTurning = false;
+    this.renderEBookPage(0);
+  }
 
-    items.forEach((item) => {
-      const entry = document.createElement('div');
-      entry.className = 'pedia-card-entry';
-      entry.innerHTML = `
-        <h4><span>${item.icon || '🔬'}</span> ${item.name}</h4>
-        <span class="pedia-meta-tag">${item.tag}</span>
-        <p>${item.desc}</p>
-        <div class="pedia-highlight">
-          <strong>Mekanisme Biologis:</strong> ${item.mechanism}
-        </div>
-        <small style="color: #8b9bb4;">💡 <em>${item.funFact}</em></small>
-      `;
-      container.appendChild(entry);
+  turnEBookPage(direction) {
+    if (this.isEbookTurning) return;
+    const newIndex = this.currentEbookIndex + direction;
+    if (newIndex < 0 || newIndex >= this.ebookEntries.length) return;
+
+    this.currentEbookIndex = newIndex;
+    this.renderEBookPage(this.currentEbookIndex, direction);
+  }
+
+  renderEBookPage(index, animateDir = 0) {
+    if (!this.ebookEntries || this.ebookEntries.length === 0) return;
+    const item = this.ebookEntries[index];
+    if (!item) return;
+
+    const spreadEl = document.getElementById('ebook-spread');
+    if (animateDir !== 0 && spreadEl) {
+      this.isEbookTurning = true;
+      const animClass = animateDir > 0 ? 'turning-next' : 'turning-prev';
+      spreadEl.classList.remove('turning-next', 'turning-prev');
+      void spreadEl.offsetWidth; // Force reflow to replay CSS keyframe
+      spreadEl.classList.add(animClass);
+      if (sound && sound.playPageTurn) sound.playPageTurn();
+
+      setTimeout(() => {
+        spreadEl.classList.remove('turning-next', 'turning-prev');
+        this.isEbookTurning = false;
+      }, 550);
+    }
+
+    // Left Page (Visualizer & Metrics)
+    const elSpecArt = document.getElementById('ebook-specimen-art');
+    if (elSpecArt) {
+      elSpecArt.innerHTML = getSpecimenIllustrationSVG(item.visualType);
+    }
+
+    const elLeftCode = document.getElementById('ebook-left-code');
+    if (elLeftCode) elLeftCode.textContent = item.specimenCode || `SPEC-${index + 1}`;
+
+    const elLeftTag = document.getElementById('ebook-left-tag');
+    if (elLeftTag) elLeftTag.textContent = item.tag || 'OBSERVASI MIKROSKOP';
+
+    const leftPageNum = (index * 2) + 2;
+    const elLeftPageNum = document.getElementById('ebook-left-pagenum');
+    if (elLeftPageNum) elLeftPageNum.textContent = String(leftPageNum).padStart(2, '0');
+
+    const elScaleLabel = document.getElementById('ebook-scale-label');
+    if (elScaleLabel) {
+      elScaleLabel.textContent = item.categoryKey === 'viruses' ? 'SKALA: 50 nm' : (item.categoryKey === 'nutrients' ? 'SKALA: 1 nm' : 'SKALA: 10 µm');
+    }
+
+    const elDiameter = document.getElementById('ebook-spec-diameter');
+    if (elDiameter) elDiameter.textContent = item.diameter || '-';
+
+    const elMorphology = document.getElementById('ebook-spec-morphology');
+    if (elMorphology) elMorphology.textContent = item.morphology || '-';
+
+    const elTarget = document.getElementById('ebook-spec-target');
+    if (elTarget) elTarget.textContent = item.target || '-';
+
+    const elTaxonomy = document.getElementById('ebook-spec-taxonomy');
+    if (elTaxonomy) elTaxonomy.textContent = item.taxonomy || '-';
+
+    const elFolioLeft = document.getElementById('ebook-folio-left');
+    if (elFolioLeft) elFolioLeft.textContent = `HAL. ${String(leftPageNum).padStart(2, '0')}`;
+
+    // Right Page (Monograph, Mechanism & Clinical Note)
+    const rightPageNum = leftPageNum + 1;
+    const elChapter = document.getElementById('ebook-right-chapter');
+    if (elChapter) elChapter.textContent = item.chapter || 'ATLAS IMUNOLOGI MIKROSKOPIK';
+
+    const elRightPageNum = document.getElementById('ebook-right-pagenum');
+    if (elRightPageNum) elRightPageNum.textContent = String(rightPageNum).padStart(2, '0');
+
+    const elTitle = document.getElementById('ebook-right-title');
+    if (elTitle) elTitle.textContent = `${item.icon || ''} ${item.name}`;
+
+    const elLatin = document.getElementById('ebook-right-latin');
+    if (elLatin) elLatin.textContent = item.scientificName || '';
+
+    const elDesc = document.getElementById('ebook-right-desc');
+    if (elDesc) elDesc.textContent = item.desc || '';
+
+    const elMech = document.getElementById('ebook-right-mechanism');
+    if (elMech) elMech.textContent = item.mechanism || '';
+
+    const elFunFact = document.getElementById('ebook-right-funfact');
+    if (elFunFact) elFunFact.textContent = item.funFact || '';
+
+    const elFolioRight = document.getElementById('ebook-folio-right');
+    if (elFolioRight) elFolioRight.textContent = `HAL. ${String(rightPageNum).padStart(2, '0')}`;
+
+    // Ribbon bookmark active highlights
+    document.querySelectorAll('.ebook-ribbon').forEach((ribbon) => {
+      ribbon.classList.toggle('active', ribbon.dataset.chapter === item.categoryKey);
     });
+
+    // Navigation paddles state
+    const btnPrev = document.getElementById('ebook-btn-prev');
+    const btnNext = document.getElementById('ebook-btn-next');
+    if (btnPrev) btnPrev.disabled = (index === 0);
+    if (btnNext) btnNext.disabled = (index === this.ebookEntries.length - 1);
+
+    // Footer tracker
+    const curNum = document.getElementById('ebook-cur-num');
+    const totalNum = document.getElementById('ebook-total-num');
+    const progFill = document.getElementById('ebook-progress-fill');
+    if (curNum) curNum.textContent = index + 1;
+    if (totalNum) totalNum.textContent = this.ebookEntries.length;
+    if (progFill) {
+      const pct = ((index + 1) / this.ebookEntries.length) * 100;
+      progFill.style.width = `${pct}%`;
+    }
   }
 
   startMission() {
