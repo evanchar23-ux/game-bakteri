@@ -2272,689 +2272,477 @@ button {
    ========================================================================== */
 
 /* ==========================================================================
-   IMMUNOPEDIA DELUXE PHYSICAL 3D E-BOOK (AUTHENTIC ATLAS & BIOLOGICAL TOME)
+   IMMUNOPEDIA HOLOGRAPHIC SPECIMEN CHAMBER (IN-VIVO BIO-TERMINAL)
    ========================================================================== */
 
 #immunopedia-modal {
-  background: radial-gradient(circle at 50% 45%, rgba(18, 28, 45, 0.96) 0%, rgba(5, 9, 16, 0.99) 100%);
+  background: radial-gradient(circle at 50% 40%, rgba(10, 20, 36, 0.95) 0%, rgba(3, 7, 14, 0.98) 100%);
   backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
 }
 
-.ebook-outer-wrapper {
-  width: 96%;
-  max-width: 1140px;
-  height: 90vh;
-  max-height: 780px;
-  min-height: 560px;
+.bio-terminal-wrapper {
+  width: 95%;
+  max-width: 1180px;
+  height: 88vh;
+  max-height: 750px;
+  min-height: 540px;
+  background: linear-gradient(135deg, rgba(8, 16, 28, 0.95) 0%, rgba(4, 9, 17, 0.98) 100%);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  border-radius: 18px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 242, 254, 0.15);
   position: relative;
+  overflow: hidden;
   user-select: none;
-  filter: drop-shadow(0 35px 70px rgba(0, 0, 0, 0.9)) drop-shadow(0 10px 30px rgba(0, 242, 254, 0.15));
 }
 
-/* --- Top Stage Header & Real Satin Hanging Ribbons --- */
-.ebook-toolbar {
-  height: 54px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 28px;
-  position: relative;
-  z-index: 30;
+/* Subtle holographic scanline across the entire terminal */
+.bio-terminal-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(0, 242, 254, 0.02) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.7;
 }
 
-.ebook-brand-tag {
+/* --- Terminal Header --- */
+.bio-terminal-header {
+  height: 64px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-family: var(--font-display);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: #00f2fe;
-  padding-bottom: 12px;
-  text-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+  justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(6, 12, 22, 0.9);
+  border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+  z-index: 20;
 }
 
-.ebook-brand-icon {
-  stroke: #00f2fe;
-  filter: drop-shadow(0 0 8px #00f2fe);
-}
-
-/* Authentic Hanging Bookmark Ribbons (Fabric Tails Hanging Over Cover) */
-.ebook-ribbons {
+.terminal-title-group {
   display: flex;
-  gap: 12px;
-  height: 100%;
-  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.ebook-ribbon {
-  position: relative;
-  padding: 8px 16px 14px 16px;
+.terminal-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #00f2fe;
+}
+
+.terminal-title {
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.8px;
-  cursor: pointer;
-  border: none;
+  letter-spacing: 1.5px;
   color: #fff;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 50% 100%, 0 calc(100% - 10px));
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease;
-  transform-origin: top center;
-  transform: translateY(0);
+  margin: 0;
+  text-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
 }
 
-/* Bab I: Sel Imun - Crimson & Gold Satin */
-.ebook-ribbon[data-chapter="cells"] {
-  background: linear-gradient(180deg, #e74c3c 0%, #b01f11 80%, #781006 100%);
-  border-top: 2px solid #ffd32a;
-}
-/* Bab II: Virologi - Toxic Violet & Purple Satin */
-.ebook-ribbon[data-chapter="viruses"] {
-  background: linear-gradient(180deg, #9b59b6 0%, #6c2d8a 80%, #441359 100%);
-  border-top: 2px solid #d2dae2;
-}
-/* Bab III: Bakteri - Bio-Amber & Gold Satin */
-.ebook-ribbon[data-chapter="bacteria"] {
-  background: linear-gradient(180deg, #e67e22 0%, #b85404 80%, #7d3301 100%);
-  border-top: 2px solid #fffa65;
-}
-/* Bab IV: Nutrisi - Emerald & Teal Satin */
-.ebook-ribbon[data-chapter="nutrients"] {
-  background: linear-gradient(180deg, #1abc9c 0%, #0e7d67 80%, #064b3d 100%);
-  border-top: 2px solid #7efff5;
+/* Filter Pills */
+.terminal-filters {
+  display: flex;
+  gap: 8px;
 }
 
-.ebook-ribbon:hover {
-  transform: translateY(4px);
-  filter: brightness(1.15) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+.terminal-filter-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.ebook-ribbon.active {
-  transform: translateY(8px);
-  filter: brightness(1.25) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.85));
+.terminal-filter-btn:hover {
+  background: rgba(0, 242, 254, 0.12);
+  border-color: rgba(0, 242, 254, 0.4);
+  color: #fff;
 }
 
-.ebook-ribbon.active::after {
-  content: '★';
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 8px;
-  color: #ffd32a;
+.terminal-filter-btn.active {
+  background: rgba(0, 242, 254, 0.2);
+  border-color: #00f2fe;
+  color: #00f2fe;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
 }
 
-.ebook-close-btn {
-  background: rgba(15, 23, 42, 0.85);
+.terminal-close-btn {
+  background: rgba(255, 71, 87, 0.1);
   border: 1px solid rgba(255, 71, 87, 0.4);
   color: #ff4757;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
-  font-weight: 800;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+  font-weight: bold;
   transition: all 0.2s ease;
-  margin-bottom: 10px;
 }
 
-.ebook-close-btn:hover {
+.terminal-close-btn:hover {
   background: #ff4757;
   color: #fff;
   box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
   transform: scale(1.1) rotate(90deg);
 }
 
-/* --- The 3D Book Stage (Atmospheric Desk Platform) --- */
-.ebook-stage {
+/* --- Main Terminal Deck (Chamber Left + Intel Right) --- */
+.bio-terminal-deck {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 20px;
+  padding: 16px 24px;
+  min-height: 0;
+  overflow: hidden;
+  z-index: 15;
+}
+
+/* --- Left: Holographic Specimen Containment Pod --- */
+.specimen-pod-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.pod-glass-chamber {
   flex: 1;
   position: relative;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.08) 0%, rgba(4, 9, 18, 0.96) 75%);
+  border: 2px solid rgba(0, 242, 254, 0.4);
+  border-radius: 14px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 30px 14px 30px;
-  perspective: 2600px;
+  box-shadow: inset 0 0 45px rgba(0, 242, 254, 0.18), 0 10px 30px rgba(0, 0, 0, 0.7);
 }
 
-/* Hardcover Binder (Heavy Leather Volume with Real Thickness) */
-.ebook-binder-cover {
+/* Holographic scan grid */
+.pod-scan-grid {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 242, 254, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Moving laser scan beam */
+.pod-scan-laser {
+  position: absolute;
+  left: 0;
   width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  background: #0d1420;
-  border-radius: 14px;
-  /* Dual gold/bronze embossed borders */
-  box-shadow: 
-    0 0 0 3px #080d14,
-    0 0 0 5px rgba(198, 155, 60, 0.4),
-    0 25px 60px rgba(0, 0, 0, 0.95),
-    inset 0 0 80px rgba(0, 0, 0, 0.9);
-  padding: 10px 14px;
-  box-sizing: border-box;
-}
-
-/* --- Metallic Brass Corner Protectors with Rivets --- */
-.book-corner-cap {
-  position: absolute;
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, #ffd32a 0%, #d4af37 40%, #8c6d1f 85%, #59440e 100%);
-  z-index: 25;
-  pointer-events: none;
-  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8), 0 3px 6px rgba(0, 0, 0, 0.7);
-}
-
-.book-corner-cap.corner-tl {
-  top: 0;
-  left: 0;
-  border-radius: 14px 0 0 0;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-.book-corner-cap.corner-tr {
-  top: 0;
-  right: 0;
-  border-radius: 0 14px 0 0;
-  clip-path: polygon(0 0, 100% 0, 100% 100%);
-}
-.book-corner-cap.corner-bl {
-  bottom: 0;
-  left: 0;
-  border-radius: 0 0 0 14px;
-  clip-path: polygon(0 0, 0 100%, 100% 100%);
-}
-.book-corner-cap.corner-br {
-  bottom: 0;
-  right: 0;
-  border-radius: 0 0 14px 0;
-  clip-path: polygon(100% 0, 0 100%, 100% 100%);
-}
-
-/* Rivet details on brass caps */
-.book-corner-cap::before {
-  content: '';
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  background: #3e2f07;
-  border-radius: 50%;
-  box-shadow: inset 1px 1px 1px #000, 0 0 0 1px #ffd32a;
-}
-.corner-tl::before { top: 10px; left: 10px; }
-.corner-tr::before { top: 10px; right: 10px; }
-.corner-bl::before { bottom: 10px; left: 10px; }
-.corner-br::before { bottom: 10px; right: 10px; }
-
-/* --- Stacked Paper Pages Edge (Authentic Book Thickness Depth) --- */
-.book-pages-stack {
-  position: absolute;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.book-pages-stack.stack-left {
-  top: 14px;
-  bottom: 14px;
-  left: 3px;
-  width: 10px;
-  background: repeating-linear-gradient(
-    to right,
-    #131a26 0px,
-    #222e40 1px,
-    #0d141e 2px,
-    #2a3a52 3px
-  );
-  border-radius: 4px 0 0 4px;
-  box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.7);
-}
-
-.book-pages-stack.stack-right {
-  top: 14px;
-  bottom: 14px;
-  right: 3px;
-  width: 10px;
-  background: repeating-linear-gradient(
-    to right,
-    #131a26 0px,
-    #222e40 1px,
-    #0d141e 2px,
-    #2a3a52 3px
-  );
-  border-radius: 0 4px 4px 0;
-  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.7);
-}
-
-.book-pages-stack.stack-bottom {
-  left: 14px;
-  right: 14px;
-  bottom: 3px;
-  height: 8px;
-  background: repeating-linear-gradient(
-    to bottom,
-    #131a26 0px,
-    #222e40 1px,
-    #0d141e 2px,
-    #2a3a52 3px
-  );
-  border-radius: 0 0 6px 6px;
-  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.7);
-}
-
-/* --- Hanging Satin Bookmark Ribbon Tail (Bottom Crease) --- */
-.ebook-bookmark-tail {
-  position: absolute;
-  bottom: -24px;
-  left: calc(50% - 10px);
-  width: 20px;
-  height: 38px;
-  background: linear-gradient(180deg, #b01f11 0%, #e74c3c 60%, #90160a 100%);
-  z-index: 12;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.85);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px));
-  pointer-events: none;
-}
-
-/* --- Book Center Spine Crease & Binding Valley --- */
-.ebook-spine-crease {
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  left: 50%;
-  width: 48px;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.75) 0%,
-    rgba(0, 0, 0, 0.95) 46%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(0, 0, 0, 0.95) 54%,
-    rgba(0, 0, 0, 0.75) 100%
-  );
-  z-index: 16;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  padding: 30px 0;
-}
-
-.spine-stitching {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-}
-
-.stitch-knot {
-  width: 12px;
   height: 3px;
-  background: #d4af37;
-  border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(212, 175, 55, 0.5);
-  display: block;
+  background: linear-gradient(90deg, transparent, #00f2fe 30%, #fff 50%, #00f2fe 70%, transparent);
+  box-shadow: 0 0 18px #00f2fe, 0 0 30px rgba(0, 242, 254, 0.8);
+  pointer-events: none;
+  z-index: 4;
+  animation: laserScan 4s ease-in-out infinite alternate;
 }
 
-/* --- Two-Page Spread Container --- */
-.ebook-spread {
+@keyframes laserScan {
+  0% { top: 12%; opacity: 0.3; }
+  50% { opacity: 0.9; }
+  100% { top: 86%; opacity: 0.3; }
+}
+
+/* Rotating radar reticle ring */
+.pod-reticle-ring {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1px dashed rgba(0, 242, 254, 0.3);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: radarSpin 22s linear infinite;
+}
+
+@keyframes radarSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Target brackets in the four corners */
+.pod-target-brackets {
+  position: absolute;
+  top: 14px; left: 14px; right: 14px; bottom: 14px;
+  pointer-events: none;
+}
+
+.t-bracket {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(0, 242, 254, 0.6);
+  border-style: solid;
+}
+
+.t-bracket.tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.t-bracket.tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.t-bracket.bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.t-bracket.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+/* Large SVG Specimen Display */
+.pod-specimen-display {
+  position: relative;
+  z-index: 3;
   width: 100%;
   height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  position: relative;
-  transform-style: preserve-3d;
-  background: #0e1624;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease, opacity 0.3s ease;
 }
 
-/* --- Archival Paper Pages (Authentic Biological Field Journal) --- */
-.ebook-page {
-  position: relative;
-  background: linear-gradient(145deg, #111b2b 0%, #0c1420 100%);
-  padding: 24px 30px;
+.pod-specimen-display svg {
+  width: 185px;
+  height: 185px;
+  filter: drop-shadow(0 0 22px rgba(0, 242, 254, 0.45));
+  animation: specimenFloat 4s ease-in-out infinite alternate;
+  transition: transform 0.3s ease;
+}
+
+.pod-specimen-display:hover svg {
+  transform: scale(1.08);
+}
+
+@keyframes specimenFloat {
+  0% { transform: translateY(-4px); }
+  100% { transform: translateY(6px); }
+}
+
+/* Specimen iris bloom on switch */
+.pod-specimen-display.focus-in svg {
+  animation: specimenBloom 0.4s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+@keyframes specimenBloom {
+  0% { transform: scale(0.8); opacity: 0.3; filter: drop-shadow(0 0 2px #00f2fe) blur(4px); }
+  60% { transform: scale(1.06); opacity: 1; filter: drop-shadow(0 0 35px #00f2fe) blur(0px); }
+  100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 22px rgba(0, 242, 254, 0.45)) blur(0px); }
+}
+
+/* Chamber Top & Bottom Telemetry Badges */
+.pod-top-status {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+}
+
+.pod-spec-code {
+  background: rgba(0, 242, 254, 0.15);
+  border: 1px solid rgba(0, 242, 254, 0.5);
+  color: #00f2fe;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.pod-threat-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.threat-ally { background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; }
+.threat-danger { background: rgba(255, 71, 87, 0.2); border: 1px solid #ff4757; color: #ff4757; }
+.threat-nutrient { background: rgba(0, 242, 254, 0.2); border: 1px solid #00f2fe; color: #00f2fe; }
+
+.pod-bottom-scale {
+  position: absolute;
+  bottom: 12px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+}
+
+.live-scan-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.8px;
+}
+
+/* Pod Side Navigation Paddles */
+.terminal-paddle {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  background: rgba(4, 9, 18, 0.85);
+  border: 1px solid rgba(0, 242, 254, 0.4);
+  border-radius: 50%;
+  color: #00f2fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 25;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 242, 254, 0.2);
+  transition: all 0.2s ease;
+}
+
+.terminal-paddle:hover:not(:disabled) {
+  background: rgba(0, 242, 254, 0.25);
+  border-color: #00f2fe;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+  transform: translateY(-50%) scale(1.12);
+}
+
+.terminal-paddle:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #64748b;
+  box-shadow: none;
+}
+
+.terminal-paddle.paddle-prev { left: -14px; }
+.terminal-paddle.paddle-next { right: -14px; }
+
+/* --- Right: Tactical Dossier & Intel Panel --- */
+.terminal-dossier-panel {
+  background: rgba(10, 18, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 18px 22px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
+  gap: 11px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 242, 254, 0.3) transparent;
 }
 
-/* Left Page Inner Spine Valley Shadow & Page Bevel */
-.ebook-page-left {
-  border-right: 1px solid rgba(0, 0, 0, 0.7);
-  box-shadow: 
-    inset -28px 0 45px -10px rgba(0, 0, 0, 0.85),
-    inset 0 0 25px rgba(0, 0, 0, 0.4);
-}
-
-/* Right Page Inner Spine Valley Shadow & Page Bevel */
-.ebook-page-right {
-  border-left: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 
-    inset 28px 0 45px -10px rgba(0, 0, 0, 0.85),
-    inset 0 0 25px rgba(0, 0, 0, 0.4);
-}
-
-/* Page Header and Footer Strips */
-.page-header-strip {
+.dossier-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 8px;
-  margin-bottom: 10px;
-  font-family: var(--font-display);
 }
 
-.specimen-id-badge {
-  background: rgba(0, 242, 254, 0.12);
-  border: 1px solid rgba(0, 242, 254, 0.45);
-  color: #00f2fe;
-  font-size: 11px;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 4px;
-  letter-spacing: 1.2px;
-}
-
-.page-classification {
+.dossier-category-tag {
   font-size: 10px;
-  color: #94a3b8;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.page-num-tag {
-  font-size: 12px;
-  font-weight: 800;
-  color: #d4af37;
-  font-family: 'Georgia', serif;
-}
-
-.chapter-badge {
+  font-weight: 700;
+  letter-spacing: 1.5px;
   color: #ffd32a;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
   text-transform: uppercase;
 }
 
-.page-footer-strip {
+.dossier-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid rgba(212, 175, 55, 0.2);
-  padding-top: 8px;
-  margin-top: 12px;
-  font-size: 10px;
-  color: #64748b;
-  letter-spacing: 1px;
 }
 
-.page-folio {
-  font-weight: 800;
-  color: #d4af37;
-  font-family: 'Georgia', serif;
-}
-
-/* --- Interactive Dog-Ear Corner Turn Curl (Real Paper Peeling) --- */
-.page-corner-curl {
-  position: absolute;
-  bottom: 0;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
-}
-
-.page-corner-curl.curl-left {
-  left: 0;
-  background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(26, 38, 57, 0.9) 60%, transparent 60%);
-  border-bottom-left-radius: 6px;
-}
-
-.page-corner-curl.curl-right {
-  right: 0;
-  background: linear-gradient(225deg, rgba(212, 175, 55, 0.4) 0%, rgba(26, 38, 57, 0.9) 60%, transparent 60%);
-  border-bottom-right-radius: 6px;
-}
-
-.page-corner-curl .curl-arrow {
-  font-size: 10px;
-  color: #ffd32a;
-  position: absolute;
-  bottom: 5px;
-  transition: transform 0.2s ease;
-}
-.curl-left .curl-arrow { left: 6px; }
-.curl-right .curl-arrow { right: 6px; }
-
-.page-corner-curl:hover {
-  width: 46px;
-  height: 46px;
-  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
-}
-.curl-left:hover .curl-arrow { transform: scale(1.3) translateX(-2px); }
-.curl-right:hover .curl-arrow { transform: scale(1.3) translateX(2px); }
-
-/* --- Left Page: Specimen Lens & Metrics --- */
-.specimen-lens-frame {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, rgba(4, 9, 16, 0.96) 75%);
-  border: 2px solid rgba(0, 242, 254, 0.4);
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 0 35px rgba(0, 242, 254, 0.2), 0 8px 24px rgba(0, 0, 0, 0.5);
-  margin-bottom: 12px;
-}
-
-.specimen-lens-frame::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image: 
-    linear-gradient(rgba(0, 242, 254, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 242, 254, 0.08) 1px, transparent 1px);
-  background-size: 20px 20px;
-  pointer-events: none;
-  opacity: 0.7;
-}
-
-.specimen-svg-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 2;
-  transition: transform 0.4s ease;
-}
-
-.specimen-svg-container svg {
-  width: 165px;
-  height: 165px;
-  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.35));
-  transition: transform 0.3s ease;
-}
-
-.specimen-svg-container:hover svg {
-  transform: scale(1.08) rotate(3deg);
-}
-
-.lens-scale-bar {
-  position: absolute;
-  bottom: 8px;
-  left: 12px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.scale-ruler {
-  display: inline-block;
-  width: 40px;
-  height: 3px;
-  background: #00f2fe;
-  position: relative;
-}
-.scale-ruler::before, .scale-ruler::after {
-  content: '';
-  position: absolute;
-  top: -3px;
-  width: 2px;
-  height: 9px;
-  background: #00f2fe;
-}
-.scale-ruler::before { left: 0; }
-.scale-ruler::after { right: 0; }
-
-.scale-label {
-  font-size: 9px;
-  color: #00f2fe;
-  font-family: monospace;
-  letter-spacing: 0.8px;
-  font-weight: bold;
-}
-
-.lens-active-tag {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  z-index: 3;
-  font-size: 9px;
-  font-weight: 700;
-  color: #10b981;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  letter-spacing: 0.8px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 2px 7px;
-  border-radius: 4px;
-}
-
-.lens-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: pulseBeacon 1.5s infinite;
-}
-
-/* Specimen Matrix Card */
-.specimen-matrix-card {
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  padding: 10px 14px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.matrix-title {
-  font-size: 10px;
-  font-weight: 700;
-  color: #d4af37;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  padding-bottom: 3px;
-}
-
-.matrix-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 12px;
-}
-
-.matrix-item {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.matrix-item .m-k {
-  font-size: 9px;
-  color: #94a3b8;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-.matrix-item .m-v {
-  font-size: 11px;
-  color: #f1f5f9;
-  font-weight: 700;
-}
-
-/* --- Right Page: Scientific Monograph --- */
-.monograph-article {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-}
-
-.monograph-title-group {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.monograph-title {
+.dossier-spec-name {
   font-family: var(--font-display);
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.5px;
+  margin: 0;
   line-height: 1.2;
 }
 
-.monograph-latin {
+.dossier-icon {
+  font-size: 24px;
+  filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
+}
+
+.dossier-latin-name {
   font-style: italic;
   font-family: 'Georgia', serif;
   font-size: 13px;
   color: #00f2fe;
-  font-weight: 600;
   letter-spacing: 0.5px;
 }
 
-.monograph-desc {
+/* 4-Stat Metrics Grid */
+.dossier-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.metric-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mc-label {
+  font-size: 9px;
+  color: #94a3b8;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+.mc-val {
+  font-size: 12px;
+  color: #f1f5f9;
+  font-weight: 800;
+}
+
+.dossier-desc {
   font-size: 12.5px;
   line-height: 1.6;
   color: #cbd5e1;
 }
 
-/* Mechanism Callout Box */
-.mechanism-callout-box {
-  background: rgba(0, 242, 254, 0.05);
+/* Biological Mechanism Box */
+.dossier-mechanism-box {
+  background: rgba(0, 242, 254, 0.06);
   border-left: 3px solid #00f2fe;
   border-radius: 0 8px 8px 0;
   padding: 9px 12px;
@@ -2963,7 +2751,7 @@ button {
   gap: 5px;
 }
 
-.mechanism-box-header {
+.dossier-box-title {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -2973,274 +2761,158 @@ button {
   letter-spacing: 1px;
 }
 
-.mechanism-text {
+.dossier-box-text {
   font-size: 11.5px;
-  line-height: 1.5;
+  line-height: 1.55;
   color: #e2e8f0;
   margin: 0;
 }
 
-/* Clinical Fun Fact Sticker */
-.clinical-note-sticker {
+/* Clinical Fun Fact Box */
+.dossier-fact-box {
   background: rgba(255, 211, 42, 0.07);
   border: 1px dashed rgba(255, 211, 42, 0.4);
   border-radius: 8px;
   padding: 9px 12px;
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.clinical-note-sticker .note-tag {
+.fact-box-title {
   font-size: 10px;
   font-weight: 800;
   color: #ffd32a;
   letter-spacing: 0.8px;
 }
 
-.clinical-note-sticker .note-content {
+.fact-box-text {
   font-size: 11.5px;
   line-height: 1.5;
   color: #f1f5f9;
   margin: 0;
 }
 
-/* --- Floating Book Navigation Paddles --- */
-.ebook-nav-paddle {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 46px;
-  height: 46px;
-  background: rgba(13, 20, 32, 0.9);
-  border: 1px solid rgba(212, 175, 55, 0.5);
-  border-radius: 50%;
-  color: #ffd32a;
+/* --- BOTTOM: Interactive Specimen Dock Carousel --- */
+.bio-terminal-dock {
+  height: 108px;
+  background: rgba(5, 10, 18, 0.9);
+  border-top: 1px solid rgba(0, 242, 254, 0.2);
+  padding: 8px 24px 10px 24px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 35;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.25);
-  transition: all 0.25s ease;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 20;
 }
 
-.ebook-nav-paddle:hover:not(:disabled) {
-  background: rgba(212, 175, 55, 0.25);
-  border-color: #ffd32a;
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
-  transform: translateY(-50%) scale(1.12);
-}
-
-.ebook-nav-paddle:disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #64748b;
-  box-shadow: none;
-}
-
-.paddle-prev { left: 4px; }
-.paddle-next { right: 4px; }
-
-/* --- E-Book Footer Bar & Progress Tracker --- */
-.ebook-footer-bar {
-  height: 42px;
+.dock-header-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
-  z-index: 30;
 }
 
-.ebook-page-counter {
-  font-family: var(--font-display);
+.dock-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #94a3b8;
+}
+
+.dock-counter {
   font-size: 11px;
   font-weight: 800;
-  color: #94a3b8;
-  letter-spacing: 1.2px;
-}
-.ebook-page-counter span { color: #00f2fe; }
-
-.ebook-progress-track {
-  flex: 0.6;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 0 20px;
-}
-
-.ebook-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #00f2fe 0%, #ffd32a 100%);
-  border-radius: 10px;
-  transition: width 0.35s ease;
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-}
-
-.ebook-keys-hint {
-  font-size: 10px;
-  color: #64748b;
+  color: #00f2fe;
   letter-spacing: 1px;
 }
-.ebook-keys-hint kbd {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
-  padding: 1px 5px;
-  font-family: monospace;
-  color: #e2e8f0;
+
+.dock-cards-scroller {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 254, 0.3) transparent;
+  padding-bottom: 4px;
 }
 
-/* Global utility: enforce hidden state */
-.hidden {
-  display: none !important;
+.dock-card {
+  flex: 0 0 130px;
+  height: 62px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
 }
 
-/* ==========================================================================
-   ORGANIC 3D PAGE CURL & FLUID SLIDE TRANSITIONS (NO STIFF BOARDS)
-   ========================================================================== */
-
-/* Turning Next: Right page curls up across the spine, then settles onto left */
-.ebook-spread.curl-turn-next .ebook-page-right {
-  animation: pageCurlNext 0.48s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  transform-origin: left center;
-  z-index: 20;
-}
-.ebook-spread.curl-turn-next .ebook-page-left {
-  animation: pageSlideInLeft 0.48s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+.dock-card:hover {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: rgba(0, 242, 254, 0.5);
+  transform: translateY(-2px);
 }
 
-/* Turning Prev: Left page curls up across the spine, then settles onto right */
-.ebook-spread.curl-turn-prev .ebook-page-left {
-  animation: pageCurlPrev 0.48s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  transform-origin: right center;
-  z-index: 20;
-}
-.ebook-spread.curl-turn-prev .ebook-page-right {
-  animation: pageSlideInRight 0.48s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+.dock-card.active {
+  background: rgba(0, 242, 254, 0.2);
+  border-color: #00f2fe;
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+  transform: translateY(-2px);
 }
 
-@keyframes pageCurlNext {
-  0% {
-    transform: perspective(1800px) rotateY(0deg) skewY(0deg);
-    box-shadow: inset 28px 0 45px -10px rgba(0, 0, 0, 0.85);
-    filter: brightness(1);
-  }
-  48% {
-    transform: perspective(1800px) rotateY(-88deg) skewY(-2.5deg) scaleX(0.96);
-    box-shadow: inset 60px 0 60px rgba(0, 0, 0, 0.95), -20px 0 30px rgba(0, 0, 0, 0.7);
-    filter: brightness(0.7);
-    opacity: 0.8;
-  }
-  52% {
-    transform: perspective(1800px) rotateY(-92deg) skewY(2.5deg) scaleX(0.96);
-    box-shadow: inset -60px 0 60px rgba(0, 0, 0, 0.95), 20px 0 30px rgba(0, 0, 0, 0.7);
-    filter: brightness(0.7);
-    opacity: 0.8;
-  }
-  100% {
-    transform: perspective(1800px) rotateY(0deg) skewY(0deg);
-    box-shadow: inset 28px 0 45px -10px rgba(0, 0, 0, 0.85);
-    filter: brightness(1);
-    opacity: 1;
-  }
+.dock-card.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #00f2fe;
+  box-shadow: 0 0 8px #00f2fe;
 }
 
-@keyframes pageCurlPrev {
-  0% {
-    transform: perspective(1800px) rotateY(0deg) skewY(0deg);
-    box-shadow: inset -28px 0 45px -10px rgba(0, 0, 0, 0.85);
-    filter: brightness(1);
-  }
-  48% {
-    transform: perspective(1800px) rotateY(88deg) skewY(2.5deg) scaleX(0.96);
-    box-shadow: inset -60px 0 60px rgba(0, 0, 0, 0.95), 20px 0 30px rgba(0, 0, 0, 0.7);
-    filter: brightness(0.7);
-    opacity: 0.8;
-  }
-  52% {
-    transform: perspective(1800px) rotateY(92deg) skewY(-2.5deg) scaleX(0.96);
-    box-shadow: inset 60px 0 60px rgba(0, 0, 0, 0.95), -20px 0 30px rgba(0, 0, 0, 0.7);
-    filter: brightness(0.7);
-    opacity: 0.8;
-  }
-  100% {
-    transform: perspective(1800px) rotateY(0deg) skewY(0deg);
-    box-shadow: inset -28px 0 45px -10px rgba(0, 0, 0, 0.85);
-    filter: brightness(1);
-    opacity: 1;
-  }
+.dock-card-icon {
+  font-size: 20px;
 }
 
-@keyframes pageSlideInLeft {
-  0% {
-    opacity: 0.5;
-    transform: translateX(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.dock-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
 }
 
-@keyframes pageSlideInRight {
-  0% {
-    opacity: 0.5;
-    transform: translateX(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.dock-card-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Specimen Lens Aperture Iris Focus Effect (Microscope focusing) */
-.specimen-svg-container.lens-focus {
-  animation: specimenIrisFocus 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes specimenIrisFocus {
-  0% {
-    transform: scale(0.84);
-    filter: drop-shadow(0 0 4px rgba(0, 242, 254, 0.1)) blur(4px);
-    opacity: 0.3;
-  }
-  70% {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 26px rgba(0, 242, 254, 0.8)) blur(0px);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.0);
-    filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.35)) blur(0px);
-    opacity: 1;
-  }
+.dock-card-tag {
+  font-size: 9px;
+  color: #00f2fe;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Responsive adjustment for tablets / narrow screens */
 @media (max-width: 860px) {
-  .ebook-outer-wrapper {
-    height: 95vh;
-    max-height: 95vh;
-  }
-  .ebook-spread {
+  .bio-terminal-deck {
     grid-template-columns: 1fr;
     overflow-y: auto;
   }
-  .ebook-spine-crease {
+  .specimen-pod-container {
+    height: 260px;
+  }
+  .terminal-filters {
     display: none;
-  }
-  .ebook-page-left {
-    border-right: none;
-    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-  }
-  .ebook-ribbons .ebook-ribbon {
-    padding: 6px 10px 10px 10px;
-    font-size: 10px;
   }
 }
 

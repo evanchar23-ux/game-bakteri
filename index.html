@@ -753,219 +753,147 @@
       </div>
     </div>
 
-    <!-- IMMUNOPEDIA INTERACTIVE E-BOOK MODAL (ATLAS IMUNOLOGI & MIKROSKOPIK DIGITAL) -->
+    <!-- IMMUNOPEDIA HOLOGRAPHIC SPECIMEN CHAMBER (BIO-TERMINAL IN-VIVO) -->
     <div id="immunopedia-modal" class="screen-overlay hidden">
-      <div class="ebook-outer-wrapper">
+      <div class="bio-terminal-wrapper">
         
-        <!-- Top Toolbar & Bookmark Ribbon Tabs -->
-        <div class="ebook-toolbar">
-          <div class="ebook-brand-tag">
-            <svg class="ebook-brand-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-            </svg>
-            <span>IMMUNOPEDIA // ATLAS MIKROSKOPIK V2.0</span>
+        <!-- Top Terminal Header -->
+        <div class="bio-terminal-header">
+          <div class="terminal-title-group">
+            <div class="terminal-badge"><span class="pulse-beacon-cyan"></span> IN-VIVO BIO-SPECIMEN TERMINAL // V2.5</div>
+            <h2 class="terminal-title">ENSIKLOPEDIA IMUNOLOGI & MIKROBIOLOGI</h2>
           </div>
 
-          <!-- Chapter Bookmark Ribbons -->
-          <div class="ebook-ribbons">
-            <button type="button" class="ebook-ribbon active" data-chapter="cells" title="Bab I: Sel-Sel Imun">
-              <span class="ribbon-marker"></span>
-              <span class="ribbon-txt">🧬 BAB I: SEL IMUN</span>
-            </button>
-            <button type="button" class="ebook-ribbon" data-chapter="viruses" title="Bab II: Virologi">
-              <span class="ribbon-marker"></span>
-              <span class="ribbon-txt">🦠 BAB II: VIROLOGI</span>
-            </button>
-            <button type="button" class="ebook-ribbon" data-chapter="bacteria" title="Bab III: Bakteriologi">
-              <span class="ribbon-marker"></span>
-              <span class="ribbon-txt">🧫 BAB III: BAKTERI</span>
-            </button>
-            <button type="button" class="ebook-ribbon" data-chapter="nutrients" title="Bab IV: Nutrisi & Adjuvan">
-              <span class="ribbon-marker"></span>
-              <span class="ribbon-txt">💊 BAB IV: NUTRISI</span>
-            </button>
+          <!-- Category Filter Pills -->
+          <div class="terminal-filters">
+            <button type="button" class="terminal-filter-btn active" data-filter="all">SEMUA (13)</button>
+            <button type="button" class="terminal-filter-btn" data-filter="cells">🧬 SEL IMUN (4)</button>
+            <button type="button" class="terminal-filter-btn" data-filter="viruses">🦠 VIROLOGI (3)</button>
+            <button type="button" class="terminal-filter-btn" data-filter="bacteria">🧫 BAKTERI (3)</button>
+            <button type="button" class="terminal-filter-btn" data-filter="nutrients">💊 NUTRISI (3)</button>
           </div>
 
-          <!-- Close Book Button -->
-          <button id="btn-close-immunopedia" class="ebook-close-btn" title="Tutup Atlas E-Book">✕</button>
+          <!-- Close Button -->
+          <button id="btn-close-immunopedia" class="terminal-close-btn" title="Tutup Terminal">✕</button>
         </div>
 
-        <!-- The 3D Book Stage (Hardcover Binder with Center Spine & Two-Page Spread) -->
-        <div class="ebook-stage" id="ebook-stage">
+        <!-- Main Workspace Deck (Chamber Left + Intel Right) -->
+        <div class="bio-terminal-deck">
           
-          <!-- Outer Hardcover Binder with Real Leather Rim & Brass Corner Protectors -->
-          <div class="ebook-binder-cover">
-            
-            <!-- Brass Corner Caps on all 4 corners -->
-            <div class="book-corner-cap corner-tl"></div>
-            <div class="book-corner-cap corner-tr"></div>
-            <div class="book-corner-cap corner-bl"></div>
-            <div class="book-corner-cap corner-br"></div>
+          <!-- LEFT: Holographic Specimen Containment Pod -->
+          <div class="specimen-pod-container">
+            <div class="pod-glass-chamber">
+              <!-- Holographic scan grid and laser line -->
+              <div class="pod-scan-grid"></div>
+              <div class="pod-scan-laser"></div>
+              <div class="pod-reticle-ring"></div>
+              <div class="pod-target-brackets">
+                <div class="t-bracket tl"></div>
+                <div class="t-bracket tr"></div>
+                <div class="t-bracket bl"></div>
+                <div class="t-bracket br"></div>
+              </div>
 
-            <!-- Visible Stacked Paper Edges (Book Thickness Depth) -->
-            <div class="book-pages-stack stack-left"></div>
-            <div class="book-pages-stack stack-right"></div>
-            <div class="book-pages-stack stack-bottom"></div>
+              <!-- Main SVG Specimen Art -->
+              <div class="pod-specimen-display" id="terminal-specimen-art">
+                <!-- SVG injected dynamically -->
+              </div>
 
-            <!-- Satin Bookmark Ribbon Tail hanging past the bottom -->
-            <div class="ebook-bookmark-tail">
-              <div class="ribbon-tail-end"></div>
-            </div>
+              <!-- Live Chamber Telemetry Badges -->
+              <div class="pod-top-status">
+                <span class="pod-spec-code" id="terminal-spec-code">SPEC-IMM-01</span>
+                <span class="pod-threat-badge" id="terminal-threat-badge">SENTINEL DEFENDER</span>
+              </div>
 
-            <!-- Book Spine Shadow (Center crease & binding rings) -->
-            <div class="ebook-spine-crease">
-              <div class="spine-stitching">
-                <span class="stitch-knot"></span>
-                <span class="stitch-knot"></span>
-                <span class="stitch-knot"></span>
-                <span class="stitch-knot"></span>
-                <span class="stitch-knot"></span>
+              <div class="pod-bottom-scale">
+                <span class="scale-ruler"></span>
+                <span class="scale-label" id="terminal-scale-label">SKALA OPTIK: 10 µm</span>
+                <span class="live-scan-badge"><span class="pulse-beacon-emerald"></span> OBSERVASI AKTIF</span>
               </div>
             </div>
 
-            <!-- Two-Page Open Spread Container -->
-            <div class="ebook-spread" id="ebook-spread">
-              
-              <!-- LEFT PAGE: Visual Specimen & Microscope Viewport -->
-              <div class="ebook-page ebook-page-left" id="ebook-page-left">
-                <!-- Page Header: Specimen Code & Microscopic Telemetry -->
-                <div class="page-header-strip">
-                  <span class="specimen-id-badge" id="ebook-left-code">SPEC-IMM-01</span>
-                  <span class="page-classification" id="ebook-left-tag">ZONA OBSERVASI MIKROSKOP</span>
-                  <span class="page-num-tag" id="ebook-left-pagenum">02</span>
-                </div>
-
-                <!-- Microscope Specimen Lens Frame -->
-                <div class="specimen-lens-frame">
-                  <div class="specimen-lens-reticle"></div>
-                  <div class="specimen-svg-container" id="ebook-specimen-art">
-                    <!-- Dynamic SVG generated here -->
-                  </div>
-                  <div class="lens-scale-bar">
-                    <span class="scale-ruler"></span>
-                    <span class="scale-label" id="ebook-scale-label">SKALA: 10 µm</span>
-                  </div>
-                  <div class="lens-active-tag">
-                    <span class="lens-dot"></span> OBSERVASI IN-VIVO
-                  </div>
-                </div>
-
-                <!-- Specimen Quick Telemetry Matrix -->
-                <div class="specimen-matrix-card">
-                  <div class="matrix-title">METRIK & MORFOLOGI SPESIMEN:</div>
-                  <div class="matrix-grid">
-                    <div class="matrix-item">
-                      <span class="m-k">DIAMETER / UKURAN:</span>
-                      <span class="m-v" id="ebook-spec-diameter">21 – 25 µm</span>
-                    </div>
-                    <div class="matrix-item">
-                      <span class="m-k">BENTUK / MORFOLOGI:</span>
-                      <span class="m-v" id="ebook-spec-morphology">Amoeboid Pleomorfik</span>
-                    </div>
-                    <div class="matrix-item">
-                      <span class="m-k">RESEPTOR / TARGET:</span>
-                      <span class="m-v" id="ebook-spec-target">Patogen Asing & Debris</span>
-                    </div>
-                    <div class="matrix-item">
-                      <span class="m-k">KLASIFIKASI:</span>
-                      <span class="m-v" id="ebook-spec-taxonomy">Leukosit Agranulosit</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Page Left Footer Seal -->
-                <div class="page-footer-strip">
-                  <span>🔬 DOKUMEN BIO-MEDIS RESMI // VIRAL SLAYER</span>
-                  <span class="page-folio" id="ebook-folio-left">HAL. 02</span>
-                </div>
-
-                <!-- Interactive Dog-Ear Corner Turn Curl (Prev) -->
-                <div class="page-corner-curl curl-left" id="ebook-curl-prev" title="Balik ke Halaman Sebelumnya">
-                  <span class="curl-arrow">◀</span>
-                </div>
-              </div>
-
-              <!-- RIGHT PAGE: Scientific Monograph & Biological Mechanism -->
-              <div class="ebook-page ebook-page-right" id="ebook-page-right">
-                <!-- Page Header: Chapter Title & Page Number -->
-                <div class="page-header-strip">
-                  <span class="chapter-badge" id="ebook-right-chapter">BAB I: SEL-SEL IMUN</span>
-                  <span class="page-num-tag" id="ebook-right-pagenum">03</span>
-                </div>
-
-                <!-- Monograph Article Content -->
-                <div class="monograph-article">
-                  <div class="monograph-title-group">
-                    <h2 class="monograph-title" id="ebook-right-title">Makrofag (Macrophage)</h2>
-                    <span class="monograph-latin" id="ebook-right-latin">Macrophagocytus Humanus</span>
-                  </div>
-
-                  <!-- General Physiological Description -->
-                  <div class="monograph-desc" id="ebook-right-desc">
-                    Berasal dari diferensiasi monosit darah yang bermigrasi ke jaringan. Makrofag bertindak sebagai sel fagositik profesional pembersih debris seluler dan patogen asing.
-                  </div>
-
-                  <!-- Molecular Biological Mechanism Box -->
-                  <div class="mechanism-callout-box">
-                    <div class="mechanism-box-header">
-                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                      </svg>
-                      <span>MEKANISME BIOLOGIS & AKSI TEMPUR:</span>
-                    </div>
-                    <p class="mechanism-text" id="ebook-right-mechanism">
-                      Melakukan penelanan patogen melalui pembentukan fagosom yang berfusi dengan lisosom (fagolisosom) yang ber-pH asam dan kaya enzim hidrolitik.
-                    </p>
-                  </div>
-
-                  <!-- Clinical Fun Fact / Notes Sticker -->
-                  <div class="clinical-note-sticker">
-                    <div class="note-pin"></div>
-                    <span class="note-tag">💡 CATATAN KLINIS & FAKTA IMUNOLOGI:</span>
-                    <p class="note-content" id="ebook-right-funfact">
-                      Makrofag juga berperan sebagai Antigen-Presenting Cell (APC) yang memproses fragmen antigen dan menyajikannya via molekul MHC-II kepada Limfosit T Helper.
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Page Right Footer -->
-                <div class="page-footer-strip right-strip">
-                  <span class="book-name-tag">ATLAS IMUNOLOGI MIKROSKOPIK</span>
-                  <span class="page-folio" id="ebook-folio-right">HAL. 03</span>
-                </div>
-
-                <!-- Interactive Dog-Ear Corner Turn Curl (Next) -->
-                <div class="page-corner-curl curl-right" id="ebook-curl-next" title="Balik ke Halaman Berikutnya">
-                  <span class="curl-arrow">▶</span>
-                </div>
-              </div>
-            </div>
+            <!-- Pod Side Navigation Paddles -->
+            <button type="button" class="terminal-paddle paddle-prev" id="terminal-btn-prev" title="Spesimen Sebelumnya (◀)">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button type="button" class="terminal-paddle paddle-next" id="terminal-btn-next" title="Spesimen Berikutnya (▶)">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
           </div>
 
-          <!-- Floating Book Navigation Paddles -->
-          <button type="button" class="ebook-nav-paddle paddle-prev" id="ebook-btn-prev" title="Halaman Sebelumnya (Panah Kiri)">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polyline points="15 18 9 12 15 6"/>
-            </svg>
-          </button>
-          <button type="button" class="ebook-nav-paddle paddle-next" id="ebook-btn-next" title="Halaman Berikutnya (Panah Kanan)">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5">
-              <polyline points="9 18 15 12 9 6"/>
-            </svg>
-          </button>
+          <!-- RIGHT: Tactical Intel & Scientific Monograph Panel -->
+          <div class="terminal-dossier-panel">
+            
+            <!-- Dossier Header -->
+            <div class="dossier-header">
+              <div class="dossier-category-tag" id="terminal-category-tag">BAB I: SISTEM PERTAHANAN SELULER</div>
+              <div class="dossier-title-row">
+                <h1 class="dossier-spec-name" id="terminal-spec-name">Makrofag (Macrophage)</h1>
+                <span class="dossier-icon" id="terminal-spec-icon">🧬</span>
+              </div>
+              <div class="dossier-latin-name" id="terminal-latin-name">Macrophagocytus Humanus</div>
+            </div>
+
+            <!-- 4-Stat Telemetry Grid -->
+            <div class="dossier-metrics-grid">
+              <div class="metric-cell">
+                <span class="mc-label">DIAMETER / UKURAN:</span>
+                <span class="mc-val" id="terminal-metric-diameter">21 – 25 µm</span>
+              </div>
+              <div class="metric-cell">
+                <span class="mc-label">MORFOLOGI / BENTUK:</span>
+                <span class="mc-val" id="terminal-metric-morphology">Amoeboid Pleomorfik</span>
+              </div>
+              <div class="metric-cell">
+                <span class="mc-label">RESEPTOR / TARGET:</span>
+                <span class="mc-val" id="terminal-metric-target">Patogen Asing & Debris</span>
+              </div>
+              <div class="metric-cell">
+                <span class="mc-label">KLASIFIKASI TAKSONOMI:</span>
+                <span class="mc-val" id="terminal-metric-taxonomy">Leukosit Agranulosit</span>
+              </div>
+            </div>
+
+            <!-- General Description -->
+            <div class="dossier-desc" id="terminal-spec-desc">
+              Berasal dari diferensiasi monosit darah yang bermigrasi ke jaringan. Makrofag bertindak sebagai sel fagositik profesional pembersih debris seluler dan patogen asing.
+            </div>
+
+            <!-- Biological Combat Mechanism Box -->
+            <div class="dossier-mechanism-box">
+              <div class="dossier-box-title">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                </svg>
+                <span>MEKANISME BIOLOGIS & AKSI TEMPUR:</span>
+              </div>
+              <p class="dossier-box-text" id="terminal-spec-mechanism">
+                Melakukan penelanan patogen melalui pembentukan fagosom yang berfusi dengan lisosom (fagolisosom) yang ber-pH asam dan kaya enzim hidrolitik.
+              </p>
+            </div>
+
+            <!-- Clinical Intelligence & Medical Fun Fact Box -->
+            <div class="dossier-fact-box">
+              <div class="fact-box-title">
+                <span>💡 CATATAN KLINIS & FAKTA IMUNOLOGI:</span>
+              </div>
+              <p class="fact-box-text" id="terminal-spec-funfact">
+                Makrofag juga berperan sebagai Antigen-Presenting Cell (APC) yang memproses fragmen antigen dan menyajikannya via molekul MHC-II kepada Limfosit T Helper.
+              </p>
+            </div>
+
+          </div>
+
         </div>
 
-        <!-- E-Book Footer Slider & Progress Tracker -->
-        <div class="ebook-footer-bar">
-          <div class="ebook-page-counter" id="ebook-page-counter">
-            SPESIMEN <span id="ebook-cur-num">1</span> DARI <span id="ebook-total-num">13</span>
+        <!-- BOTTOM: Interactive Specimen Dock Carousel -->
+        <div class="bio-terminal-dock">
+          <div class="dock-header-bar">
+            <span class="dock-tag">SPESIMEN PADA DATABASE</span>
+            <span class="dock-counter" id="terminal-counter-label">SPESIMEN 1 / 13</span>
           </div>
-          <div class="ebook-progress-track">
-            <div class="ebook-progress-fill" id="ebook-progress-fill" style="width: 7.7%;"></div>
-          </div>
-          <div class="ebook-keys-hint">
-            <span>NAVIGASI: <kbd>◀</kbd> <kbd>▶</kbd> ATAU KLIK HALAMAN</span>
+          <div class="dock-cards-scroller" id="terminal-dock-scroller">
+            <!-- Dynamically generated clickable specimen cards -->
           </div>
         </div>
 

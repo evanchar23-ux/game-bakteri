@@ -252,7 +252,7 @@ export class Game {
     this.renderCharacterSelectionCards();
     this.renderOrganSelectionCards();
     this.initHologram3DRotator();
-    this.initEBookData();
+    this.initBioTerminal();
   }
 
   showSwarmBanner(text) {
@@ -380,21 +380,22 @@ export class Game {
       };
     }
 
-    // Open Immunopedia E-Book
+    // Open Immunopedia Holographic Bio-Terminal
     const btnOpenImmunopedia = document.getElementById('btn-open-immunopedia');
     if (btnOpenImmunopedia) {
       btnOpenImmunopedia.onclick = () => {
         sound.init();
         this.showScreen(this.uiImmunopedia);
-        this.renderEBookPage(this.currentEbookIndex);
-        if (sound.playPageTurn) sound.playPageTurn();
+        this.displayTerminalSpecimen(this.currentTerminalIndex);
+        if (sound.playRewardClaim) sound.playRewardClaim();
+        else if (window.sound && window.sound.playClick) window.sound.playClick();
       };
     }
     const btnCloseImmunopedia = document.getElementById('btn-close-immunopedia');
     if (btnCloseImmunopedia) {
       btnCloseImmunopedia.onclick = () => {
         this.hideScreen(this.uiImmunopedia);
-        if (window.sound) window.sound.playClick();
+        if (window.sound && window.sound.playClick) window.sound.playClick();
       };
     }
 
@@ -478,71 +479,39 @@ export class Game {
       document.getElementById('audio-icon').innerText = muted ? '🔇' : '🔊';
     };
 
-    // Immunopedia E-Book Ribbon Bookmark navigation
-    document.querySelectorAll('.ebook-ribbon').forEach((ribbon) => {
-      ribbon.onclick = () => {
+    // Immunopedia Bio-Terminal Category Filters
+    document.querySelectorAll('.terminal-filter-btn').forEach((btn) => {
+      btn.onclick = () => {
         sound.init();
-        const chapter = ribbon.dataset.chapter;
-        if (this.ebookRibbonIndices && this.ebookRibbonIndices[chapter] !== undefined) {
-          const targetIdx = this.ebookRibbonIndices[chapter];
-          if (targetIdx !== this.currentEbookIndex) {
-            const dir = targetIdx > this.currentEbookIndex ? 1 : -1;
-            this.currentEbookIndex = targetIdx;
-            this.renderEBookPage(this.currentEbookIndex, dir);
-          }
-        }
+        if (window.sound && window.sound.playClick) window.sound.playClick();
+        const filter = btn.dataset.filter || 'all';
+        this.filterTerminalCategory(filter);
       };
     });
 
-    // E-Book Paddles
-    const btnEbookPrev = document.getElementById('ebook-btn-prev');
-    const btnEbookNext = document.getElementById('ebook-btn-next');
-    if (btnEbookPrev) {
-      btnEbookPrev.onclick = () => this.turnEBookPage(-1);
-    }
-    if (btnEbookNext) {
-      btnEbookNext.onclick = () => this.turnEBookPage(1);
-    }
-
-    // Corner Dog-Ear Page Turn Curls
-    const curlPrev = document.getElementById('ebook-curl-prev');
-    const curlNext = document.getElementById('ebook-curl-next');
-    if (curlPrev) {
-      curlPrev.onclick = (e) => {
-        e.stopPropagation();
-        this.turnEBookPage(-1);
+    // Bio-Terminal Navigation Paddles
+    const btnTermPrev = document.getElementById('terminal-btn-prev');
+    const btnTermNext = document.getElementById('terminal-btn-next');
+    if (btnTermPrev) {
+      btnTermPrev.onclick = () => {
+        sound.init();
+        this.navigateTerminalSpecimen(-1);
       };
     }
-    if (curlNext) {
-      curlNext.onclick = (e) => {
-        e.stopPropagation();
-        this.turnEBookPage(1);
+    if (btnTermNext) {
+      btnTermNext.onclick = () => {
+        sound.init();
+        this.navigateTerminalSpecimen(1);
       };
     }
 
-    // Direct page click navigation
-    const pageLeft = document.getElementById('ebook-page-left');
-    const pageRight = document.getElementById('ebook-page-right');
-    if (pageLeft) {
-      pageLeft.onclick = (e) => {
-        if (e.target.closest('button, a, input, select, .page-corner-curl')) return;
-        this.turnEBookPage(-1);
-      };
-    }
-    if (pageRight) {
-      pageRight.onclick = (e) => {
-        if (e.target.closest('button, a, input, select, .page-corner-curl')) return;
-        this.turnEBookPage(1);
-      };
-    }
-
-    // E-Book Keyboard shortcuts
+    // Bio-Terminal Keyboard shortcuts
     window.addEventListener('keydown', (e) => {
       if (this.uiImmunopedia && !this.uiImmunopedia.classList.contains('hidden')) {
         if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-          this.turnEBookPage(-1);
+          this.navigateTerminalSpecimen(-1);
         } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-          this.turnEBookPage(1);
+          this.navigateTerminalSpecimen(1);
         } else if (e.key === 'Escape') {
           this.hideScreen(this.uiImmunopedia);
         }
@@ -1165,151 +1134,180 @@ export class Game {
     }
   }
 
-  initEBookData() {
-    this.ebookEntries = [];
-    this.ebookRibbonIndices = { cells: 0, viruses: 0, bacteria: 0, nutrients: 0 };
-    let idx = 0;
+  initBioTerminal() {
+    this.allTerminalEntries = [];
     for (const [catKey, list] of Object.entries(IMMUNOPEDIA_DATA)) {
-      this.ebookRibbonIndices[catKey] = idx;
       for (const item of list) {
-        this.ebookEntries.push({ ...item, categoryKey: catKey });
-        idx++;
+        this.allTerminalEntries.push({ ...item, categoryKey: catKey });
       }
     }
-    this.currentEbookIndex = 0;
-    this.isEbookTurning = false;
-    this.renderEBookPage(0);
+    this.currentTerminalFilter = 'all';
+    this.filteredTerminalEntries = [...this.allTerminalEntries];
+    this.currentTerminalIndex = 0;
+
+    this.renderTerminalDock();
+    this.displayTerminalSpecimen(0);
   }
 
-  turnEBookPage(direction) {
-    if (this.isEbookTurning) return;
-    const newIndex = this.currentEbookIndex + direction;
-    if (newIndex < 0 || newIndex >= this.ebookEntries.length) return;
-
-    this.currentEbookIndex = newIndex;
-    this.renderEBookPage(this.currentEbookIndex, direction);
-  }
-
-  updateLeftPageDOM(item, index) {
-    const elSpecArt = document.getElementById('ebook-specimen-art');
-    if (elSpecArt) {
-      elSpecArt.innerHTML = getSpecimenIllustrationSVG(item.visualType);
-      elSpecArt.classList.remove('lens-focus');
-      void elSpecArt.offsetWidth; // Trigger reflow for lens bloom
-      elSpecArt.classList.add('lens-focus');
-    }
-
-    const elLeftCode = document.getElementById('ebook-left-code');
-    if (elLeftCode) elLeftCode.textContent = item.specimenCode || `SPEC-${index + 1}`;
-
-    const elLeftTag = document.getElementById('ebook-left-tag');
-    if (elLeftTag) elLeftTag.textContent = item.tag || 'ZONA OBSERVASI MIKROSKOP';
-
-    const leftPageNum = (index * 2) + 2;
-    const elLeftPageNum = document.getElementById('ebook-left-pagenum');
-    if (elLeftPageNum) elLeftPageNum.textContent = String(leftPageNum).padStart(2, '0');
-
-    const elScaleLabel = document.getElementById('ebook-scale-label');
-    if (elScaleLabel) {
-      elScaleLabel.textContent = item.categoryKey === 'viruses' ? 'SKALA: 50 nm' : (item.categoryKey === 'nutrients' ? 'SKALA: 1 nm' : 'SKALA: 10 µm');
-    }
-
-    const elDiameter = document.getElementById('ebook-spec-diameter');
-    if (elDiameter) elDiameter.textContent = item.diameter || '-';
-
-    const elMorphology = document.getElementById('ebook-spec-morphology');
-    if (elMorphology) elMorphology.textContent = item.morphology || '-';
-
-    const elTarget = document.getElementById('ebook-spec-target');
-    if (elTarget) elTarget.textContent = item.target || '-';
-
-    const elTaxonomy = document.getElementById('ebook-spec-taxonomy');
-    if (elTaxonomy) elTaxonomy.textContent = item.taxonomy || '-';
-
-    const elFolioLeft = document.getElementById('ebook-folio-left');
-    if (elFolioLeft) elFolioLeft.textContent = `HAL. ${String(leftPageNum).padStart(2, '0')}`;
-  }
-
-  updateRightPageDOM(item, index) {
-    const leftPageNum = (index * 2) + 2;
-    const rightPageNum = leftPageNum + 1;
-
-    const elChapter = document.getElementById('ebook-right-chapter');
-    if (elChapter) elChapter.textContent = item.chapter || 'BAB I: SEL-SEL IMUN';
-
-    const elRightPageNum = document.getElementById('ebook-right-pagenum');
-    if (elRightPageNum) elRightPageNum.textContent = String(rightPageNum).padStart(2, '0');
-
-    const elTitle = document.getElementById('ebook-right-title');
-    if (elTitle) elTitle.textContent = `${item.icon || ''} ${item.name}`;
-
-    const elLatin = document.getElementById('ebook-right-latin');
-    if (elLatin) elLatin.textContent = item.scientificName || '';
-
-    const elDesc = document.getElementById('ebook-right-desc');
-    if (elDesc) elDesc.textContent = item.desc || '';
-
-    const elMech = document.getElementById('ebook-right-mechanism');
-    if (elMech) elMech.textContent = item.mechanism || '';
-
-    const elFunFact = document.getElementById('ebook-right-funfact');
-    if (elFunFact) elFunFact.textContent = item.funFact || '';
-
-    const elFolioRight = document.getElementById('ebook-folio-right');
-    if (elFolioRight) elFolioRight.textContent = `HAL. ${String(rightPageNum).padStart(2, '0')}`;
-  }
-
-  renderEBookPage(index, animateDir = 0) {
-    if (!this.ebookEntries || this.ebookEntries.length === 0) return;
-    const newItem = this.ebookEntries[index];
-    if (!newItem) return;
-
-    const spreadEl = document.getElementById('ebook-spread');
-
-    if (animateDir !== 0 && spreadEl) {
-      this.isEbookTurning = true;
-      if (sound && sound.playPageTurn) sound.playPageTurn();
-
-      const animClass = animateDir > 0 ? 'curl-turn-next' : 'curl-turn-prev';
-      spreadEl.classList.remove('curl-turn-next', 'curl-turn-prev');
-      void spreadEl.offsetWidth; // Force reflow
-      spreadEl.classList.add(animClass);
-
-      // Mid-flip (at 200ms when page is vertical): update content seamlessly!
-      setTimeout(() => {
-        this.updateLeftPageDOM(newItem, index);
-        this.updateRightPageDOM(newItem, index);
-      }, 200);
-
-      setTimeout(() => {
-        spreadEl.classList.remove('curl-turn-next', 'curl-turn-prev');
-        this.isEbookTurning = false;
-      }, 480);
-    } else {
-      this.updateLeftPageDOM(newItem, index);
-      this.updateRightPageDOM(newItem, index);
-    }
-
-    // Ribbon bookmark active highlights
-    document.querySelectorAll('.ebook-ribbon').forEach((ribbon) => {
-      ribbon.classList.toggle('active', ribbon.dataset.chapter === newItem.categoryKey);
+  filterTerminalCategory(filterKey) {
+    this.currentTerminalFilter = filterKey;
+    document.querySelectorAll('.terminal-filter-btn').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.filter === filterKey);
     });
 
-    // Navigation paddles state
-    const btnPrev = document.getElementById('ebook-btn-prev');
-    const btnNext = document.getElementById('ebook-btn-next');
-    if (btnPrev) btnPrev.disabled = (index === 0);
-    if (btnNext) btnNext.disabled = (index === this.ebookEntries.length - 1);
+    if (filterKey === 'all') {
+      this.filteredTerminalEntries = [...this.allTerminalEntries];
+    } else {
+      this.filteredTerminalEntries = this.allTerminalEntries.filter((item) => item.categoryKey === filterKey);
+    }
 
-    // Footer tracker
-    const curNum = document.getElementById('ebook-cur-num');
-    const totalNum = document.getElementById('ebook-total-num');
-    const progFill = document.getElementById('ebook-progress-fill');
-    if (curNum) curNum.textContent = index + 1;
-    if (totalNum) totalNum.textContent = this.ebookEntries.length;
-    if (progFill) {
-      const pct = ((index + 1) / this.ebookEntries.length) * 100;
-      progFill.style.width = `${pct}%`;
+    this.currentTerminalIndex = 0;
+    this.renderTerminalDock();
+    this.displayTerminalSpecimen(0);
+  }
+
+  renderTerminalDock() {
+    const scroller = document.getElementById('terminal-dock-scroller');
+    if (!scroller) return;
+
+    scroller.innerHTML = '';
+    this.filteredTerminalEntries.forEach((item, idx) => {
+      const card = document.createElement('div');
+      card.className = `dock-card ${idx === this.currentTerminalIndex ? 'active' : ''}`;
+      card.dataset.index = idx;
+
+      const firstName = item.name.split(' ')[0] || item.name;
+      card.innerHTML = `
+        <span class="dock-card-icon">${item.icon || '🧬'}</span>
+        <div class="dock-card-info">
+          <span class="dock-card-name">${firstName}</span>
+          <span class="dock-card-tag">${item.specimenCode || 'SPEC'}</span>
+        </div>
+      `;
+
+      card.onclick = () => {
+        this.selectTerminalSpecimen(idx);
+      };
+
+      scroller.appendChild(card);
+    });
+  }
+
+  selectTerminalSpecimen(index) {
+    if (index < 0 || index >= this.filteredTerminalEntries.length) return;
+    this.currentTerminalIndex = index;
+    this.displayTerminalSpecimen(index);
+  }
+
+  navigateTerminalSpecimen(delta) {
+    const newIdx = this.currentTerminalIndex + delta;
+    if (newIdx >= 0 && newIdx < this.filteredTerminalEntries.length) {
+      this.selectTerminalSpecimen(newIdx);
+    }
+  }
+
+  displayTerminalSpecimen(index) {
+    if (!this.filteredTerminalEntries || this.filteredTerminalEntries.length === 0) return;
+    const item = this.filteredTerminalEntries[index];
+    if (!item) return;
+
+    // Specimen Art Display with iris bloom effect
+    const elSpecArt = document.getElementById('terminal-specimen-art');
+    if (elSpecArt) {
+      elSpecArt.innerHTML = getSpecimenIllustrationSVG(item.visualType);
+      elSpecArt.classList.remove('focus-in');
+      void elSpecArt.offsetWidth; // force reflow for smooth re-trigger
+      elSpecArt.classList.add('focus-in');
+    }
+
+    // Specimen Pod Code & Threat Badge
+    const elCode = document.getElementById('terminal-spec-code');
+    if (elCode) elCode.textContent = item.specimenCode || `SPEC-${index + 1}`;
+
+    const elThreat = document.getElementById('terminal-threat-badge');
+    if (elThreat) {
+      elThreat.className = 'pod-threat-badge';
+      if (item.categoryKey === 'cells') {
+        elThreat.classList.add('threat-ally');
+        elThreat.textContent = 'SENTINEL DEFENDER';
+      } else if (item.categoryKey === 'nutrients') {
+        elThreat.classList.add('threat-nutrient');
+        elThreat.textContent = 'BIO-CATALYST / NUTRIENT';
+      } else {
+        elThreat.classList.add('threat-danger');
+        elThreat.textContent = item.categoryKey === 'viruses' ? 'THREAT: VIRAL PATHOGEN' : 'THREAT: BACTERIAL PATHOGEN';
+      }
+    }
+
+    // Scale label
+    const elScale = document.getElementById('terminal-scale-label');
+    if (elScale) {
+      if (item.categoryKey === 'viruses') elScale.textContent = 'SKALA OPTIK: 50 – 120 nm';
+      else if (item.categoryKey === 'nutrients') elScale.textContent = 'SKALA MOLEKULER: ~1 nm';
+      else elScale.textContent = 'SKALA SITOLOGI: 10 – 25 µm';
+    }
+
+    // Right Dossier elements
+    const elCat = document.getElementById('terminal-category-tag');
+    if (elCat) elCat.textContent = (item.chapter || 'DATABASE SPESIMEN MIKROBIOLOGI').toUpperCase();
+
+    const elName = document.getElementById('terminal-spec-name');
+    if (elName) elName.textContent = item.name;
+
+    const elIcon = document.getElementById('terminal-spec-icon');
+    if (elIcon) elIcon.textContent = item.icon || '🧬';
+
+    const elLatin = document.getElementById('terminal-latin-name');
+    if (elLatin) elLatin.textContent = item.scientificName || '';
+
+    // 4 Metrics
+    const elDiam = document.getElementById('terminal-metric-diameter');
+    if (elDiam) elDiam.textContent = item.diameter || '-';
+
+    const elMorph = document.getElementById('terminal-metric-morphology');
+    if (elMorph) elMorph.textContent = item.morphology || '-';
+
+    const elTarget = document.getElementById('terminal-metric-target');
+    if (elTarget) elTarget.textContent = item.target || '-';
+
+    const elTaxon = document.getElementById('terminal-metric-taxonomy');
+    if (elTaxon) elTaxon.textContent = item.taxonomy || '-';
+
+    // Descriptions & Mechanism
+    const elDesc = document.getElementById('terminal-spec-desc');
+    if (elDesc) elDesc.textContent = item.desc || '';
+
+    const elMech = document.getElementById('terminal-spec-mechanism');
+    if (elMech) elMech.textContent = item.mechanism || '';
+
+    const elFact = document.getElementById('terminal-spec-funfact');
+    if (elFact) elFact.textContent = item.funFact || '';
+
+    // Counter
+    const elCounter = document.getElementById('terminal-counter-label');
+    if (elCounter) {
+      elCounter.textContent = `SPESIMEN ${index + 1} / ${this.filteredTerminalEntries.length}`;
+    }
+
+    // Update Paddles
+    const btnPrev = document.getElementById('terminal-btn-prev');
+    const btnNext = document.getElementById('terminal-btn-next');
+    if (btnPrev) btnPrev.disabled = (index === 0);
+    if (btnNext) btnNext.disabled = (index === this.filteredTerminalEntries.length - 1);
+
+    // Update Dock Cards Active State & Scroll active card into view
+    const dockCards = document.querySelectorAll('#terminal-dock-scroller .dock-card');
+    dockCards.forEach((card, cIdx) => {
+      const isActive = cIdx === index;
+      card.classList.toggle('active', isActive);
+      if (isActive) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+
+    // Sound effect
+    if (window.sound && window.sound.playClick) {
+      window.sound.playClick();
     }
   }
 
