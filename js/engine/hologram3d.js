@@ -323,6 +323,20 @@ export class Hologram3DViewer {
       this.humanGroup.remove(this.humanModelWrapper);
       this.humanModelWrapper = null;
     }
+
+    // Group and scale internal organs proportionally
+    if (!this.internalOrgansGroup) {
+      this.internalOrgansGroup = new THREE.Group();
+      const childrenToMove = [];
+      this.humanGroup.children.forEach(c => {
+        if (c !== this.humanModelWrapper) childrenToMove.push(c);
+      });
+      childrenToMove.forEach(c => this.internalOrgansGroup.add(c));
+      this.humanGroup.add(this.internalOrgansGroup);
+    }
+    const ratio = targetHeight / 1.75;
+    this.internalOrgansGroup.scale.set(ratio, ratio, ratio);
+
     this.loadHumanModel(modelUrl, targetHeight);
   }
 
@@ -337,9 +351,21 @@ export class Hologram3DViewer {
       (gltf) => {
         const model = gltf.scene;
 
-        // Auto-scale and center model
-        model.updateMatrixWorld(true);
-        const box = new THREE.Box3().setFromObject(model);
+        // Compute precise bounding box from meshes only
+        const box = new THREE.Box3();
+        model.traverse((child) => {
+          if (child.isMesh) {
+            child.geometry.computeBoundingBox();
+            const childBox = child.geometry.boundingBox.clone();
+            childBox.applyMatrix4(child.matrixWorld);
+            box.union(childBox);
+          }
+        });
+        
+        if (box.isEmpty()) {
+           box.setFromObject(model);
+        }
+
         const size = box.getSize(new THREE.Vector3());
         const center = box.getCenter(new THREE.Vector3());
 
@@ -351,7 +377,8 @@ export class Hologram3DViewer {
         model.position.z = -center.z;
         model.position.y = -box.min.y;
 
-        const scale = targetHeight / (size.y > 0 ? size.y : 1.8);
+        const actualHeight = size.y > 0.1 ? size.y : 1.8;
+        const scale = targetHeight / actualHeight;
         wrapper.scale.set(scale, scale, scale);
 
         // Apply Translucent Cyber-Holographic Shader Material

@@ -876,7 +876,9 @@ export class Game {
       lungs: { label: 'BIO-HAZARD KELAS IV [AEROSOL]', color: '#00d2ff', bg: 'rgba(0, 210, 255, 0.12)' },
       bloodstream: { label: 'STATUS KRITIS [RISIKO SEPSIS SISTEMIK]', color: '#e63946', bg: 'rgba(230, 57, 70, 0.15)' },
       gut: { label: 'BIO-HAZARD KELAS III [TOKSIN ENTERIK]', color: '#2a9d8f', bg: 'rgba(42, 157, 143, 0.12)' },
-      skin: { label: 'TRAUMA TERBUKA [KOLONISASI BIOFILM]', color: '#e76f51', bg: 'rgba(231, 111, 81, 0.12)' }
+      skin: { label: 'TRAUMA TERBUKA [KOLONISASI BIOFILM]', color: '#e76f51', bg: 'rgba(231, 111, 81, 0.12)' },
+      brain: { label: 'ANCAMAN NEUROLOGIS [INFEKSI SISTEM SARAF]', color: '#b388ff', bg: 'rgba(179, 136, 255, 0.15)' },
+      stomach: { label: 'ANCAMAN ASAM TINGGI [KOLONISASI LAMBUNG]', color: '#ffeb3b', bg: 'rgba(255, 235, 59, 0.15)' }
     };
 
     const pathogenNameMap = {
