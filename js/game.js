@@ -813,6 +813,7 @@ export class Game {
 
     if (this.hologram3d) {
       this.hologram3d.changeModel(subject.model, subject.targetHeight);
+      this.hologram3d.showOrgans(subject.organs.map(o => o.id));
     }
     
     // Clear dynamic hotspots

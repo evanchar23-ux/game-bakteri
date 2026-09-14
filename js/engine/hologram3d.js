@@ -360,6 +360,12 @@ export class Hologram3DViewer {
     this.loadHumanModel(modelUrl, targetHeight);
   }
 
+  showOrgans(organIds) {
+    Object.entries(this.organs).forEach(([key, obj3d]) => {
+      obj3d.visible = organIds.includes(key);
+    });
+  }
+
   loadHumanModel(modelUrl = 'assets/human_model.glb', targetHeight = 1.75) {
     if (!THREE.GLTFLoader) {
       return;

@@ -586,7 +586,7 @@
               <canvas id="hologram3dCanvas" class="hologram-3d-canvas"></canvas>
 
               <!-- Interactive Anatomical Hotspots SVG Layer (Clean & Sleek) -->
-              <svg class="human-mannequin-svg" id="human-mannequin-svg" viewBox="0 0 340 600" preserveAspectRatio="xMidYMid meet">
+              <svg class="human-mannequin-svg" id="human-mannequin-svg" viewBox="0 0 340 600" preserveAspectRatio="none">
                 <defs>
                   <filter id="hotspotGlow" x="-50%" y="-50%" width="200%" height="200%">
                     <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -595,6 +595,7 @@
                       <feMergeNode in="SourceGraphic"/>
                     </feMerge>
                   </filter>
+                </defs>
                 <!-- Dynamic Interactive Hotspot Nodes will be injected here via JS -->
                 <g id="dynamic-hotspots"></g>
               </svg>
