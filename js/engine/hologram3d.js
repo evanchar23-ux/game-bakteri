@@ -283,6 +283,26 @@ export class Hologram3DViewer {
     const brainMesh = new THREE.Mesh(brainGeom, brainMat);
     brainMesh.position.set(0, 1.58, 0.01);
     this.humanGroup.add(brainMesh);
+    this.organs.brain = brainMesh;
+
+    // 5.5 GASTRIC STOMACH (Acidic digestion organ)
+    const stomachGroup = new THREE.Group();
+    stomachGroup.position.set(-0.06, 1.08, 0.06);
+
+    const stomachMat = new THREE.MeshStandardMaterial({
+      color: 0xffeb3b,
+      emissive: 0xffcc00,
+      emissiveIntensity: 0.85,
+      transparent: true,
+      opacity: 0.8
+    });
+    const stomachGeom = new THREE.SphereGeometry(0.045, 16, 16);
+    stomachGeom.scale(1.2, 0.9, 0.8);
+    const stomachMesh = new THREE.Mesh(stomachGeom, stomachMat);
+    stomachGroup.add(stomachMesh);
+    
+    this.humanGroup.add(stomachGroup);
+    this.organs.stomach = stomachGroup;
 
     // 6. 3D VERTEBRAL SPINE (Back Column)
     const spineGroup = new THREE.Group();
@@ -396,6 +416,7 @@ export class Hologram3DViewer {
 
         model.traverse((child) => {
           if (child.isMesh) {
+            child.frustumCulled = false; // Prevent culling when rotating if bounds are weird
             // Hide internal mouth/teeth meshes for clean anatomy silhouette
             if (child.name && child.name.toLowerCase().includes('teeth')) {
               child.visible = false;
