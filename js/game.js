@@ -504,18 +504,34 @@ export class Game {
       btnEbookNext.onclick = () => this.turnEBookPage(1);
     }
 
+    // Corner Dog-Ear Page Turn Curls
+    const curlPrev = document.getElementById('ebook-curl-prev');
+    const curlNext = document.getElementById('ebook-curl-next');
+    if (curlPrev) {
+      curlPrev.onclick = (e) => {
+        e.stopPropagation();
+        this.turnEBookPage(-1);
+      };
+    }
+    if (curlNext) {
+      curlNext.onclick = (e) => {
+        e.stopPropagation();
+        this.turnEBookPage(1);
+      };
+    }
+
     // Direct page click navigation
     const pageLeft = document.getElementById('ebook-page-left');
     const pageRight = document.getElementById('ebook-page-right');
     if (pageLeft) {
       pageLeft.onclick = (e) => {
-        if (e.target.closest('button, a, input, select')) return;
+        if (e.target.closest('button, a, input, select, .page-corner-curl')) return;
         this.turnEBookPage(-1);
       };
     }
     if (pageRight) {
       pageRight.onclick = (e) => {
-        if (e.target.closest('button, a, input, select')) return;
+        if (e.target.closest('button, a, input, select, .page-corner-curl')) return;
         this.turnEBookPage(1);
       };
     }
@@ -1174,37 +1190,84 @@ export class Game {
     this.renderEBookPage(this.currentEbookIndex, direction);
   }
 
-  renderEBookPage(index, animateDir = 0) {
-    if (!this.ebookEntries || this.ebookEntries.length === 0) return;
-    const item = this.ebookEntries[index];
-    if (!item) return;
+  generateLeftPageHTML(item, index) {
+    const leftPageNum = (index * 2) + 2;
+    const scale = item.categoryKey === 'viruses' ? 'SKALA: 50 nm' : (item.categoryKey === 'nutrients' ? 'SKALA: 1 nm' : 'SKALA: 10 µm');
+    return `
+      <div class="page-header-strip">
+        <span class="specimen-id-badge">${item.specimenCode || `SPEC-${index + 1}`}</span>
+        <span class="page-classification">${item.tag || 'ZONA OBSERVASI MIKROSKOP'}</span>
+        <span class="page-num-tag">${String(leftPageNum).padStart(2, '0')}</span>
+      </div>
+      <div class="specimen-lens-frame">
+        <div class="specimen-svg-container">${getSpecimenIllustrationSVG(item.visualType)}</div>
+        <div class="lens-scale-bar">
+          <span class="scale-ruler"></span>
+          <span class="scale-label">${scale}</span>
+        </div>
+        <div class="lens-active-tag"><span class="lens-dot"></span> OBSERVASI IN-VIVO</div>
+      </div>
+      <div class="specimen-matrix-card">
+        <div class="matrix-title">METRIK & MORFOLOGI SPESIMEN:</div>
+        <div class="matrix-grid">
+          <div class="matrix-item"><span class="m-k">DIAMETER / UKURAN:</span><span class="m-v">${item.diameter || '-'}</span></div>
+          <div class="matrix-item"><span class="m-k">BENTUK / MORFOLOGI:</span><span class="m-v">${item.morphology || '-'}</span></div>
+          <div class="matrix-item"><span class="m-k">RESEPTOR / TARGET:</span><span class="m-v">${item.target || '-'}</span></div>
+          <div class="matrix-item"><span class="m-k">KLASIFIKASI:</span><span class="m-v">${item.taxonomy || '-'}</span></div>
+        </div>
+      </div>
+      <div class="page-footer-strip">
+        <span>🔬 DOKUMEN BIO-MEDIS RESMI // VIRAL SLAYER</span>
+        <span class="page-folio">HAL. ${String(leftPageNum).padStart(2, '0')}</span>
+      </div>
+    `;
+  }
 
-    const spreadEl = document.getElementById('ebook-spread');
-    if (animateDir !== 0 && spreadEl) {
-      this.isEbookTurning = true;
-      const animClass = animateDir > 0 ? 'turning-next' : 'turning-prev';
-      spreadEl.classList.remove('turning-next', 'turning-prev');
-      void spreadEl.offsetWidth; // Force reflow to replay CSS keyframe
-      spreadEl.classList.add(animClass);
-      if (sound && sound.playPageTurn) sound.playPageTurn();
+  generateRightPageHTML(item, index) {
+    const leftPageNum = (index * 2) + 2;
+    const rightPageNum = leftPageNum + 1;
+    return `
+      <div class="page-header-strip">
+        <span class="chapter-badge">${item.chapter || 'BAB I: SEL-SEL IMUN'}</span>
+        <span class="page-num-tag">${String(rightPageNum).padStart(2, '0')}</span>
+      </div>
+      <div class="monograph-article">
+        <div class="monograph-title-group">
+          <h2 class="monograph-title">${item.icon || ''} ${item.name}</h2>
+          <span class="monograph-latin">${item.scientificName || ''}</span>
+        </div>
+        <div class="monograph-desc">${item.desc || ''}</div>
+        <div class="mechanism-callout-box">
+          <div class="mechanism-box-header">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+            <span>MEKANISME BIOLOGIS & AKSI TEMPUR:</span>
+          </div>
+          <p class="mechanism-text">${item.mechanism || ''}</p>
+        </div>
+        <div class="clinical-note-sticker">
+          <div class="note-pin"></div>
+          <span class="note-tag">💡 CATATAN KLINIS & FAKTA IMUNOLOGI:</span>
+          <p class="note-content">${item.funFact || ''}</p>
+        </div>
+      </div>
+      <div class="page-footer-strip right-strip">
+        <span class="book-name-tag">ATLAS IMUNOLOGI MIKROSKOPIK</span>
+        <span class="page-folio">HAL. ${String(rightPageNum).padStart(2, '0')}</span>
+      </div>
+    `;
+  }
 
-      setTimeout(() => {
-        spreadEl.classList.remove('turning-next', 'turning-prev');
-        this.isEbookTurning = false;
-      }, 550);
-    }
-
-    // Left Page (Visualizer & Metrics)
+  updateLeftPageDOM(item, index) {
     const elSpecArt = document.getElementById('ebook-specimen-art');
-    if (elSpecArt) {
-      elSpecArt.innerHTML = getSpecimenIllustrationSVG(item.visualType);
-    }
+    if (elSpecArt) elSpecArt.innerHTML = getSpecimenIllustrationSVG(item.visualType);
 
     const elLeftCode = document.getElementById('ebook-left-code');
     if (elLeftCode) elLeftCode.textContent = item.specimenCode || `SPEC-${index + 1}`;
 
     const elLeftTag = document.getElementById('ebook-left-tag');
-    if (elLeftTag) elLeftTag.textContent = item.tag || 'OBSERVASI MIKROSKOP';
+    if (elLeftTag) elLeftTag.textContent = item.tag || 'ZONA OBSERVASI MIKROSKOP';
 
     const leftPageNum = (index * 2) + 2;
     const elLeftPageNum = document.getElementById('ebook-left-pagenum');
@@ -1229,11 +1292,14 @@ export class Game {
 
     const elFolioLeft = document.getElementById('ebook-folio-left');
     if (elFolioLeft) elFolioLeft.textContent = `HAL. ${String(leftPageNum).padStart(2, '0')}`;
+  }
 
-    // Right Page (Monograph, Mechanism & Clinical Note)
+  updateRightPageDOM(item, index) {
+    const leftPageNum = (index * 2) + 2;
     const rightPageNum = leftPageNum + 1;
+
     const elChapter = document.getElementById('ebook-right-chapter');
-    if (elChapter) elChapter.textContent = item.chapter || 'ATLAS IMUNOLOGI MIKROSKOPIK';
+    if (elChapter) elChapter.textContent = item.chapter || 'BAB I: SEL-SEL IMUN';
 
     const elRightPageNum = document.getElementById('ebook-right-pagenum');
     if (elRightPageNum) elRightPageNum.textContent = String(rightPageNum).padStart(2, '0');
@@ -1255,10 +1321,68 @@ export class Game {
 
     const elFolioRight = document.getElementById('ebook-folio-right');
     if (elFolioRight) elFolioRight.textContent = `HAL. ${String(rightPageNum).padStart(2, '0')}`;
+  }
+
+  renderEBookPage(index, animateDir = 0) {
+    if (!this.ebookEntries || this.ebookEntries.length === 0) return;
+    const newItem = this.ebookEntries[index];
+    if (!newItem) return;
+
+    const flipLeaf = document.getElementById('ebook-flip-leaf');
+    const leafFront = document.getElementById('flip-leaf-front');
+    const leafBack = document.getElementById('flip-leaf-back');
+    const underShadow = document.getElementById('ebook-under-shadow');
+
+    if (animateDir !== 0 && flipLeaf && leafFront && leafBack) {
+      this.isEbookTurning = true;
+      const prevIndex = index - animateDir;
+      const prevItem = this.ebookEntries[prevIndex] || newItem;
+
+      if (sound && sound.playPageTurn) sound.playPageTurn();
+
+      if (animateDir > 0) {
+        // Turning Next: leaf starts on right side, folds and turns across spine to left
+        leafFront.innerHTML = this.generateRightPageHTML(prevItem, prevIndex);
+        leafBack.innerHTML = this.generateLeftPageHTML(newItem, index);
+
+        flipLeaf.className = 'ebook-flip-leaf leaf-next animating-next';
+        if (underShadow) underShadow.className = 'ebook-under-shadow shadow-right';
+
+        // Immediately update static right page to incoming target monograph
+        this.updateRightPageDOM(newItem, index);
+
+        setTimeout(() => {
+          this.updateLeftPageDOM(newItem, index);
+          flipLeaf.className = 'ebook-flip-leaf hidden';
+          if (underShadow) underShadow.className = 'ebook-under-shadow hidden';
+          this.isEbookTurning = false;
+        }, 640);
+      } else {
+        // Turning Prev: leaf starts on left side, folds and turns across spine to right
+        leafFront.innerHTML = this.generateRightPageHTML(newItem, index);
+        leafBack.innerHTML = this.generateLeftPageHTML(prevItem, prevIndex);
+
+        flipLeaf.className = 'ebook-flip-leaf leaf-prev animating-prev';
+        if (underShadow) underShadow.className = 'ebook-under-shadow shadow-left';
+
+        // Immediately update static left page to incoming target specimen
+        this.updateLeftPageDOM(newItem, index);
+
+        setTimeout(() => {
+          this.updateRightPageDOM(newItem, index);
+          flipLeaf.className = 'ebook-flip-leaf hidden';
+          if (underShadow) underShadow.className = 'ebook-under-shadow hidden';
+          this.isEbookTurning = false;
+        }, 640);
+      }
+    } else {
+      this.updateLeftPageDOM(newItem, index);
+      this.updateRightPageDOM(newItem, index);
+    }
 
     // Ribbon bookmark active highlights
     document.querySelectorAll('.ebook-ribbon').forEach((ribbon) => {
-      ribbon.classList.toggle('active', ribbon.dataset.chapter === item.categoryKey);
+      ribbon.classList.toggle('active', ribbon.dataset.chapter === newItem.categoryKey);
     });
 
     // Navigation paddles state

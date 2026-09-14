@@ -793,10 +793,36 @@
 
         <!-- The 3D Book Stage (Hardcover Binder with Center Spine & Two-Page Spread) -->
         <div class="ebook-stage" id="ebook-stage">
+          
+          <!-- Outer Hardcover Binder with Real Leather Rim & Brass Corner Protectors -->
           <div class="ebook-binder-cover">
             
-            <!-- Book Spine Shadow (Center crease) -->
-            <div class="ebook-spine-crease"></div>
+            <!-- Brass Corner Caps on all 4 corners -->
+            <div class="book-corner-cap corner-tl"></div>
+            <div class="book-corner-cap corner-tr"></div>
+            <div class="book-corner-cap corner-bl"></div>
+            <div class="book-corner-cap corner-br"></div>
+
+            <!-- Visible Stacked Paper Edges (Book Thickness Depth) -->
+            <div class="book-pages-stack stack-left"></div>
+            <div class="book-pages-stack stack-right"></div>
+            <div class="book-pages-stack stack-bottom"></div>
+
+            <!-- Satin Bookmark Ribbon Tail hanging past the bottom -->
+            <div class="ebook-bookmark-tail">
+              <div class="ribbon-tail-end"></div>
+            </div>
+
+            <!-- Book Spine Shadow (Center crease & binding rings) -->
+            <div class="ebook-spine-crease">
+              <div class="spine-stitching">
+                <span class="stitch-knot"></span>
+                <span class="stitch-knot"></span>
+                <span class="stitch-knot"></span>
+                <span class="stitch-knot"></span>
+                <span class="stitch-knot"></span>
+              </div>
+            </div>
 
             <!-- Two-Page Open Spread Container -->
             <div class="ebook-spread" id="ebook-spread">
@@ -853,6 +879,11 @@
                   <span>🔬 DOKUMEN BIO-MEDIS RESMI // VIRAL SLAYER</span>
                   <span class="page-folio" id="ebook-folio-left">HAL. 02</span>
                 </div>
+
+                <!-- Interactive Dog-Ear Corner Turn Curl (Prev) -->
+                <div class="page-corner-curl curl-left" id="ebook-curl-prev" title="Balik ke Halaman Sebelumnya">
+                  <span class="curl-arrow">◀</span>
+                </div>
               </div>
 
               <!-- RIGHT PAGE: Scientific Monograph & Biological Mechanism -->
@@ -903,7 +934,21 @@
                   <span class="book-name-tag">ATLAS IMUNOLOGI MIKROSKOPIK</span>
                   <span class="page-folio" id="ebook-folio-right">HAL. 03</span>
                 </div>
+
+                <!-- Interactive Dog-Ear Corner Turn Curl (Next) -->
+                <div class="page-corner-curl curl-right" id="ebook-curl-next" title="Balik ke Halaman Berikutnya">
+                  <span class="curl-arrow">▶</span>
+                </div>
               </div>
+
+              <!-- Dedicated 3D Realistic Curved Page Turn Leaf (Hidden during idle, active during 3D flip) -->
+              <div class="ebook-flip-leaf hidden" id="ebook-flip-leaf">
+                <div class="flip-leaf-face flip-leaf-front" id="flip-leaf-front"></div>
+                <div class="flip-leaf-face flip-leaf-back" id="flip-leaf-back"></div>
+                <div class="flip-leaf-lighting" id="flip-leaf-lighting"></div>
+              </div>
+              <!-- Cast Shadow underneath turning leaf -->
+              <div class="ebook-under-shadow hidden" id="ebook-under-shadow"></div>
 
             </div>
           </div>

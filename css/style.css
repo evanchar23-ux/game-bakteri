@@ -2272,37 +2272,39 @@ button {
    ========================================================================== */
 
 /* ==========================================================================
-   IMMUNOPEDIA INTERACTIVE E-BOOK (DIGITAL ATLAS & BIOLOGICAL FIELD GUIDE)
+   IMMUNOPEDIA DELUXE PHYSICAL 3D E-BOOK (AUTHENTIC ATLAS & BIOLOGICAL TOME)
    ========================================================================== */
+
+#immunopedia-modal {
+  background: radial-gradient(circle at 50% 45%, rgba(18, 28, 45, 0.96) 0%, rgba(5, 9, 16, 0.99) 100%);
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .ebook-outer-wrapper {
   width: 96%;
-  max-width: 1080px;
-  height: 88vh;
-  max-height: 740px;
-  min-height: 520px;
-  background: linear-gradient(135deg, #0a111c 0%, #060a12 100%);
-  border: 1px solid rgba(0, 242, 254, 0.25);
-  border-radius: 18px;
+  max-width: 1140px;
+  height: 90vh;
+  max-height: 780px;
+  min-height: 560px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 242, 254, 0.15);
   position: relative;
-  overflow: hidden;
   user-select: none;
+  filter: drop-shadow(0 35px 70px rgba(0, 0, 0, 0.9)) drop-shadow(0 10px 30px rgba(0, 242, 254, 0.15));
 }
 
-/* --- Top Toolbar & Ribbon Bookmarks --- */
+/* --- Top Stage Header & Real Satin Hanging Ribbons --- */
 .ebook-toolbar {
-  height: 50px;
+  height: 54px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding: 0 20px;
-  background: rgba(8, 14, 25, 0.95);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  z-index: 20;
+  padding: 0 28px;
+  position: relative;
+  z-index: 30;
 }
 
 .ebook-brand-tag {
@@ -2311,123 +2313,300 @@ button {
   gap: 10px;
   font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
+  font-weight: 800;
+  letter-spacing: 2px;
   color: #00f2fe;
+  padding-bottom: 12px;
+  text-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
 }
 
 .ebook-brand-icon {
   stroke: #00f2fe;
+  filter: drop-shadow(0 0 8px #00f2fe);
 }
 
+/* Authentic Hanging Bookmark Ribbons (Fabric Tails Hanging Over Cover) */
 .ebook-ribbons {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   height: 100%;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .ebook-ribbon {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: none;
-  color: var(--text-muted);
-  padding: 6px 14px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.25s ease;
   position: relative;
-  top: 1px;
+  padding: 8px 16px 14px 16px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), 50% 100%, 0 calc(100% - 10px));
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease;
+  transform-origin: top center;
+  transform: translateY(0);
+}
+
+/* Bab I: Sel Imun - Crimson & Gold Satin */
+.ebook-ribbon[data-chapter="cells"] {
+  background: linear-gradient(180deg, #e74c3c 0%, #b01f11 80%, #781006 100%);
+  border-top: 2px solid #ffd32a;
+}
+/* Bab II: Virologi - Toxic Violet & Purple Satin */
+.ebook-ribbon[data-chapter="viruses"] {
+  background: linear-gradient(180deg, #9b59b6 0%, #6c2d8a 80%, #441359 100%);
+  border-top: 2px solid #d2dae2;
+}
+/* Bab III: Bakteri - Bio-Amber & Gold Satin */
+.ebook-ribbon[data-chapter="bacteria"] {
+  background: linear-gradient(180deg, #e67e22 0%, #b85404 80%, #7d3301 100%);
+  border-top: 2px solid #fffa65;
+}
+/* Bab IV: Nutrisi - Emerald & Teal Satin */
+.ebook-ribbon[data-chapter="nutrients"] {
+  background: linear-gradient(180deg, #1abc9c 0%, #0e7d67 80%, #064b3d 100%);
+  border-top: 2px solid #7efff5;
 }
 
 .ebook-ribbon:hover {
-  background: rgba(0, 242, 254, 0.12);
-  color: #fff;
-  border-color: rgba(0, 242, 254, 0.3);
+  transform: translateY(4px);
+  filter: brightness(1.15) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
 .ebook-ribbon.active {
-  background: linear-gradient(180deg, rgba(0, 242, 254, 0.2) 0%, rgba(14, 24, 42, 0.95) 100%);
-  color: #00f2fe;
-  border-color: rgba(0, 242, 254, 0.6);
-  box-shadow: 0 -4px 12px rgba(0, 242, 254, 0.2);
-  transform: translateY(-2px);
+  transform: translateY(8px);
+  filter: brightness(1.25) drop-shadow(0 8px 18px rgba(0, 0, 0, 0.85));
+}
+
+.ebook-ribbon.active::after {
+  content: '★';
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  color: #ffd32a;
 }
 
 .ebook-close-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #cbd5e1;
-  width: 32px;
-  height: 32px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 71, 87, 0.4);
+  color: #ff4757;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.2s ease;
+  margin-bottom: 10px;
 }
 
 .ebook-close-btn:hover {
-  background: rgba(255, 71, 87, 0.25);
-  border-color: #ff4757;
-  color: #ff4757;
-  transform: scale(1.08);
+  background: #ff4757;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+  transform: scale(1.1) rotate(90deg);
 }
 
-/* --- The 3D Book Stage --- */
+/* --- The 3D Book Stage (Atmospheric Desk Platform) --- */
 .ebook-stage {
   flex: 1;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 24px;
-  perspective: 2000px;
-  overflow: hidden;
+  padding: 8px 30px 14px 30px;
+  perspective: 2600px;
 }
 
+/* Hardcover Binder (Heavy Leather Volume with Real Thickness) */
 .ebook-binder-cover {
   width: 100%;
   height: 100%;
   position: relative;
   display: flex;
-  background: #090e17;
-  border-radius: 12px;
-  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8), 0 15px 40px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  overflow: hidden;
+  background: #0d1420;
+  border-radius: 14px;
+  /* Dual gold/bronze embossed borders */
+  box-shadow: 
+    0 0 0 3px #080d14,
+    0 0 0 5px rgba(198, 155, 60, 0.4),
+    0 25px 60px rgba(0, 0, 0, 0.95),
+    inset 0 0 80px rgba(0, 0, 0, 0.9);
+  padding: 10px 14px;
+  box-sizing: border-box;
 }
 
-/* Spine shadow (center crease between left and right pages) */
-.ebook-spine-crease {
+/* --- Metallic Brass Corner Protectors with Rivets --- */
+.book-corner-cap {
   position: absolute;
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #ffd32a 0%, #d4af37 40%, #8c6d1f 85%, #59440e 100%);
+  z-index: 25;
+  pointer-events: none;
+  box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.8), 0 3px 6px rgba(0, 0, 0, 0.7);
+}
+
+.book-corner-cap.corner-tl {
   top: 0;
+  left: 0;
+  border-radius: 14px 0 0 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.book-corner-cap.corner-tr {
+  top: 0;
+  right: 0;
+  border-radius: 0 14px 0 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.book-corner-cap.corner-bl {
   bottom: 0;
-  left: 50%;
-  width: 40px;
-  transform: translateX(-50%);
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.85) 45%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(0, 0, 0, 0.85) 55%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
-  z-index: 15;
+  left: 0;
+  border-radius: 0 0 0 14px;
+  clip-path: polygon(0 0, 0 100%, 100% 100%);
+}
+.book-corner-cap.corner-br {
+  bottom: 0;
+  right: 0;
+  border-radius: 0 0 14px 0;
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+}
+
+/* Rivet details on brass caps */
+.book-corner-cap::before {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: #3e2f07;
+  border-radius: 50%;
+  box-shadow: inset 1px 1px 1px #000, 0 0 0 1px #ffd32a;
+}
+.corner-tl::before { top: 10px; left: 10px; }
+.corner-tr::before { top: 10px; right: 10px; }
+.corner-bl::before { bottom: 10px; left: 10px; }
+.corner-br::before { bottom: 10px; right: 10px; }
+
+/* --- Stacked Paper Pages Edge (Authentic Book Thickness Depth) --- */
+.book-pages-stack {
+  position: absolute;
+  z-index: 2;
   pointer-events: none;
 }
 
-/* Two-Page Spread Grid */
+.book-pages-stack.stack-left {
+  top: 14px;
+  bottom: 14px;
+  left: 3px;
+  width: 10px;
+  background: repeating-linear-gradient(
+    to right,
+    #131a26 0px,
+    #222e40 1px,
+    #0d141e 2px,
+    #2a3a52 3px
+  );
+  border-radius: 4px 0 0 4px;
+  box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.7);
+}
+
+.book-pages-stack.stack-right {
+  top: 14px;
+  bottom: 14px;
+  right: 3px;
+  width: 10px;
+  background: repeating-linear-gradient(
+    to right,
+    #131a26 0px,
+    #222e40 1px,
+    #0d141e 2px,
+    #2a3a52 3px
+  );
+  border-radius: 0 4px 4px 0;
+  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.7);
+}
+
+.book-pages-stack.stack-bottom {
+  left: 14px;
+  right: 14px;
+  bottom: 3px;
+  height: 8px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #131a26 0px,
+    #222e40 1px,
+    #0d141e 2px,
+    #2a3a52 3px
+  );
+  border-radius: 0 0 6px 6px;
+  box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* --- Hanging Satin Bookmark Ribbon Tail (Bottom Crease) --- */
+.ebook-bookmark-tail {
+  position: absolute;
+  bottom: -24px;
+  left: calc(50% - 10px);
+  width: 20px;
+  height: 38px;
+  background: linear-gradient(180deg, #b01f11 0%, #e74c3c 60%, #90160a 100%);
+  z-index: 12;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.85);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 50% 100%, 0 calc(100% - 8px));
+  pointer-events: none;
+}
+
+/* --- Book Center Spine Crease & Binding Valley --- */
+.ebook-spine-crease {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 50%;
+  width: 48px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.95) 46%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(0, 0, 0, 0.95) 54%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  z-index: 16;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30px 0;
+}
+
+.spine-stitching {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.stitch-knot {
+  width: 12px;
+  height: 3px;
+  background: #d4af37;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 5px rgba(212, 175, 55, 0.5);
+  display: block;
+}
+
+/* --- Two-Page Spread Container --- */
 .ebook-spread {
   width: 100%;
   height: 100%;
@@ -2435,13 +2614,17 @@ button {
   grid-template-columns: 1fr 1fr;
   position: relative;
   transform-style: preserve-3d;
+  background: #0e1624;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.7);
 }
 
-/* Individual Book Page */
+/* --- Archival Paper Pages (Authentic Biological Field Journal) --- */
 .ebook-page {
   position: relative;
-  background: linear-gradient(135deg, #0e1726 0%, #0b121e 100%);
-  padding: 22px 28px;
+  background: linear-gradient(145deg, #111b2b 0%, #0c1420 100%);
+  padding: 24px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2451,14 +2634,20 @@ button {
   scrollbar-color: rgba(0, 242, 254, 0.3) transparent;
 }
 
+/* Left Page Inner Spine Valley Shadow & Page Bevel */
 .ebook-page-left {
-  border-right: 1px solid rgba(0, 0, 0, 0.5);
-  box-shadow: inset -20px 0 35px -10px rgba(0, 0, 0, 0.65);
+  border-right: 1px solid rgba(0, 0, 0, 0.7);
+  box-shadow: 
+    inset -28px 0 45px -10px rgba(0, 0, 0, 0.85),
+    inset 0 0 25px rgba(0, 0, 0, 0.4);
 }
 
+/* Right Page Inner Spine Valley Shadow & Page Bevel */
 .ebook-page-right {
-  border-left: 1px solid rgba(255, 255, 255, 0.04);
-  box-shadow: inset 20px 0 35px -10px rgba(0, 0, 0, 0.65);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    inset 28px 0 45px -10px rgba(0, 0, 0, 0.85),
+    inset 0 0 25px rgba(0, 0, 0, 0.4);
 }
 
 /* Page Header and Footer Strips */
@@ -2466,100 +2655,134 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
   padding-bottom: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-family: var(--font-display);
 }
 
 .specimen-id-badge {
   background: rgba(0, 242, 254, 0.12);
-  border: 1px solid rgba(0, 242, 254, 0.4);
+  border: 1px solid rgba(0, 242, 254, 0.45);
   color: #00f2fe;
   font-size: 11px;
-  font-weight: 700;
-  padding: 3px 8px;
+  font-weight: 800;
+  padding: 3px 9px;
   border-radius: 4px;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
 .page-classification {
   font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 1.2px;
+  color: #94a3b8;
+  letter-spacing: 1.4px;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .page-num-tag {
   font-size: 12px;
-  font-weight: 700;
-  color: #64748b;
+  font-weight: 800;
+  color: #d4af37;
+  font-family: 'Georgia', serif;
 }
 
 .chapter-badge {
-  color: #ff9f43;
+  color: #ffd32a;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 }
 
 .page-footer-strip {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(212, 175, 55, 0.2);
   padding-top: 8px;
-  margin-top: 14px;
+  margin-top: 12px;
   font-size: 10px;
   color: #64748b;
   letter-spacing: 1px;
 }
 
 .page-folio {
-  font-weight: 700;
-  color: #94a3b8;
+  font-weight: 800;
+  color: #d4af37;
+  font-family: 'Georgia', serif;
 }
+
+/* --- Interactive Dog-Ear Corner Turn Curl (Real Paper Peeling) --- */
+.page-corner-curl {
+  position: absolute;
+  bottom: 0;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.page-corner-curl.curl-left {
+  left: 0;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(26, 38, 57, 0.9) 60%, transparent 60%);
+  border-bottom-left-radius: 6px;
+}
+
+.page-corner-curl.curl-right {
+  right: 0;
+  background: linear-gradient(225deg, rgba(212, 175, 55, 0.4) 0%, rgba(26, 38, 57, 0.9) 60%, transparent 60%);
+  border-bottom-right-radius: 6px;
+}
+
+.page-corner-curl .curl-arrow {
+  font-size: 10px;
+  color: #ffd32a;
+  position: absolute;
+  bottom: 5px;
+  transition: transform 0.2s ease;
+}
+.curl-left .curl-arrow { left: 6px; }
+.curl-right .curl-arrow { right: 6px; }
+
+.page-corner-curl:hover {
+  width: 46px;
+  height: 46px;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.6));
+}
+.curl-left:hover .curl-arrow { transform: scale(1.3) translateX(-2px); }
+.curl-right:hover .curl-arrow { transform: scale(1.3) translateX(2px); }
 
 /* --- Left Page: Specimen Lens & Metrics --- */
 .specimen-lens-frame {
   position: relative;
   width: 100%;
-  height: 230px;
-  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.06) 0%, rgba(4, 9, 16, 0.95) 75%);
-  border: 2px solid rgba(0, 242, 254, 0.35);
-  border-radius: 14px;
+  height: 220px;
+  background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, rgba(4, 9, 16, 0.96) 75%);
+  border: 2px solid rgba(0, 242, 254, 0.4);
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 30px rgba(0, 242, 254, 0.15), 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 35px rgba(0, 242, 254, 0.2), 0 8px 24px rgba(0, 0, 0, 0.5);
   margin-bottom: 12px;
 }
 
-/* Microscope crosshair reticle overlay */
 .specimen-lens-frame::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-image: 
     linear-gradient(rgba(0, 242, 254, 0.08) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 242, 254, 0.08) 1px, transparent 1px);
   background-size: 20px 20px;
   pointer-events: none;
-  opacity: 0.6;
-}
-
-.specimen-lens-frame::after {
-  content: '';
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border: 1px dashed rgba(0, 242, 254, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
+  opacity: 0.7;
 }
 
 .specimen-svg-container {
@@ -2574,14 +2797,14 @@ button {
 }
 
 .specimen-svg-container svg {
-  width: 170px;
-  height: 170px;
-  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.3));
+  width: 165px;
+  height: 165px;
+  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.35));
   transition: transform 0.3s ease;
 }
 
 .specimen-svg-container:hover svg {
-  transform: scale(1.06) rotate(3deg);
+  transform: scale(1.08) rotate(3deg);
 }
 
 .lens-scale-bar {
@@ -2601,7 +2824,6 @@ button {
   background: #00f2fe;
   position: relative;
 }
-
 .scale-ruler::before, .scale-ruler::after {
   content: '';
   position: absolute;
@@ -2610,7 +2832,6 @@ button {
   height: 9px;
   background: #00f2fe;
 }
-
 .scale-ruler::before { left: 0; }
 .scale-ruler::after { right: 0; }
 
@@ -2634,8 +2855,8 @@ button {
   align-items: center;
   gap: 5px;
   letter-spacing: 0.8px;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 7px;
   border-radius: 4px;
 }
 
@@ -2650,10 +2871,10 @@ button {
 
 /* Specimen Matrix Card */
 .specimen-matrix-card {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -2663,17 +2884,17 @@ button {
 .matrix-title {
   font-size: 10px;
   font-weight: 700;
-  color: #94a3b8;
+  color: #d4af37;
   letter-spacing: 1px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding-bottom: 4px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 3px;
 }
 
 .matrix-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
+  gap: 6px 12px;
 }
 
 .matrix-item {
@@ -2681,17 +2902,15 @@ button {
   flex-direction: column;
   gap: 2px;
 }
-
 .matrix-item .m-k {
   font-size: 9px;
-  color: #64748b;
+  color: #94a3b8;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
-
 .matrix-item .m-v {
   font-size: 11px;
-  color: #e2e8f0;
+  color: #f1f5f9;
   font-weight: 700;
 }
 
@@ -2699,7 +2918,7 @@ button {
 .monograph-article {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   flex: 1;
 }
 
@@ -2720,14 +2939,15 @@ button {
 
 .monograph-latin {
   font-style: italic;
-  font-size: 12px;
+  font-family: 'Georgia', serif;
+  font-size: 13px;
   color: #00f2fe;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
 .monograph-desc {
-  font-size: 13px;
+  font-size: 12.5px;
   line-height: 1.6;
   color: #cbd5e1;
 }
@@ -2737,10 +2957,10 @@ button {
   background: rgba(0, 242, 254, 0.05);
   border-left: 3px solid #00f2fe;
   border-radius: 0 8px 8px 0;
-  padding: 10px 14px;
+  padding: 9px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .mechanism-box-header {
@@ -2754,34 +2974,33 @@ button {
 }
 
 .mechanism-text {
-  font-size: 12px;
-  line-height: 1.55;
+  font-size: 11.5px;
+  line-height: 1.5;
   color: #e2e8f0;
   margin: 0;
 }
 
 /* Clinical Fun Fact Sticker */
 .clinical-note-sticker {
-  background: rgba(255, 159, 67, 0.08);
-  border: 1px dashed rgba(255, 159, 67, 0.4);
+  background: rgba(255, 211, 42, 0.07);
+  border: 1px dashed rgba(255, 211, 42, 0.4);
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 9px 12px;
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-top: 4px;
 }
 
 .clinical-note-sticker .note-tag {
   font-size: 10px;
   font-weight: 800;
-  color: #ff9f43;
+  color: #ffd32a;
   letter-spacing: 0.8px;
 }
 
 .clinical-note-sticker .note-content {
-  font-size: 12px;
+  font-size: 11.5px;
   line-height: 1.5;
   color: #f1f5f9;
   margin: 0;
@@ -2792,72 +3011,62 @@ button {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  background: rgba(6, 12, 22, 0.85);
-  border: 1px solid rgba(0, 242, 254, 0.35);
+  width: 46px;
+  height: 46px;
+  background: rgba(13, 20, 32, 0.9);
+  border: 1px solid rgba(212, 175, 55, 0.5);
   border-radius: 50%;
-  color: #00f2fe;
+  color: #ffd32a;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 30;
+  z-index: 35;
   backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.2);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.25);
   transition: all 0.25s ease;
 }
 
 .ebook-nav-paddle:hover:not(:disabled) {
-  background: rgba(0, 242, 254, 0.2);
-  border-color: #00f2fe;
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
-  transform: translateY(-50%) scale(1.1);
+  background: rgba(212, 175, 55, 0.25);
+  border-color: #ffd32a;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
+  transform: translateY(-50%) scale(1.12);
 }
 
 .ebook-nav-paddle:disabled {
-  opacity: 0.3;
+  opacity: 0.25;
   cursor: not-allowed;
   border-color: rgba(255, 255, 255, 0.1);
   color: #64748b;
   box-shadow: none;
 }
 
-.paddle-prev {
-  left: 6px;
-}
-
-.paddle-next {
-  right: 6px;
-}
+.paddle-prev { left: 4px; }
+.paddle-next { right: 4px; }
 
 /* --- E-Book Footer Bar & Progress Tracker --- */
 .ebook-footer-bar {
-  height: 44px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
-  background: rgba(6, 10, 18, 0.95);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 20;
+  padding: 0 28px;
+  z-index: 30;
 }
 
 .ebook-page-counter {
   font-family: var(--font-display);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   color: #94a3b8;
   letter-spacing: 1.2px;
 }
-
-.ebook-page-counter span {
-  color: #00f2fe;
-}
+.ebook-page-counter span { color: #00f2fe; }
 
 .ebook-progress-track {
   flex: 0.6;
-  height: 5px;
+  height: 6px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   overflow: hidden;
@@ -2866,7 +3075,7 @@ button {
 
 .ebook-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+  background: linear-gradient(90deg, #00f2fe 0%, #ffd32a 100%);
   border-radius: 10px;
   transition: width 0.35s ease;
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
@@ -2877,7 +3086,6 @@ button {
   color: #64748b;
   letter-spacing: 1px;
 }
-
 .ebook-keys-hint kbd {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -2887,58 +3095,144 @@ button {
   color: #e2e8f0;
 }
 
-/* --- Realistic 3D Page Turn Keyframes & Animations --- */
-.ebook-spread.turning-next .ebook-page-right {
-  animation: pageTurnNext 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+/* ==========================================================================
+   REALISTIC 3D FLIPPING LEAF (CURVED BENDING PAPER WITH SHADOW SWEEP)
+   ========================================================================== */
+
+.ebook-flip-leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 40;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+/* Turning Next: leaf starts on right side (left: 50%) and flips to left side */
+.ebook-flip-leaf.leaf-next {
+  left: 50%;
   transform-origin: left center;
 }
 
-.ebook-spread.turning-prev .ebook-page-left {
-  animation: pageTurnPrev 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+/* Turning Prev: leaf starts on left side (left: 0) and flips to right side */
+.ebook-flip-leaf.leaf-prev {
+  left: 0;
   transform-origin: right center;
 }
 
-@keyframes pageTurnNext {
+.flip-leaf-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  background: linear-gradient(145deg, #111b2b 0%, #0c1420 100%);
+  padding: 24px 30px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.flip-leaf-front {
+  transform: rotateY(0deg);
+}
+
+.flip-leaf-back {
+  transform: rotateY(180deg);
+}
+
+/* Traveling shadow on the turning paper leaf */
+.flip-leaf-lighting {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.2s ease;
+}
+
+/* Under-Page Cast Shadow (Expands and contracts under the lifting sheet) */
+.ebook-under-shadow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 25;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.ebook-under-shadow.shadow-right {
+  left: 50%;
+  background: radial-gradient(ellipse at 0% 50%, rgba(0, 0, 0, 0.75) 0%, transparent 80%);
+}
+.ebook-under-shadow.shadow-left {
+  left: 0;
+  background: radial-gradient(ellipse at 100% 50%, rgba(0, 0, 0, 0.75) 0%, transparent 80%);
+}
+
+/* --- Organic 3D Page Turning Keyframes --- */
+.ebook-flip-leaf.animating-next {
+  animation: flipOrganicNext 0.65s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+.ebook-flip-leaf.animating-prev {
+  animation: flipOrganicPrev 0.65s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+}
+
+@keyframes flipOrganicNext {
   0% {
-    transform: rotateY(0deg);
-    filter: brightness(1);
-    box-shadow: inset 20px 0 35px -10px rgba(0, 0, 0, 0.65);
+    transform: rotateY(0deg) skewY(0deg) scaleX(1);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  25% {
+    transform: rotateY(-45deg) skewY(-3.5deg) scaleX(0.97);
+    box-shadow: -15px 0 25px rgba(0,0,0,0.6);
   }
   50% {
-    transform: rotateY(-40deg) scale(0.97);
-    filter: brightness(0.65);
-    box-shadow: inset 60px 0 50px -10px rgba(0, 0, 0, 0.85);
+    transform: rotateY(-90deg) skewY(0deg) scaleX(0.94);
+    box-shadow: -25px 0 35px rgba(0,0,0,0.8);
+  }
+  75% {
+    transform: rotateY(-135deg) skewY(3deg) scaleX(0.97);
+    box-shadow: 15px 0 25px rgba(0,0,0,0.6);
   }
   100% {
-    transform: rotateY(0deg);
-    filter: brightness(1);
-    box-shadow: inset 20px 0 35px -10px rgba(0, 0, 0, 0.65);
+    transform: rotateY(-180deg) skewY(0deg) scaleX(1);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
   }
 }
 
-@keyframes pageTurnPrev {
+@keyframes flipOrganicPrev {
   0% {
-    transform: rotateY(0deg);
-    filter: brightness(1);
-    box-shadow: inset -20px 0 35px -10px rgba(0, 0, 0, 0.65);
+    transform: rotateY(0deg) skewY(0deg) scaleX(1);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+  }
+  25% {
+    transform: rotateY(45deg) skewY(3.5deg) scaleX(0.97);
+    box-shadow: 15px 0 25px rgba(0,0,0,0.6);
   }
   50% {
-    transform: rotateY(40deg) scale(0.97);
-    filter: brightness(0.65);
-    box-shadow: inset -60px 0 50px -10px rgba(0, 0, 0, 0.85);
+    transform: rotateY(90deg) skewY(0deg) scaleX(0.94);
+    box-shadow: 25px 0 35px rgba(0,0,0,0.8);
+  }
+  75% {
+    transform: rotateY(135deg) skewY(-3deg) scaleX(0.97);
+    box-shadow: -15px 0 25px rgba(0,0,0,0.6);
   }
   100% {
-    transform: rotateY(0deg);
-    filter: brightness(1);
-    box-shadow: inset -20px 0 35px -10px rgba(0, 0, 0, 0.65);
+    transform: rotateY(180deg) skewY(0deg) scaleX(1);
+    box-shadow: 0 0 0 rgba(0,0,0,0);
   }
 }
 
 /* Responsive adjustment for tablets / narrow screens */
-@media (max-width: 820px) {
+@media (max-width: 860px) {
   .ebook-outer-wrapper {
-    height: 94vh;
-    max-height: 94vh;
+    height: 95vh;
+    max-height: 95vh;
   }
   .ebook-spread {
     grid-template-columns: 1fr;
@@ -2949,10 +3243,11 @@ button {
   }
   .ebook-page-left {
     border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
   }
-  .ebook-ribbons .ribbon-txt {
-    display: none;
+  .ebook-ribbons .ebook-ribbon {
+    padding: 6px 10px 10px 10px;
+    font-size: 10px;
   }
 }
 
