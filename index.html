@@ -6,7 +6,7 @@
   <title>Viral Slayer: The Microscopic Immune Defense</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@500;600;700;800&family=Teko:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@500;600;700;800&family=Teko:wght@700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/libs/three.min.js"></script>
   <script src="js/libs/GLTFLoader.js"></script>
@@ -280,214 +280,183 @@
       </button>
     </div>
 
-    <!-- AAA MAIN MENU SCREEN (EXACT LAYOUT OF SCREENSHOT 2) -->
+    <!-- AAA MAIN MENU SCREEN (REDESIGN MOCKUP) -->
     <div id="main-menu" class="screen-overlay full-screen-theme active">
-      <!-- Full cinematic background image with overlay glow & canvas -->
-      <div class="main-menu-artwork" id="main-menu-artwork"></div>
-      <canvas id="menuAmbientCanvas" class="menu-ambient-canvas"></canvas>
-      <div class="main-menu-vignette"></div>
+      <!-- Background Pathogen Field SVG -->
+      <div class="field">
+        <svg width="100%" height="100%" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#2fe7c8" stroke-width="1" fill="none" opacity="0.18">
+            <circle cx="1180" cy="120" r="46"/>
+            <circle cx="1180" cy="120" r="30"/>
+            <line x1="1180" y1="74" x2="1180" y2="60"/>
+            <line x1="1180" y1="166" x2="1180" y2="180"/>
+            <line x1="1226" y1="120" x2="1240" y2="120"/>
+            <line x1="1134" y1="120" x2="1120" y2="120"/>
+          </g>
+          <g stroke="#ff3d78" stroke-width="1" fill="none" opacity="0.14">
+            <circle cx="260" cy="620" r="60"/>
+            <path d="M260 560 v-14 M260 680 v14 M320 620 h14 M200 620 h-14 M303 577 l10 -10 M217 663 l-10 10 M303 663 l10 10 M217 577 l-10 -10"/>
+          </g>
+          <g stroke="#8b6bff" stroke-width="0.8" fill="none" opacity="0.12">
+            <path d="M60 60 q40 40 0 80 q-40 40 0 80" />
+            <path d="M100 60 q-40 40 0 80 q40 40 0 80" />
+          </g>
+        </svg>
+      </div>
 
-      <!-- Top Navigation Header -->
-      <header class="top-nav-bar">
-        <div class="brand-mini">
-          <svg class="nav-shield-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="rgba(0, 242, 254, 0.15)" stroke="#00f2fe"/>
+      <!-- TOP BAR -->
+      <div class="topbar">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+            <path d="M20 3 L34 11 V27 L20 37 L6 27 V11 Z" stroke="#2fe7c8" stroke-width="1.6"/>
+            <circle cx="20" cy="20" r="6" fill="#2fe7c8" opacity="0.85"/>
           </svg>
-          <span class="brand-text">VIRAL SLAYER</span>
+          <div class="brand-name">VIRAL <b>SLAYER</b></div>
         </div>
-        <div class="nav-taglines">
-          <span>EDUKASI</span>
-          <span class="nav-sep">//</span>
-          <span>AKSI</span>
-          <span class="nav-sep">//</span>
-          <span>IMUNOLOGI</span>
+        <div class="nav-strip">
+          <span>EDUKASI</span><span class="sep">//</span><span>AKSI</span><span class="sep">//</span><span class="active">IMUNOLOGI</span>
         </div>
-      </header>
+      </div>
 
-      <!-- Main Two-Column Content Area -->
-      <div class="main-menu-body">
-        <!-- Left Column: Title Logo & Action Buttons -->
-        <div class="hero-left-col">
-          <div class="hero-logo-container">
-            <div class="stylized-logo">
-              <div class="logo-shield-emblem">
-                <svg viewBox="0 0 44 44" class="emblem-svg">
-                  <polygon points="22,2 40,11 40,29 22,42 4,29 4,11" class="emblem-hex"/>
-                  <circle cx="22" cy="22" r="7" class="emblem-core"/>
-                  <circle cx="22" cy="22" r="13" class="emblem-ring"/>
-                </svg>
-              </div>
-              <div class="logo-text-block">
-                <div class="logo-title-row">
-                  <span class="logo-v">V</span><span class="logo-iral">IRAL</span>
-                  <span class="logo-slayer">SLAYER</span>
-                </div>
-                <div class="logo-subtitle">SISTEM PERTAHANAN SELULAR // EDUKASI IMUNOLOGI INTERAKTIF</div>
-              </div>
+      <!-- MAIN LAYOUT -->
+      <div class="layout">
+        <!-- LEFT COLUMN -->
+        <div class="left-col">
+          <div class="hero-block">
+            <div class="hero-icon">
+              <svg class="hero-hex" viewBox="0 0 60 60" fill="none">
+                <path d="M30 4 L52 17 V43 L30 56 L8 43 V17 Z" stroke="#ff3d78" stroke-width="1.6"/>
+                <circle cx="30" cy="30" r="8" fill="#ff3d78" opacity="0.9"/>
+                <circle cx="30" cy="18" r="2" fill="#ff3d78"/>
+                <circle cx="41" cy="35" r="2" fill="#ff3d78"/>
+                <circle cx="19" cy="35" r="2" fill="#ff3d78"/>
+              </svg>
+              <div class="hero-title">VIRAL<br><span class="glow">SLAYER</span></div>
+            </div>
+            <div class="hero-sub">
+              SISTEM PERTAHANAN SELULAR // EDUKASI IMUNOLOGI INTERAKTIF
             </div>
           </div>
 
-          <!-- High-Tech Cyber-Bio Action Buttons -->
-          <div class="hero-action-buttons">
-            <button id="btn-start-expedition" class="action-btn-pill primary-glow-pill">
-              <div class="btn-icon-wrap">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                  <polygon points="6,4 20,12 6,20"/>
-                </svg>
+          <div class="menu">
+            <button type="button" id="btn-start-expedition" class="menu-btn primary">
+              <div class="play-tri">
+                <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 2 L12 7 L3 12 Z" fill="#070c14"/></svg>
               </div>
-              <div class="btn-text-wrap">
-                <span class="btn-main-label">Mulai Pertempuran</span>
-                <span class="btn-sub-badge">[DEPLOY]</span>
-              </div>
+              <div class="label">Mulai Pertempuran</div>
+              <div class="tag">DEPLOY</div>
             </button>
 
-            <button id="btn-menu-char-select" class="action-btn-pill glass-pill">
-              <div class="btn-icon-wrap">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="8" r="4"/>
-                  <path d="M6 20v-2a6 6 0 0 1 12 0v2"/>
-                  <circle cx="12" cy="8" r="1.5" fill="currentColor"/>
-                </svg>
-              </div>
-              <div class="btn-text-wrap">
-                <span class="btn-main-label">Pilih Sel Imun</span>
-                <span class="btn-sub-badge">[4 KELAS]</span>
-              </div>
+            <button type="button" id="btn-menu-char-select" class="menu-btn">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-4 3.1-6.5 7-6.5S19 16 19 20"/></svg>
+              <div class="label">Pilih Sel Imun</div>
+              <div class="tag">4 KELAS</div>
             </button>
 
-            <button id="btn-open-immunopedia" class="action-btn-pill glass-pill">
-              <div class="btn-icon-wrap">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                  <line x1="8" y1="7" x2="16" y2="7"/>
-                  <line x1="8" y1="11" x2="14" y2="11"/>
-                </svg>
-              </div>
-              <div class="btn-text-wrap">
-                <span class="btn-main-label">Ensiklopedia Imun</span>
-                <span class="btn-sub-badge">[PEDIA]</span>
-              </div>
+            <button type="button" id="btn-open-immunopedia" class="menu-btn">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3.5" width="16" height="17" rx="1.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+              <div class="label">Ensiklopedia Imun</div>
+              <div class="tag">PEDIA</div>
             </button>
 
-            <button id="btn-open-howtoplay" class="action-btn-pill glass-pill">
-              <div class="btn-icon-wrap">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="9"/>
-                  <line x1="12" y1="8" x2="12" y2="12"/>
-                  <circle cx="12" cy="16" r="1" fill="currentColor"/>
-                </svg>
-              </div>
-              <div class="btn-text-wrap">
-                <span class="btn-main-label">Doktrin & Kontrol</span>
-                <span class="btn-sub-badge">[TAKTIK]</span>
-              </div>
+            <button type="button" id="btn-open-howtoplay" class="menu-btn">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4.5l3 2"/></svg>
+              <div class="label">Doktrin &amp; Kontrol</div>
+              <div class="tag">TAKTIK</div>
             </button>
 
-            <button id="btn-menu-settings" class="action-btn-pill glass-pill">
-              <div class="btn-icon-wrap">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                </svg>
-              </div>
-              <div class="btn-text-wrap">
-                <span class="btn-main-label">Konfigurasi Sistem</span>
-                <span class="btn-sub-badge">[AUDIO]</span>
-              </div>
+            <button type="button" id="btn-menu-settings" class="menu-btn">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="2.6"/><path d="M12 3.5v2.4M12 18.1v2.4M20.5 12h-2.4M5.9 12H3.5M17.7 6.3l-1.7 1.7M8 16l-1.7 1.7M17.7 17.7L16 16M8 8 6.3 6.3"/></svg>
+              <div class="label">Konfigurasi Sistem</div>
+              <div class="tag">AUDIO</div>
             </button>
           </div>
         </div>
 
-        <!-- Right Column: Tactical Bio-Monitor Center & Sensor Feed -->
-        <div class="hero-right-col">
-          <div class="tactical-biomonitor-card">
-            <!-- Header with Status Beacon -->
-            <div class="biomonitor-header">
-              <div class="biomonitor-status-pill">
-                <span class="pulse-beacon"></span>
-                <span>STATUS INANG // INFLAMASI AKUT TERDETEKSI</span>
-              </div>
-              <span class="biomonitor-clock">BIO-RADAR AKTIF</span>
-            </div>
-
-            <!-- Host Physiological Biomarkers -->
-            <div class="biomarkers-grid">
-              <div class="biomarker-box alert">
-                <span class="bm-label">SUHU INTI</span>
-                <span class="bm-val">38.8 °C</span>
-                <span class="bm-sub">Demam Pirogenik</span>
-              </div>
-              <div class="biomarker-box active">
-                <span class="bm-label">LEUKOSIT TOTAL</span>
-                <span class="bm-val">14.800 <small>/µL</small></span>
-                <span class="bm-sub">Leukositosis Aktif</span>
-              </div>
-              <div class="biomarker-box warning">
-                <span class="bm-label">RESPONS IMUN</span>
-                <span class="bm-val">FASE AKUT</span>
-                <span class="bm-sub">Sitokin Pro-Inflamasi</span>
-              </div>
-            </div>
-
-            <!-- Interactive Organ Threat Matrix -->
-            <div class="organ-threat-strip">
-              <div class="threat-strip-header">STATUS ANCAMAN PATOLOGIS ORGAN TUBUH</div>
-              <div class="organ-pills-row">
-                <span class="organ-threat-pill critical" title="Invasi Droplet SARS-CoV-2">
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v8M12 7c-2-2-5-1-6 2s0 7 2 9 4 1 4 1M12 7c2-2 5-1 6 2s0 7-2 9-4 1-4 1"/></svg>
-                  Pulmo [Aerosol]
-                </span>
-                <span class="organ-threat-pill warning" title="Kolonisasi Toksin Enterik">
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 7c0-2 2-3 4-3s4 1.5 4 3.5c0 3-4 3-4 5.5s4 2.5 4 5c0 2-2 3-4 3s-4-1.5-4-3.5"/></svg>
-                  Usus [Toksin]
-                </span>
-                <span class="organ-threat-pill caution" title="Bakteremia & Risiko Sepsis">
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-                  Vaskular [Sepsis]
-                </span>
-                <span class="organ-threat-pill alert" title="Trauma Robekan Epidermis">
-                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                  Dermis [Luka]
-                </span>
-              </div>
-            </div>
-
-            <!-- Live Electron Microscope Sensor Feed (Educational Animation Trigger) -->
-            <div class="sensor-feed-box" id="trailer-box" title="Klik untuk memutar Video Animasi Edukasi Imunologi (70 Detik - Multi Voice Over)">
-              <div class="sensor-header-tag">
-                <span>● BIOSKOP EDUKASI // ANIMASI MIKROBA & SEL IMUN (70s)</span>
-                <span class="rec-badge">MULTI-VOICE</span>
-              </div>
-              <div class="trailer-preview-box">
-                <div class="trailer-thumb-img"></div>
-                <div class="trailer-overlay-tint"></div>
-                <div class="sensor-reticle"></div>
-                <div class="trailer-play-btn">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="#00f2fe">
-                    <polygon points="6,4 20,12 6,20"/>
-                  </svg>
+        <!-- RIGHT COLUMN -->
+        <div class="right-col">
+          <!-- BIOMONITOR PANEL -->
+          <div class="panel">
+            <div class="status-head">
+              <div class="left">
+                <div class="pulse-dot"></div>
+                <div class="title">STATUS INANG // INFLAMASI AKUT TERDETEKSI
+                  <small>PEMANTAUAN FISIOLOGIS REAL-TIME</small>
                 </div>
               </div>
-              <div class="sensor-footer-tag">
-                <span><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 8l6 4-6 4z"/></svg> PUTAR VIDEO ANIMASI EDUKASI (KAK ARYA & CIA)</span>
+              <div class="badge-radar">BIO-RADAR AKTIF</div>
+            </div>
+
+            <div class="vitals-row">
+              <div class="vital pink">
+                <div class="k">SUHU INTI</div>
+                <div class="v">38.8°C</div>
+                <div class="d">Demam Pirogenik</div>
               </div>
+              <div class="vital">
+                <div class="k">LEUKOSIT TOTAL</div>
+                <div class="v" style="color:var(--alert-amber)">14.800/μL</div>
+                <div class="d">Leukositosis Aktif</div>
+              </div>
+              <div class="vital">
+                <div class="k">RESPONS IMUN</div>
+                <div class="v" style="color:var(--antibody-cyan)">FASE AKUT</div>
+                <div class="d">Sitokin Pro-Inflamasi</div>
+              </div>
+            </div>
+
+            <div class="threat-title">STATUS ANCAMAN PATOLOGIS ORGAN TUBUH</div>
+            <div class="threat-grid">
+              <div class="threat pulmo">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v6M8 9c-3 0-5 3-5 7 0 3 1.5 4 3 4s2.5-1.5 2.5-4V9zM16 9c3 0 5 3 5 7 0 3-1.5 4-3 4s-2.5-1.5-2.5-4V9z"/></svg>
+                Pulmo <span style="color:var(--text-dim); font-weight:400">[Aerosol]</span>
+              </div>
+              <div class="threat usus">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4c0 3 3 3 3 6s-3 3-3 6 3 3 3 6M15 4c0 3 3 3 3 6s-3 3-3 6"/></svg>
+                Usus <span style="color:var(--text-dim); font-weight:400">[Toksin]</span>
+              </div>
+              <div class="threat vaskular">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.6-11 10-11 10z"/></svg>
+                Vaskular <span style="color:var(--text-dim); font-weight:400">[Sepsis]</span>
+              </div>
+              <div class="threat dermis">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 14 12 4l8 10-8 6z"/><path d="M8 15l4 5 4-5"/></svg>
+                Dermis <span style="color:var(--text-dim); font-weight:400">[Luka]</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- VIDEO PANEL -->
+          <div class="panel video-panel" id="trailer-box" style="cursor:pointer;" title="Klik untuk memutar Video Animasi Edukasi (70 Detik)">
+            <div class="video-head">
+              <div class="t">BIOSKOP EDUKASI // ANIMASI MIKROBA &amp; SEL IMUN
+                <small>DURASI 70 DETIK</small>
+              </div>
+              <div class="multivoice">MULTI-VOICE</div>
+            </div>
+            <div class="video-frame">
+              <svg width="100%" height="100%" viewBox="0 0 400 150" style="position:absolute; opacity:0.5;">
+                <circle cx="70" cy="40" r="18" fill="none" stroke="#ff3d78" stroke-width="1"/>
+                <circle cx="330" cy="100" r="24" fill="none" stroke="#2fe7c8" stroke-width="1"/>
+                <circle cx="200" cy="30" r="10" fill="none" stroke="#8b6bff" stroke-width="1"/>
+              </svg>
+              <div class="play-btn">
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M4 2 L14 8 L4 14 Z" fill="#2fe7c8"/></svg>
+              </div>
+            </div>
+            <div class="video-foot">
+              <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 1 L10 6 L2 11 Z" fill="#2fe7c8"/></svg>
+              PUTAR VIDEO ANIMASI EDUKASI (KAK ARYA &amp; CIA)
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Bottom Status & Cyber-Line Footer -->
-      <footer class="bottom-nav-bar">
-        <div class="footer-motto">
-          <span class="footer-dot-live"></span>
-          <span>HOST: HOMO SAPIENS // 10¹² LIMFOSIT AKTIF // STATUS: SIAP TEMPUR</span>
-        </div>
-        <div class="footer-cyber-line">
-          <div class="cyber-glow-line"></div>
-          <span class="cyber-slashes">/////</span>
-        </div>
-      </footer>
+      <!-- BOTTOM BAR -->
+      <div class="bottombar">
+        <div class="dot-live"></div>
+        HOST: HOMO SAPIENS &nbsp;//&nbsp; 10¹² LIMFOSIT AKTIF &nbsp;//&nbsp; STATUS: SIAP TEMPUR
+      </div>
     </div>
 
     <!-- CHARACTER SELECTION OVERLAY (3D HOLOGRAPHIC BIO-CHAMBER) -->

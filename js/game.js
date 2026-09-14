@@ -1,4 +1,4 @@
-﻿/**
+/**
  * game.js
  * Inti Game Loop & State Manager Viral Slayer
  * Mengatur siklus permainan, gelombang patogen, collision, HUD, modal debriefing, dan telemetri imunologi.
@@ -570,7 +570,7 @@ export class Game {
     }
 
     // Attach bio-acoustic hover and click sounds to all action buttons & cards
-    document.querySelectorAll('.action-btn-pill, .sensor-feed-box, .organ-threat-pill').forEach((btn) => {
+    document.querySelectorAll('.action-btn-pill, .sensor-feed-box, .organ-threat-pill, .menu-btn, .video-panel, .threat').forEach((btn) => {
       btn.addEventListener('mouseenter', () => {
         sound.init();
         sound.playHover();
