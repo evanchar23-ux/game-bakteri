@@ -108,7 +108,7 @@ canvas#gameCanvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('../assets/edu_clean_bg.jpg') center center / cover no-repeat;
+  background: url('../assets/pro_edu_bg.jpg') center center / cover no-repeat;
   z-index: 1;
   filter: brightness(1.0) contrast(1.0);
   will-change: transform;
@@ -302,7 +302,7 @@ canvas#gameCanvas {
   text-align: center;
 }
 
-/* Edu-Tech Solid Action Buttons */
+/* Modern Professional Action Buttons */
 .hero-action-buttons {
   display: flex;
   flex-direction: column;
@@ -312,53 +312,53 @@ canvas#gameCanvas {
 
 .action-btn-pill {
   font-family: var(--font-body);
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 14px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  border: none;
+  border: 1px solid rgba(0,0,0,0.05);
   user-select: none;
 }
 
 .primary-glow-pill {
   background: var(--primary-cyan);
   color: #ffffff;
-  box-shadow: 0 6px 0 var(--cyan-bright);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .primary-glow-pill:active, .primary-glow-pill:hover:active {
-  transform: translateY(6px);
-  box-shadow: 0 0 0 var(--cyan-bright);
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
 }
 
 .primary-glow-pill:hover {
-  filter: brightness(1.1);
-  transform: translateY(2px);
-  box-shadow: 0 4px 0 var(--cyan-bright);
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
 }
 
 .glass-pill {
   background: #ffffff;
   color: var(--text-main);
-  box-shadow: 0 4px 0 #d1d8e0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .glass-pill:hover {
-  background: #f8f9fa;
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #d1d8e0;
+  background: #fdfdfd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .glass-pill:active, .glass-pill:hover:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 #d1d8e0;
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .glass-pill:hover .btn-icon-wrap {
-  transform: scale(1.1);
+  transform: scale(1.05);
   color: var(--primary-cyan);
 }
 
@@ -660,12 +660,12 @@ canvas#gameCanvas {
    ========================================================================== */
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
   padding: 30px;
   position: relative;
   overflow: hidden;
@@ -706,18 +706,18 @@ button {
 .btn-primary {
   background: var(--primary-cyan);
   color: #ffffff;
-  box-shadow: 0 4px 0 var(--cyan-bright);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .btn-primary:hover:not(:disabled) {
   background: #3eb0ff;
-  box-shadow: 0 2px 0 var(--cyan-bright);
-  transform: translateY(2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active:not(:disabled) {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 var(--cyan-bright);
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.3);
 }
 
 .btn-primary:disabled {
