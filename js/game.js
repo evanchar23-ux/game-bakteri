@@ -168,6 +168,7 @@ export class Game {
     this.uiHowToPlay = document.getElementById('howtoplay-modal');
     this.uiTeaser = document.getElementById('teaser-modal');
     this.uiHUD = document.getElementById('hud');
+    this.currentScreen = this.uiMenu;
 
     // Stage Entrance Cinematic Overlay
     this.uiEntranceCinematic = document.getElementById('entrance-cinematic');
@@ -408,9 +409,11 @@ export class Game {
     };
     document.getElementById('btn-close-howtoplay').onclick = () => {
       this.hideScreen(this.uiHowToPlay);
+      if (window.sound && window.sound.playClick) window.sound.playClick();
     };
     document.getElementById('btn-ok-howtoplay').onclick = () => {
       this.hideScreen(this.uiHowToPlay);
+      if (window.sound && window.sound.playClick) window.sound.playClick();
     };
 
     // Character Select navigation
@@ -562,15 +565,32 @@ export class Game {
   }
 
   showScreen(targetOverlay) {
-    [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiUpgrade, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiEntranceCinematic].forEach((el) => {
-      if (el) el.classList.add('hidden');
-    });
-    if (this.uiEntranceCinematic) this.uiEntranceCinematic.classList.remove('active');
+    const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser];
+    const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && targetOverlay.id === 'settings-modal'));
+
+    if (!isModal && fullScreens.includes(targetOverlay)) {
+      this.currentScreen = targetOverlay;
+      fullScreens.forEach((el) => {
+        if (el && el !== targetOverlay) el.classList.add('hidden');
+      });
+      if (this.uiEntranceCinematic) this.uiEntranceCinematic.classList.remove('active');
+    }
+
     if (targetOverlay) targetOverlay.classList.remove('hidden');
   }
 
   hideScreen(targetOverlay) {
     if (targetOverlay) targetOverlay.classList.add('hidden');
+
+    // When closing a modal dialog outside active gameplay, ensure underlying screen (Main Menu, Character Select, etc.) is visible
+    if (this.state !== 'PLAYING') {
+      const active = this.currentScreen || this.uiMenu;
+      if (active) {
+        active.classList.remove('hidden');
+        active.style.opacity = '1';
+        active.style.pointerEvents = 'auto';
+      }
+    }
   }
 
   initMenuLivingEngine() {
