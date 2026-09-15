@@ -27,6 +27,7 @@ import { EducationalCinema } from './engine/educationalCinema.js';
 import { Hologram3DViewer } from './engine/hologram3d.js';
 import { Cell3DViewer } from './engine/cell3d.js';
 import { CinematicIntro3D } from './engine/CinematicIntro3D.js';
+import { MenuBioSimulation } from './engine/menuBioSimulation.js';
 
 export class Game {
   constructor(canvas) {
@@ -253,6 +254,7 @@ export class Game {
     this.renderOrganSelectionCards();
     this.initHologram3DRotator();
     this.initBioTerminal();
+    this.initMenuLivingEngine();
   }
 
   showSwarmBanner(text) {
@@ -572,42 +574,9 @@ export class Game {
   }
 
   initMenuLivingEngine() {
-    this.menuArtwork = document.getElementById('main-menu-artwork');
-    this.menuAmbientCanvas = document.getElementById('menuAmbientCanvas');
-    if (this.menuAmbientCanvas) {
-      this.menuAmbientCtx = this.menuAmbientCanvas.getContext('2d');
-      this.menuAmbientCanvas.width = window.innerWidth;
-      this.menuAmbientCanvas.height = window.innerHeight;
-    }
-
-    this.menuParallaxX = 0;
-    this.menuParallaxY = 0;
-    this.menuParallaxTargetX = 0;
-    this.menuParallaxTargetY = 0;
-
-    // Track mouse for 3D parallax depth
-    window.addEventListener('mousemove', (e) => {
-      if (this.uiMenu && !this.uiMenu.classList.contains('hidden')) {
-        this.menuParallaxTargetX = (e.clientX / window.innerWidth - 0.5) * -18;
-        this.menuParallaxTargetY = (e.clientY / window.innerHeight - 0.5) * -14;
-      }
-    });
-
-    // Seed menu ambient floating cellular particles
-    this.menuParticles = [];
-    for (let i = 0; i < 32; i++) {
-      this.menuParticles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        radius: 8 + Math.random() * 20,
-        speedX: (Math.random() - 0.5) * 14,
-        speedY: -8 - Math.random() * 18,
-        parallaxFactor: 0.3 + Math.random() * 1.1,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.015,
-        type: Math.random() > 0.35 ? 'rbc' : 'cytokine',
-        alpha: 0.12 + Math.random() * 0.22
-      });
+    const canvas = document.getElementById('menu-bio-canvas');
+    if (canvas) {
+      this.menuBioSimulation = new MenuBioSimulation(canvas);
     }
 
     // Attach bio-acoustic hover and click sounds to all action buttons & cards
@@ -626,63 +595,9 @@ export class Game {
   updateMenuLivingEngine(dt) {
     if (!this.uiMenu || this.uiMenu.classList.contains('hidden')) return;
 
-    // Smooth Parallax Lerp
-    this.menuParallaxX += (this.menuParallaxTargetX - this.menuParallaxX) * 0.08;
-    this.menuParallaxY += (this.menuParallaxTargetY - this.menuParallaxY) * 0.08;
-
-    if (this.menuArtwork) {
-      this.menuArtwork.style.transform = `scale(1.06) translate(${this.menuParallaxX.toFixed(2)}px, ${this.menuParallaxY.toFixed(2)}px)`;
-    }
-
-    if (!this.menuAmbientCtx) return;
-    const ctx = this.menuAmbientCtx;
-    const w = this.menuAmbientCanvas.width;
-    const h = this.menuAmbientCanvas.height;
-    ctx.clearRect(0, 0, w, h);
-
-    // Update & Render Floating Menu Cells
-    for (let p of this.menuParticles) {
-      p.x += p.speedX * dt;
-      p.y += p.speedY * dt;
-      p.rotation += p.rotSpeed;
-
-      if (p.x < -40) p.x = w + 40;
-      if (p.x > w + 40) p.x = -40;
-      if (p.y < -40) p.y = h + 40;
-      if (p.y > h + 40) p.y = -40;
-
-      const px = p.x + this.menuParallaxX * p.parallaxFactor;
-      const py = p.y + this.menuParallaxY * p.parallaxFactor;
-
-      ctx.save();
-      ctx.translate(px, py);
-      ctx.rotate(p.rotation);
-      ctx.globalAlpha = p.alpha;
-
-      if (p.type === 'rbc') {
-        // Translucent floating biconcave red blood cell
-        ctx.fillStyle = 'rgba(215, 35, 65, 0.4)';
-        ctx.beginPath();
-        ctx.ellipse(0, 0, p.radius, p.radius * 0.65, 0, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Inner dimple
-        ctx.fillStyle = 'rgba(120, 10, 25, 0.35)';
-        ctx.beginPath();
-        ctx.ellipse(0, 0, p.radius * 0.45, p.radius * 0.3, 0, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        // Luminous floating cytokine spore
-        const grad = ctx.createRadialGradient(0, 0, 1, 0, 0, p.radius * 0.6);
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.4, '#00f2fe');
-        grad.addColorStop(1, 'rgba(0, 242, 254, 0)');
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(0, 0, p.radius * 0.6, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
+    if (this.menuBioSimulation) {
+      this.menuBioSimulation.update(dt);
+      this.menuBioSimulation.render();
     }
   }
 
