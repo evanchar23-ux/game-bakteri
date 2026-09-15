@@ -522,6 +522,17 @@ export class Game {
         }
       }
     });
+
+    // Autoplay policy unlock: start tense menu music on first user gesture if on main menu
+    const unlockAudioAndStartMusic = () => {
+      sound.init();
+      sound.resume();
+      if (this.uiMenu && !this.uiMenu.classList.contains('hidden') && this.state !== 'PLAYING') {
+        sound.startMenuMusic();
+      }
+    };
+    window.addEventListener('click', unlockAudioAndStartMusic, { once: false });
+    window.addEventListener('keydown', unlockAudioAndStartMusic, { once: false });
   }
 
   finishPrologue() {
@@ -577,6 +588,13 @@ export class Game {
     }
 
     if (targetOverlay) targetOverlay.classList.remove('hidden');
+
+    // Manage Menu Music based on target screen
+    if (targetOverlay === this.uiMenu || targetOverlay === this.uiCharSelect || targetOverlay === this.uiOrganSelect) {
+      if (sound) sound.startMenuMusic();
+    } else if (targetOverlay === this.uiTeaser || targetOverlay === this.uiVictory || targetOverlay === this.uiGameOver) {
+      if (sound) sound.stopMenuMusic();
+    }
   }
 
   hideScreen(targetOverlay) {
@@ -1341,8 +1359,9 @@ export class Game {
     this.camera.setZoom(0.62);
     this.camera.zoomTo(1.0, 1.15);
 
-    // Play Epic Deep Sub-Bass Drop sound
+    // Play Epic Deep Sub-Bass Drop sound & stop menu music
     sound.init();
+    if (sound.stopMenuMusic) sound.stopMenuMusic();
     sound.playCinematicBassDrop();
 
     // Show Cinematic Overlay & Anamorphic Letterbox

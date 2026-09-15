@@ -9,7 +9,11 @@ class SoundEngine {
     this.ctx = null;
     this.isMuted = false;
     this.masterGain = null;
+    this.musicGain = null;
     this.isInitialized = false;
+    this.isMenuMusicPlaying = false;
+    this.droneNodes = null;
+    this.musicInterval = null;
   }
 
   init() {
@@ -811,6 +815,328 @@ class SoundEngine {
 
     subOsc.start(t);
     subOsc.stop(t + 0.8);
+  }
+
+  // =========================================================================
+  // CINEMATIC TENSION & SUSPENSE SOUNDTRACK SYNTHESIZER (IN-VIVO BIO-THRILLER)
+  // Menghasilkan musik latar menegangkan bernuansa dark sci-fi thriller (Hans Zimmer / Cyberpunk)
+  // =========================================================================
+
+  startMenuMusic() {
+    if (!this.isInitialized) {
+      this.init();
+    }
+    if (!this.ctx) return;
+    this.resume();
+
+    if (this.isMenuMusicPlaying) return;
+    this.isMenuMusicPlaying = true;
+
+    const t = this.ctx.currentTime;
+
+    // Music master gain node with smooth fade-in
+    if (!this.musicGain) {
+      this.musicGain = this.ctx.createGain();
+      this.musicGain.connect(this.masterGain);
+    }
+
+    this.musicGain.gain.cancelScheduledValues(t);
+    this.musicGain.gain.setValueAtTime(this.musicGain.gain.value || 0.0001, t);
+    this.musicGain.gain.linearRampToValueAtTime(0.55, t + 1.8);
+
+    // 1. Start ominous pulsating sub-bass drone
+    this.startTensionDrone();
+
+    // 2. Start rhythmic tension sequencer (heartbeat thumps + dark synth arpeggio + sonar pings)
+    this.startTensionSequencer();
+  }
+
+  stopMenuMusic() {
+    if (!this.isMenuMusicPlaying) return;
+    this.isMenuMusicPlaying = false;
+
+    if (this.musicGain && this.ctx) {
+      const t = this.ctx.currentTime;
+      this.musicGain.gain.cancelScheduledValues(t);
+      this.musicGain.gain.setValueAtTime(this.musicGain.gain.value, t);
+      this.musicGain.gain.linearRampToValueAtTime(0.0001, t + 1.2);
+    }
+
+    setTimeout(() => {
+      if (!this.isMenuMusicPlaying) {
+        this.stopTensionDrone();
+        this.stopTensionSequencer();
+      }
+    }, 1250);
+  }
+
+  playAmbientLoop() {
+    this.startMenuMusic();
+  }
+
+  // --- Dark Ambient Reese Sub-Bass Drone ---
+  startTensionDrone() {
+    this.stopTensionDrone();
+    if (!this.ctx || !this.musicGain) return;
+
+    const t = this.ctx.currentTime;
+
+    // Two detuned dark sawtooth oscillators for sinister beating
+    const osc1 = this.ctx.createOscillator();
+    const osc2 = this.ctx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc2.type = 'sawtooth';
+
+    // D1 note (36.71 Hz) with detune of +9 cents
+    osc1.frequency.setValueAtTime(36.71, t);
+    osc2.frequency.setValueAtTime(36.71, t);
+    osc2.detune.setValueAtTime(9, t);
+
+    // Deep resonant lowpass filter with slow LFO sweep
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(110, t);
+    filter.Q.setValueAtTime(3.8, t);
+
+    // Slow breathing LFO (0.16 Hz ~ 6.2s cycle)
+    const lfo = this.ctx.createOscillator();
+    const lfoGain = this.ctx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.setValueAtTime(0.16, t);
+    lfoGain.gain.setValueAtTime(38, t); // modulates cutoff between 72Hz and 148Hz
+    lfo.connect(lfoGain);
+    lfoGain.connect(filter.frequency);
+    lfo.start(t);
+
+    const droneGain = this.ctx.createGain();
+    droneGain.gain.setValueAtTime(0.0001, t);
+    droneGain.gain.linearRampToValueAtTime(0.42, t + 1.5);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    filter.connect(droneGain);
+    droneGain.connect(this.musicGain);
+
+    osc1.start(t);
+    osc2.start(t);
+
+    this.droneNodes = { osc1, osc2, lfo, droneGain };
+  }
+
+  stopTensionDrone() {
+    if (this.droneNodes) {
+      try {
+        const t = this.ctx ? this.ctx.currentTime : 0;
+        if (this.droneNodes.droneGain && this.ctx) {
+          this.droneNodes.droneGain.gain.linearRampToValueAtTime(0.0001, t + 0.5);
+        }
+        setTimeout(() => {
+          try {
+            if (this.droneNodes) {
+              if (this.droneNodes.osc1) this.droneNodes.osc1.stop();
+              if (this.droneNodes.osc2) this.droneNodes.osc2.stop();
+              if (this.droneNodes.lfo) this.droneNodes.lfo.stop();
+              this.droneNodes = null;
+            }
+          } catch (e) {}
+        }, 550);
+      } catch (e) {
+        this.droneNodes = null;
+      }
+    }
+  }
+
+  // --- Rhythmic Tension Sequencer (Heartbeat + Phrygian Arp + Bio-Sonar) ---
+  startTensionSequencer() {
+    this.stopTensionSequencer();
+    if (!this.ctx || !this.musicGain) return;
+
+    // Tempo: 64 BPM, sixteenth note interval
+    const stepDuration = (60 / 64) / 4; // 0.234375s
+    let nextStepTime = this.ctx.currentTime + 0.05;
+    let stepIndex = 0;
+
+    // Dark D Phrygian Synth Arpeggio Frequencies (in Hz)
+    const D2 = 73.42, Eb2 = 77.78, F2 = 87.31, G2 = 98.00, A2 = 110.00, Bb2 = 116.54, C3 = 130.81, D3 = 146.83;
+    const arpPattern = [
+      D2, D2, F2, D2,
+      Eb2, D2, A2, D2,
+      D2, F2, D2, G2,
+      Bb2, A2, F2, Eb2,
+      D2, D2, F2, D2,
+      Eb2, D2, C3, D2,
+      D2, F2, G2, Bb2,
+      A2, G2, F2, Eb2
+    ];
+
+    const scheduleAheadTime = 0.18;
+
+    this.musicInterval = setInterval(() => {
+      if (!this.ctx || !this.isMenuMusicPlaying) return;
+
+      const currentTime = this.ctx.currentTime;
+      while (nextStepTime < currentTime + scheduleAheadTime) {
+        const stepInBar = stepIndex % 16;
+        const totalStep = stepIndex % 64;
+
+        // 1. TENSE BIOLOGICAL HEARTBEAT THUMP ("Lub... Dub...")
+        // Triggers on beat 1 (step 0) and beat 1.75 (step 3) of every 16-step bar
+        if (stepInBar === 0 || stepInBar === 3) {
+          const isDub = stepInBar === 3;
+          this.playSynthesizedHeartbeat(nextStepTime, isDub);
+        }
+
+        // 2. TENSE DARK SYNTH ARPEGGIO PLUCK
+        const noteFreq = arpPattern[stepIndex % arpPattern.length];
+        const isAccent = (stepInBar === 0 || stepInBar === 8 || stepInBar === 12);
+        this.playSynthesizedTensionPluck(nextStepTime, noteFreq, isAccent);
+
+        // 3. EERIE BIO-HAZARD SONAR / RADAR PING (every 64 steps / 4 bars)
+        if (totalStep === 0) {
+          this.playSynthesizedSonarPing(nextStepTime);
+        }
+
+        // 4. SUSPENSE LIQUID BREATH SWELL (at step 24 of every 32 steps)
+        if (totalStep % 32 === 24) {
+          this.playSynthesizedBreathSwell(nextStepTime, stepDuration * 7);
+        }
+
+        nextStepTime += stepDuration;
+        stepIndex++;
+      }
+    }, 28);
+  }
+
+  stopTensionSequencer() {
+    if (this.musicInterval) {
+      clearInterval(this.musicInterval);
+      this.musicInterval = null;
+    }
+  }
+
+  // Synthesized Sub Heartbeat Thump
+  playSynthesizedHeartbeat(time, isDub = false) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+
+    osc.type = 'sine';
+    const startFreq = isDub ? 72 : 88;
+    const endFreq = isDub ? 28 : 34;
+    const dur = isDub ? 0.16 : 0.22;
+
+    osc.frequency.setValueAtTime(startFreq, time);
+    osc.frequency.exponentialRampToValueAtTime(endFreq, time + dur);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(140, time);
+
+    const vol = isDub ? 0.38 : 0.52;
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(vol, time + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.musicGain);
+
+    osc.start(time);
+    osc.stop(time + dur + 0.02);
+  }
+
+  // Synthesized Tense Minor Arpeggio Note Pluck
+  playSynthesizedTensionPluck(time, freq, isAccent = false) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const osc = this.ctx.createOscillator();
+    const filter = this.ctx.createBiquadFilter();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(freq, time);
+
+    // Resonant bandpass filter that snaps shut for tense pluck
+    filter.type = 'bandpass';
+    const cutoff = isAccent ? 950 : 620;
+    filter.frequency.setValueAtTime(cutoff, time);
+    filter.frequency.exponentialRampToValueAtTime(180, time + 0.15);
+    filter.Q.setValueAtTime(4.8, time);
+
+    const dur = 0.18;
+    const vol = isAccent ? 0.19 : 0.12;
+
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(vol, time + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.musicGain);
+
+    osc.start(time);
+    osc.stop(time + dur + 0.02);
+  }
+
+  // Eerie Distant High Sonar Pulse (Quarantine Warning)
+  playSynthesizedSonarPing(time) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    // D6 note (1174.66 Hz) dropping gently to 1080 Hz
+    osc.frequency.setValueAtTime(1174.66, time);
+    osc.frequency.exponentialRampToValueAtTime(1080, time + 1.6);
+
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(0.065, time + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.8);
+
+    osc.connect(gain);
+    gain.connect(this.musicGain);
+
+    osc.start(time);
+    osc.stop(time + 1.85);
+  }
+
+  // Ambient Liquid Fluid / Respirator Breath Swell
+  playSynthesizedBreathSwell(time, duration) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * duration);
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = noiseBuffer.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      const white = Math.random() * 2 - 1;
+      last = (last + 0.02 * white) / 1.02;
+      data[i] = last * 1.8;
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(280, time);
+    filter.frequency.linearRampToValueAtTime(700, time + duration * 0.5);
+    filter.frequency.linearRampToValueAtTime(240, time + duration);
+    filter.Q.setValueAtTime(2.2, time);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(0.08, time + duration * 0.45);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.musicGain);
+
+    noise.start(time);
+    noise.stop(time + duration);
   }
 }
 
