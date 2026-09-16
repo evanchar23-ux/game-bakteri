@@ -79,12 +79,20 @@ canvas#gameCanvas {
   transform-origin: center;
 }
 
+.screen-overlay:not(#main-menu) {
+  background: rgba(2, 6, 16, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
 .screen-overlay:not(.hidden) > .modal-content {
-  animation: modalPopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalPopIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes modalPopIn {
-  0% { transform: scale(0.96) translateY(10px); opacity: 0; filter: blur(4px); }
+  0% { transform: scale(0.96) translateY(12px); opacity: 0; filter: blur(6px); }
   100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
 }
 
@@ -605,13 +613,13 @@ canvas#gameCanvas {
    ========================================================================== */
 
 .glass-card {
-  background: rgba(6, 12, 24, 0.65);
+  background: rgba(6, 12, 24, 0.78);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.22);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(0, 242, 254, 0.08), inset 0 0 1px rgba(255, 255, 255, 0.15);
   border-radius: 18px;
-  padding: 30px;
+  padding: 26px 28px;
   position: relative;
   overflow: hidden;
 }
@@ -624,6 +632,88 @@ canvas#gameCanvas {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+}
+
+/* Modal Content Scrollers & Standard Layouts */
+.modal-content {
+  position: relative;
+  box-sizing: border-box;
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 254, 0.35) rgba(0, 0, 0, 0.25);
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 254, 0.35);
+  border-radius: 4px;
+}
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 254, 0.65);
+}
+
+/* Modal Sizing Tiers */
+.modal-compact {
+  max-width: 520px !important;
+  width: min(520px, 92vw) !important;
+  padding: 24px 28px !important;
+}
+
+.modal-standard {
+  max-width: 780px !important;
+  width: min(780px, 92vw) !important;
+  padding: 24px 28px !important;
+}
+
+.modal-wide {
+  max-width: 1060px !important;
+  width: min(1060px, 94vw) !important;
+  padding: 24px 28px !important;
+}
+
+/* Standard Header Split Layout */
+.header-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.header-split-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  flex: 1;
+}
+
+.header-split-text h2 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+.header-split-text p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.modal-subtitle-tag {
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--primary-cyan);
+  text-transform: uppercase;
 }
 
 /* ==========================================================================
@@ -695,19 +785,43 @@ button {
   overflow: hidden;
 }
 
-.btn-icon-close {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: 50%;
-  font-size: 16px;
+.btn-icon-close,
+.terminal-close-btn {
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #c0d4ed !important;
+  font-family: var(--font-display, 'Rajdhani', sans-serif) !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  outline: none !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4) !important;
 }
 
-.btn-icon-close:hover {
-  background: var(--alert-red);
-  color: #fff;
+.btn-icon-close:hover,
+.terminal-close-btn:hover {
+  background: rgba(255, 71, 87, 0.25) !important;
+  border-color: #ff4757 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(255, 71, 87, 0.6) !important;
+  transform: scale(1.1) rotate(90deg) !important;
+}
+
+.btn-icon-close:active,
+.terminal-close-btn:active {
+  transform: scale(0.95) rotate(90deg) !important;
 }
 
 .btn-audio-toggle {
@@ -1469,6 +1583,12 @@ button {
   margin: 0;
 }
 
+.bio-chamber-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .bio-chamber-id-tag {
   font-family: var(--font-display);
   font-size: 10px;
@@ -1479,6 +1599,7 @@ button {
   border: 1px solid rgba(0, 242, 254, 0.25);
   padding: 4px 10px;
   border-radius: 6px;
+  white-space: nowrap;
 }
 
 /* Two-Column Bio-Chamber Layout */
@@ -1952,14 +2073,15 @@ button {
    ========================================================================== */
 
 .debrief-card {
-  max-width: 600px;
-  width: 90%;
-  text-align: center;
+  max-width: 780px;
+  width: min(780px, 92vw);
+  text-align: left;
 }
 
 .victory-reward-card {
-  max-width: 680px;
-  max-height: 90vh;
+  max-width: 780px;
+  width: min(780px, 92vw);
+  max-height: 88vh;
   overflow-y: auto;
   border: 1px solid rgba(255, 215, 0, 0.4);
   box-shadow: 0 0 45px rgba(255, 215, 0, 0.25), 0 20px 50px rgba(0, 0, 0, 0.85);
@@ -2924,8 +3046,18 @@ button {
    ========================================================================== */
 
 .guide-card {
-  max-width: 680px;
-  width: 90%;
+  max-width: 780px;
+  width: min(780px, 92vw);
+}
+
+.settings-card {
+  max-width: 520px;
+  width: min(520px, 92vw);
+}
+
+.upgrade-modal-card {
+  max-width: 780px;
+  width: min(780px, 92vw);
 }
 
 .guide-body {

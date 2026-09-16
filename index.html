@@ -456,6 +456,7 @@
           </div>
           <div class="bio-chamber-header-right">
             <div class="bio-chamber-id-tag">KONTENSI BIOLOGIS: STERIL // LEVEL 4</div>
+            <button id="btn-close-char-select" class="btn-icon-close" title="Kembali ke Menu Utama">✕</button>
           </div>
         </div>
 
@@ -521,6 +522,7 @@
             <button id="btn-prev-subject" class="btn-outline" style="padding: 5px 10px; font-size: 14px;">◀</button>
             <span class="scanner-host-id" id="subject-name-display">SUBJECT: HOMO SAPIENS #01 (DEWASA)</span>
             <button id="btn-next-subject" class="btn-outline" style="padding: 5px 10px; font-size: 14px;">▶</button>
+            <button id="btn-close-organ-select" class="btn-icon-close" title="Kembali ke Pilih Sel">✕</button>
           </div>
         </div>
 
@@ -607,7 +609,7 @@
 
     <!-- LEVEL UP / CYTOKINE MUTATION MODAL -->
     <div id="upgrade-modal" class="screen-overlay hidden">
-      <div class="modal-content glass-card">
+      <div class="modal-content glass-card modal-standard upgrade-modal-card">
         <div class="modal-header upgrade-header">
           <div class="upgrade-tag">DIFERENSIASI IMUN TERCAPAI!</div>
           <h2>PILIH SINYAL SITOKIN / MUTASI</h2>
@@ -622,11 +624,16 @@
 
     <!-- MEDICAL DEBRIEFING / VICTORY OVERLAY WITH REWARDS & MEDAL -->
     <div id="victory-modal" class="screen-overlay hidden">
-      <div class="modal-content glass-card debrief-card victory-reward-card">
+      <div class="modal-content glass-card debrief-card victory-reward-card modal-standard">
         <div class="debrief-header victory">
-          <span class="debrief-badge victory-glory-badge"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> EVALUASI MEDIS // REMISI KLINIS TOTAL <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-          <h2>LAPORAN STERILISASI & PENGHARGAAN</h2>
-          <p class="debrief-organ-cleared" id="deb-organ-name">Organ Tubuh Berhasil Disterilkan Sepenuhnya</p>
+          <div class="header-split">
+            <div class="header-split-text">
+              <span class="debrief-badge victory-glory-badge"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> EVALUASI MEDIS // REMISI KLINIS TOTAL <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+              <h2>LAPORAN STERILISASI & PENGHARGAAN</h2>
+              <p class="debrief-organ-cleared" id="deb-organ-name">Organ Tubuh Berhasil Disterilkan Sepenuhnya</p>
+            </div>
+            <button id="btn-close-victory" class="btn-icon-close" title="Tutup & Kembali ke Menu">✕</button>
+          </div>
         </div>
 
         <!-- Grade & Medal Honorary Section -->
@@ -715,11 +722,16 @@
 
     <!-- GAME OVER / ORGAN FAILURE OVERLAY -->
     <div id="gameover-modal" class="screen-overlay hidden">
-      <div class="modal-content glass-card debrief-card failure">
+      <div class="modal-content glass-card debrief-card failure modal-standard">
         <div class="debrief-header failure">
-          <span class="debrief-badge alert-badge">SEPSIS & KEGAGALAN ORGAN</span>
-          <h2>RESPONS IMUN KEWALAHAN</h2>
-          <p id="gameover-cause">Patogen berkembang biak melampaui kapasitas fungsional sel imun.</p>
+          <div class="header-split">
+            <div class="header-split-text">
+              <span class="debrief-badge alert-badge">SEPSIS & KEGAGALAN ORGAN</span>
+              <h2>RESPONS IMUN KEWALAHAN</h2>
+              <p id="gameover-cause">Patogen berkembang biak melampaui kapasitas fungsional sel imun.</p>
+            </div>
+            <button id="btn-close-gameover" class="btn-icon-close" title="Tutup & Kembali ke Menu">✕</button>
+          </div>
         </div>
 
         <div class="medical-fun-fact-box">
@@ -757,7 +769,7 @@
           </div>
 
           <!-- Close Button -->
-          <button id="btn-close-immunopedia" class="terminal-close-btn" title="Tutup Terminal">✕</button>
+          <button id="btn-close-immunopedia" class="btn-icon-close terminal-close-btn" title="Tutup Ensiklopedia">✕</button>
         </div>
 
         <!-- Main Workspace Deck (Chamber Left + Intel Right) -->
@@ -885,11 +897,15 @@
 
     <!-- HOW TO PLAY / PANDUAN MODAL -->
     <div id="howtoplay-modal" class="screen-overlay hidden">
-      <div class="modal-content glass-card guide-card">
+      <div class="modal-content glass-card modal-standard guide-card">
         <div class="modal-header">
           <div class="header-split">
-            <h2>PANDUAN BERMAIN & KONTROL</h2>
-            <button id="btn-close-howtoplay" class="btn-icon-close">✕</button>
+            <div class="header-split-text">
+              <span class="modal-subtitle-tag">DOKUMEN TAKTIK &amp; PANDUAN</span>
+              <h2>PANDUAN BERMAIN &amp; KONTROL</h2>
+              <p>Pelajari kendali sel imun dan mekanisme pertahanan biologis tubuh.</p>
+            </div>
+            <button id="btn-close-howtoplay" class="btn-icon-close" title="Tutup Panduan">✕</button>
           </div>
         </div>
         <div class="guide-body">
@@ -1009,11 +1025,15 @@
 
     <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="screen-overlay hidden">
-      <div class="modal-content glass-card" style="max-width: 480px; width: 90%;">
+      <div class="modal-content glass-card modal-compact settings-card">
         <div class="modal-header">
           <div class="header-split">
-            <h2>PENGATURAN SUARA & TAMPILAN</h2>
-            <button id="btn-close-settings" class="btn-icon-close">✕</button>
+            <div class="header-split-text">
+              <span class="modal-subtitle-tag">SISTEM &amp; PREFERENSI</span>
+              <h2>PENGATURAN SUARA &amp; TAMPILAN</h2>
+              <p>Sesuaikan efek audio bio-akustik dan kinerja visual grafis.</p>
+            </div>
+            <button id="btn-close-settings" class="btn-icon-close" title="Tutup Pengaturan">✕</button>
           </div>
         </div>
         <div style="display: flex; flex-direction: column; gap: 16px; margin: 20px 0;">

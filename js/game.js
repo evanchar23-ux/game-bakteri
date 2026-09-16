@@ -417,9 +417,21 @@ export class Game {
     };
 
     // Character Select navigation
-    document.getElementById('btn-back-to-main').onclick = () => {
-      this.showScreen(this.uiMenu);
-    };
+    const btnBackToMain = document.getElementById('btn-back-to-main');
+    if (btnBackToMain) {
+      btnBackToMain.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showScreen(this.uiMenu);
+      };
+    }
+    const btnCloseChar = document.getElementById('btn-close-char-select');
+    if (btnCloseChar) {
+      btnCloseChar.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showScreen(this.uiMenu);
+      };
+    }
+
     document.getElementById('btn-proceed-to-organ').onclick = () => {
       this.showScreen(this.uiOrganSelect);
       this.renderSubjectUI();
@@ -444,13 +456,29 @@ export class Game {
     };
 
     // Organ Select navigation
-    document.getElementById('btn-back-to-char').onclick = () => {
-      this.showScreen(this.uiCharSelect);
-      this.renderCharacterSelectionCards();
-      if (this.cell3d) {
-        setTimeout(() => this.cell3d.handleResize(), 60);
-      }
-    };
+    const btnBackToChar = document.getElementById('btn-back-to-char');
+    if (btnBackToChar) {
+      btnBackToChar.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showScreen(this.uiCharSelect);
+        this.renderCharacterSelectionCards();
+        if (this.cell3d) {
+          setTimeout(() => this.cell3d.handleResize(), 60);
+        }
+      };
+    }
+    const btnCloseOrgan = document.getElementById('btn-close-organ-select');
+    if (btnCloseOrgan) {
+      btnCloseOrgan.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showScreen(this.uiCharSelect);
+        this.renderCharacterSelectionCards();
+        if (this.cell3d) {
+          setTimeout(() => this.cell3d.handleResize(), 60);
+        }
+      };
+    }
+
     document.getElementById('btn-deploy-mission').onclick = () => {
       this.startMission();
     };
@@ -470,12 +498,32 @@ export class Game {
         this.startMission();
       };
     }
+    const btnCloseVictory = document.getElementById('btn-close-victory');
+    if (btnCloseVictory) {
+      btnCloseVictory.onclick = () => {
+        if (window.sound) {
+          if (window.sound.playRewardClaim) window.sound.playRewardClaim();
+          else window.sound.playClick();
+        }
+        this.hideScreen(this.uiVictory);
+        this.showScreen(this.uiMenu);
+      };
+    }
+
     document.getElementById('btn-retry').onclick = () => {
       this.startMission();
     };
     document.getElementById('btn-gameover-home').onclick = () => {
       this.showScreen(this.uiMenu);
     };
+    const btnCloseGameover = document.getElementById('btn-close-gameover');
+    if (btnCloseGameover) {
+      btnCloseGameover.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.hideScreen(this.uiGameOver);
+        this.showScreen(this.uiMenu);
+      };
+    }
 
     // Audio toggle
     document.getElementById('audio-toggle').onclick = () => {
