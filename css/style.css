@@ -138,18 +138,18 @@ canvas#gameCanvas {
   inset: 0;
   width: 100%;
   height: 100%;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   box-sizing: border-box;
   background:
     radial-gradient(ellipse 900px 500px at 82% 15%, rgba(255,61,120,0.10), transparent 60%),
     radial-gradient(ellipse 700px 600px at 10% 85%, rgba(47,231,200,0.08), transparent 60%),
     linear-gradient(180deg, #060a11 0%, #070c14 40%, #050810 100%);
-  padding: 34px 46px 26px;
+  padding: clamp(14px, 2.2vh, 24px) clamp(24px, 3.5vw, 44px) clamp(10px, 1.6vh, 16px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   font-family: 'IBM Plex Sans', sans-serif;
   color: var(--text-main);
   z-index: 10;
@@ -180,22 +180,22 @@ canvas#gameCanvas {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 22px;
+  padding-bottom: clamp(8px, 1.3vh, 14px);
   border-bottom: 1px solid var(--line-soft);
 }
 #main-menu .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 #main-menu .brand-mark {
-  width: 34px;
-  height: 34px;
+  width: clamp(26px, 3vh, 32px);
+  height: clamp(26px, 3vh, 32px);
   flex-shrink: 0;
 }
 #main-menu .brand-name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 19px;
+  font-size: clamp(15px, 1.8vh, 18px);
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--text-main);
@@ -210,15 +210,15 @@ canvas#gameCanvas {
   align-items: center;
   gap: 0;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: clamp(9.5px, 1.1vh, 11px);
+  letter-spacing: 0.12em;
   color: var(--text-dim);
 }
 #main-menu .nav-strip span.active {
   color: var(--antibody-cyan);
 }
 #main-menu .nav-strip .sep {
-  margin: 0 12px;
+  margin: 0 10px;
   color: var(--line);
 }
 
@@ -228,30 +228,31 @@ canvas#gameCanvas {
   z-index: 2;
   display: grid;
   grid-template-columns: 1fr 1.15fr;
-  gap: 44px;
-  padding-top: 24px;
-  align-items: start;
+  gap: clamp(20px, 3vw, 40px);
+  padding-top: clamp(8px, 1.6vh, 16px);
+  align-items: center;
+  flex: 1;
 }
 
 /* Left Column */
 #main-menu .hero-block {
-  margin-bottom: 28px;
+  margin-bottom: clamp(10px, 1.8vh, 18px);
 }
 #main-menu .hero-icon {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 14px;
+  gap: 14px;
+  margin-bottom: clamp(4px, 0.8vh, 8px);
 }
 #main-menu .hero-hex {
-  width: 56px;
-  height: 56px;
+  width: clamp(36px, 4.5vh, 46px);
+  height: clamp(36px, 4.5vh, 46px);
   flex-shrink: 0;
   filter: drop-shadow(0 0 12px rgba(255, 61, 120, 0.4));
 }
 #main-menu .hero-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 44px;
+  font-size: clamp(26px, 3.6vh, 36px);
   line-height: 0.98;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -262,11 +263,11 @@ canvas#gameCanvas {
   text-shadow: 0 0 26px rgba(255,61,120,0.45);
 }
 #main-menu .hero-sub {
-  margin-top: 14px;
-  font-size: 12.5px;
+  margin-top: clamp(4px, 0.8vh, 8px);
+  font-size: clamp(9.5px, 1.1vh, 11px);
   color: var(--text-dim);
-  line-height: 1.6;
-  max-width: 380px;
+  line-height: 1.4;
+  max-width: 360px;
   font-family: 'IBM Plex Mono', monospace;
   letter-spacing: 0.02em;
 }
@@ -274,19 +275,19 @@ canvas#gameCanvas {
 #main-menu .menu {
   display: flex;
   flex-direction: column;
-  gap: 11px;
-  max-width: 420px;
+  gap: clamp(5px, 0.8vh, 8px);
+  max-width: 400px;
 }
 
 #main-menu .menu-btn {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 15px 20px;
+  gap: 12px;
+  padding: clamp(7px, 1vh, 10px) clamp(12px, 1.4vw, 16px);
   background: var(--bg-panel);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   overflow: hidden;
   color: var(--text-main);
@@ -305,8 +306,8 @@ canvas#gameCanvas {
 }
 
 #main-menu .menu-btn .ic {
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   flex-shrink: 0;
   color: var(--text-dim);
   transition: color 0.2s ease;
@@ -316,13 +317,13 @@ canvas#gameCanvas {
 }
 #main-menu .menu-btn .label {
   flex: 1;
-  font-size: 14.5px;
+  font-size: clamp(12px, 1.35vh, 13px);
   font-weight: 600;
   color: var(--text-main);
 }
 #main-menu .menu-btn .tag {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.12em;
   color: var(--text-dim);
 }
@@ -352,8 +353,8 @@ canvas#gameCanvas {
   font-weight: 600;
 }
 #main-menu .menu-btn.primary .play-tri {
-  width: 34px;
-  height: 34px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--antibody-cyan);
   display: flex;
@@ -371,14 +372,14 @@ canvas#gameCanvas {
 #main-menu .right-col {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(8px, 1.2vh, 12px);
 }
 
 #main-menu .panel {
   background: var(--bg-panel);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 18px 20px;
+  border-radius: 10px;
+  padding: clamp(10px, 1.4vh, 14px) clamp(14px, 1.6vw, 18px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
@@ -386,12 +387,12 @@ canvas#gameCanvas {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: clamp(6px, 1vh, 10px);
 }
 #main-menu .status-head .left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 @keyframes pulseDotAnim {
@@ -400,25 +401,25 @@ canvas#gameCanvas {
   100% { transform: scale(0.9); opacity: 0.8; box-shadow: 0 0 4px var(--virus-pink); }
 }
 #main-menu .pulse-dot {
-  width: 9px;
-  height: 9px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--virus-pink);
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: 3px;
   animation: pulseDotAnim 1.8s infinite ease-in-out;
 }
 
 #main-menu .status-head .title {
-  font-size: 13px;
+  font-size: clamp(11px, 1.2vh, 12px);
   font-weight: 600;
   color: var(--virus-pink);
-  line-height: 1.4;
+  line-height: 1.35;
 }
 #main-menu .status-head .title small {
   display: block;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 8.5px;
   color: var(--text-dim);
   font-weight: 400;
   margin-top: 2px;
@@ -426,38 +427,38 @@ canvas#gameCanvas {
 }
 #main-menu .badge-radar {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 8.5px;
   letter-spacing: 0.1em;
   color: var(--antibody-cyan);
   border: 1px solid var(--antibody-cyan-dim);
   border-radius: 20px;
-  padding: 5px 12px;
+  padding: 2px 8px;
   white-space: nowrap;
 }
 
 #main-menu .vitals-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 7px;
 }
 #main-menu .vital {
   background: var(--bg-panel-2);
   border: 1px solid var(--line-soft);
-  border-radius: 9px;
-  padding: 12px 13px;
+  border-radius: 7px;
+  padding: clamp(6px, 0.9vh, 9px) 9px;
 }
 #main-menu .vital .k {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
+  font-size: 8px;
   letter-spacing: 0.1em;
   color: var(--text-dim);
-  margin-bottom: 8px;
+  margin-bottom: 3px;
 }
 #main-menu .vital .v {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px;
+  font-size: clamp(14px, 1.8vh, 17px);
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   color: #ffffff;
 }
 #main-menu .vital.pink .v {
@@ -470,26 +471,26 @@ canvas#gameCanvas {
 
 #main-menu .threat-title {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
+  font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--text-dim);
-  margin: 18px 0 10px;
+  margin: clamp(7px, 1.1vh, 10px) 0 clamp(4px, 0.7vh, 6px);
 }
 #main-menu .threat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 9px;
+  gap: 5px;
 }
 #main-menu .threat {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 7px;
   background: var(--bg-panel-2);
   border: 1px solid var(--line-soft);
   border-left: 3px solid var(--line);
-  border-radius: 7px;
-  padding: 10px 12px;
-  font-size: 12px;
+  border-radius: 6px;
+  padding: clamp(4px, 0.7vh, 6px) 8px;
+  font-size: 10.5px;
   font-weight: 500;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -497,8 +498,8 @@ canvas#gameCanvas {
   transform: translateY(-2px);
 }
 #main-menu .threat .ic {
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   flex-shrink: 0;
 }
 #main-menu .threat.pulmo { border-left-color: var(--virus-pink); }
@@ -524,36 +525,36 @@ canvas#gameCanvas {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px 12px;
+  padding: clamp(6px, 1vh, 10px) 14px clamp(4px, 0.7vh, 6px);
 }
 #main-menu .video-head .t {
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 600;
 }
 #main-menu .video-head .t small {
   display: block;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
+  font-size: 8px;
   color: var(--text-dim);
   font-weight: 400;
-  margin-top: 3px;
+  margin-top: 1px;
   letter-spacing: 0.08em;
 }
 #main-menu .multivoice {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
+  font-size: 8px;
   letter-spacing: 0.08em;
   color: var(--plasma-purple);
   border: 1px solid #3a2f66;
   border-radius: 20px;
-  padding: 4px 10px;
+  padding: 2px 7px;
   white-space: nowrap;
 }
 #main-menu .video-frame {
   position: relative;
-  height: 140px;
-  margin: 0 20px 14px;
-  border-radius: 9px;
+  height: clamp(75px, 10.5vh, 100px);
+  margin: 0 14px clamp(5px, 0.8vh, 8px);
+  border-radius: 7px;
   overflow: hidden;
   background:
     radial-gradient(circle at 30% 30%, rgba(255,61,120,0.35), transparent 55%),
@@ -565,8 +566,8 @@ canvas#gameCanvas {
   justify-content: center;
 }
 #main-menu .play-btn {
-  width: 50px;
-  height: 50px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: rgba(7,12,20,0.6);
   border: 1.5px solid var(--antibody-cyan);
@@ -574,21 +575,21 @@ canvas#gameCanvas {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(2px);
-  box-shadow: 0 0 16px rgba(47, 231, 200, 0.3);
+  box-shadow: 0 0 14px rgba(47, 231, 200, 0.3);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 #main-menu .video-panel:hover .play-btn {
-  transform: scale(1.12);
-  box-shadow: 0 0 24px var(--antibody-cyan);
+  transform: scale(1.1);
+  box-shadow: 0 0 18px var(--antibody-cyan);
 }
 #main-menu .video-foot {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
+  font-size: 9px;
   color: var(--antibody-cyan);
-  padding: 0 20px 16px;
+  padding: 0 14px clamp(6px, 0.9vh, 9px);
   letter-spacing: 0.04em;
 }
 
@@ -601,20 +602,20 @@ canvas#gameCanvas {
 #main-menu .bottombar {
   position: relative;
   z-index: 2;
-  margin-top: 26px;
-  padding-top: 16px;
+  margin-top: clamp(6px, 1vh, 10px);
+  padding-top: clamp(6px, 0.9vh, 9px);
   border-top: 1px solid var(--line-soft);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10.5px;
+  font-size: 9px;
   color: var(--text-dim);
   letter-spacing: 0.05em;
 }
 #main-menu .dot-live {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--antibody-cyan);
   animation: liveDotAnim 2s infinite ease-in-out;
