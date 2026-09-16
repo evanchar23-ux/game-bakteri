@@ -36,45 +36,45 @@ export class CinematicTeaser {
         triggerTime: 3.2,
         stepTag: 'TAHAP 1/4 • SISTEM IMUN BAWAAN',
         keyBadge: '<kbd>L-CLICK</kbd> SERANGAN UTAMA',
-        avatar: '🛡️',
+        avatar: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
         title: 'Fagositosis & Lisis Lisosom',
         cellName: 'Makrofag (The Giant Sentinel)',
         bioDesc: 'Membran sel menjulurkan pseudopodia untuk memerangkap patogen ke dalam vakuola fagosom, lalu memfusikannya dengan lisosom asam berisi hidrolase untuk melisiskan mikroba.',
         effectDesc: 'Menghasilkan damage melee masif dalam jarak dekat dan menyerap 35 HP setiap kali berhasil menelan partikel patogen.',
-        btnText: 'LANJUT KE TAKTIK BERIKUTNYA ➔'
+        btnText: 'LANJUT KE TAKTIK BERIKUTNYA'
       },
       {
         triggerTime: 7.2,
         stepTag: 'TAHAP 2/4 • FIRST RESPONDER AKUT',
         keyBadge: '<kbd>SPASI</kbd> / <kbd>R-CLICK</kbd> SKILL TAKTIS',
-        avatar: '⚡',
+        avatar: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
         title: 'NETosis (Neutrophil Extracellular Trap)',
         cellName: 'Neutrofil (Polymorphonuclear PMN)',
         bioDesc: 'Neutrofil mengekstrusi perangkap jaring serat DNA kromatin yang dilapisi protein defensin antimikroba untuk menjerat kawanan mikroba sekaligus.',
         effectDesc: 'Mengunci pergerakan patogen di area jaring dan memberikan racun berkelanjutan (continuous damage over time).',
-        btnText: 'LANJUT KE TAKTIK BERIKUTNYA ➔'
+        btnText: 'LANJUT KE TAKTIK BERIKUTNYA'
       },
       {
         triggerTime: 11.2,
         stepTag: 'TAHAP 3/4 • IMUNITAS HUMORAL ADAPTIF',
         keyBadge: '<kbd>L-CLICK</kbd> / <kbd>SPASI</kbd> SERANGAN & TAKTIS',
-        avatar: '🏹',
+        avatar: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M4 22c3.5-1.5 6.5-6.5 9-11 2.5-4.5 5.5-9 9-10.5"/><path d="M4 2c3.5 1.5 6.5 6.5 9 11 2.5 4.5 5.5 9 9 10.5"/><path d="M7.5 12.5l9-9"/><path d="M10.5 15.5l7-7"/><path d="M4.5 6.5l4-4"/><path d="M6 9.5l6-6"/><path d="M18 14.5l-6 6"/><path d="M15 17.5l-4 4"/><path d="M19.5 11.5l-9 9"/></svg>',
         title: 'Opsonisasi & Kunci Afinitas Antibodi',
         cellName: 'Limfosit B (The Antibody Fortress)',
         bioDesc: 'Antibodi IgG mengikat epitop spesifik antigen patogen (Opsonisasi), menandai mikroba asing agar mudah dikenali dan dilipatgandakan kerentanannya oleh sel imun.',
         effectDesc: 'Proyektil melengkung mengejar antigen (homing) dan memberikan efek 100% Critical Vulnerability (2x Damage).',
-        btnText: 'LANJUT KE TAKTIK BERIKUTNYA ➔'
+        btnText: 'LANJUT KE TAKTIK BERIKUTNYA'
       },
       {
         triggerTime: 15.2,
         stepTag: 'TAHAP 4/4 • IMUNITAS SELULER ADAPTIF',
         keyBadge: '<kbd>Q</kbd> / <kbd>E</kbd> RESPON BIO-ULTIMATE',
-        avatar: '⚔️',
+        avatar: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M9.5 6.5L21 18v3h-3L6.5 9.5M11 5l-6 6M8 8L4 4M5 3L3 5"/></svg>',
         title: 'Perforin Lance & Granzyme Apoptosis',
         cellName: 'Limfosit T Sitotoksik (CD8+ Assassin)',
         bioDesc: 'Perforin melubangi membran sel target, memungkinkan enzim granzyme masuk dan memicu kaskade caspase untuk memicu bunuh diri sel (Programmed Cell Death).',
         effectDesc: 'Menembus pertahanan perisai (True Damage) dan melisiskan patogen kuat serta Superbug Boss seketika.',
-        btnText: '⚔️ TERJUN KE ARENA PERTEMPURAN SEKARANG!'
+        btnText: 'TERJUN KE ARENA PERTEMPURAN SEKARANG!'
       }
     ];
 
@@ -140,7 +140,7 @@ export class CinematicTeaser {
 
     this.tacStepTag.innerText = stepData.stepTag;
     this.tacKeyBadge.innerHTML = stepData.keyBadge;
-    this.tacAvatar.innerText = stepData.avatar;
+    this.tacAvatar.innerHTML = stepData.avatar;
     this.tacTitle.innerText = stepData.title;
     this.tacCellName.innerText = stepData.cellName;
     this.tacBioDesc.innerText = stepData.bioDesc;
@@ -438,11 +438,11 @@ export class CinematicTeaser {
     ctx.font = 'bold 12px Rajdhani, sans-serif';
     ctx.fillStyle = '#00d2ff';
     ctx.textAlign = 'left';
-    ctx.fillText('🔴 SIMULASI TAKTIK REAL-TIME • PANDUAN PENGGUNAAN SEL IMUN', 20, 24);
+    ctx.fillText('SIMULASI TAKTIK REAL-TIME • PANDUAN PENGGUNAAN SEL IMUN', 20, 24);
 
     ctx.textAlign = 'right';
     ctx.fillStyle = '#ffd166';
-    ctx.fillText(this.isPausedForCard ? '⏸ WAKTU DIHENTIKAN UNTUK PENJELASAN' : '▶ SIMULASI BERJALAN', w - 20, 24);
+    ctx.fillText(this.isPausedForCard ? 'WAKTU DIHENTIKAN UNTUK PENJELASAN' : 'SIMULASI BERJALAN', w - 20, 24);
   }
 
   renderDetailedActor(ctx, actor, type, angle) {

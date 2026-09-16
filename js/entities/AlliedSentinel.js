@@ -144,7 +144,7 @@ export class AlliedSentinel {
     // 3. Overhead Friendly Badge
     ctx.save();
     const badgeY = sy - this.radius - 12;
-    const badgeText = this.type === 'helper_t' ? '🛡️ REKAN: T-HELPER' : '🛡️ REKAN: DENDRITIK';
+    const badgeText = this.type === 'helper_t' ? 'REKAN: T-HELPER' : 'REKAN: DENDRITIK';
     ctx.font = 'bold 8.5px Rajdhani, sans-serif';
     const tw = ctx.measureText(badgeText).width + 8;
 

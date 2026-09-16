@@ -3,12 +3,12 @@
  * Engine Animasi Karakter Kartun 2D Studio (Sprite-Based Expressive Animation)
  * 
  * Menggunakan aset ilustrasi kartun HD autentik multi-frame:
- * 👧 CIA:
+ * CIA:
  *    - cia_idle.jpg: Senyum manis alami, rambut afro-puffs pink beads, kaos biru
  *    - cia_talk.jpg: Mulut terbuka bicara (gigi atas putih + lidah pink) & tangan gestur di dada
  *    - cia_blink.jpg: Kedipan mata tertutup lentur alami
  * 
- * 👦 KAK ARYA:
+ * KAK ARYA:
  *    - arya_idle.jpg: Senyum bersahabat, jas lab dokter, headset mic
  *    - arya_talk.jpg: Mulut terbuka bicara & tangan menunjuk ke medan tempur mikroskopik
  *    - arya_blink.jpg: Kedipan mata tertutup lembut alami
@@ -205,7 +205,7 @@ export class CharacterAvatars2D {
     } else {
       // Fallback placeholder jika sedang loading
       const fallbackColor = isArya ? '#00f2fe' : '#ff66cc';
-      const label = isArya ? '👦 KAK ARYA' : '👧 CIA';
+      const label = isArya ? 'KAK ARYA' : 'CIA';
       this.drawPlaceholder(ctx, w, h, label, fallbackColor);
     }
 

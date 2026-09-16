@@ -4,7 +4,7 @@
  * Dilengkapi visualisasi morfologi mikroskopik biologis nyata:
  * - VIRUS: Partikel aseluler, getaran nano brownian, envelope transparan, duri spike trimer/HA-NA, inti genom RNA/DNA berdenyut.
  * - BAKTERI: Organisme seluler prokariotik, dinding sel peptidoglikan berlapis tebal (Gram+/Gram-), nukleoid sirkular, ribosom granuler, koloni rantai/tandan anggur/flagela.
- * - TACTICAL BADGE: Label melayang [🧬 VIRUS] vs [🦠 BAKTERI - Gram± 🛡️] agar pemain seketika membedakannya.
+ * - TACTICAL BADGE: Label melayang [VIRUS] vs [BAKTERI - Gram+/-] agar pemain seketika membedakannya.
  */
 
 import { PATHOGENS } from '../data/pathogens.js';
@@ -596,14 +596,14 @@ export class Pathogen {
     let textColor = '';
 
     if (isVirus) {
-      badgeText = this.isBoss ? `🧬 VIRUS APEX: ${this.def.name}` : `🧬 VIRUS`;
+      badgeText = this.isBoss ? `VIRUS APEX: ${this.def.name}` : `VIRUS`;
       badgeBorder = 'rgba(255, 0, 100, 0.85)';
       badgeFill = 'rgba(20, 5, 15, 0.8)';
       textColor = '#ff5588';
     } else {
       const gramTag = this.def.gram ? (this.def.gram.includes('Positif') ? 'Gram+' : 'Gram-') : '';
-      const armorTag = this.armor > 0 ? ` 🛡️${this.armor}%` : '';
-      badgeText = this.isBoss ? `🦠 SUPERBUG: ${this.def.name}` : `🦠 BAKTERI [${gramTag}]${armorTag}`;
+      const armorTag = this.armor > 0 ? ` [${this.armor}% ARMOR]` : '';
+      badgeText = this.isBoss ? `SUPERBUG: ${this.def.name}` : `BAKTERI [${gramTag}]${armorTag}`;
       const isGramPos = this.def.gram && this.def.gram.includes('Positif');
       badgeBorder = isGramPos ? 'rgba(168, 85, 247, 0.85)' : 'rgba(16, 185, 129, 0.85)';
       badgeFill = 'rgba(10, 15, 25, 0.8)';

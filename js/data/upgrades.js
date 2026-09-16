@@ -1,4 +1,4 @@
-﻿/**
+/**
  * upgrades.js
  * Pilihan Peningkatan Diferensiasi Sitokin / Mutasi Imunologis
  * Muncul saat pemain naik level di dalam run (3 pilihan acak).
@@ -20,7 +20,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'chemokine_il8',
     title: 'Kemokin Kemotaksis (IL-8)',
-    icon: '⚡',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
     type: 'speed_ally',
     effectDesc: '+20% Kecepatan Gerak & Memanggil 1 Neutrofil Pembantu',
     lore: 'Interleukin-8 adalah kemoatraktan kuat yang memanggil rekrutmen leukosit ke situs infeksi.',
@@ -32,7 +32,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'complement_mac',
     title: 'Komplemen Jalur Lisis (MAC)',
-    icon: '💥',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>',
     type: 'damage',
     effectDesc: 'Semua Serangan Mengabaikan Armor Bakteri & +15% Damage',
     lore: 'Membrane Attack Complex (C5b-C9) melubangi membran luar bakteri patogen secara langsung.',
@@ -56,7 +56,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'lysozyme_enhancer',
     title: 'Lisozim Konsentrasi Tinggi',
-    icon: '🧪',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M10 2v7.31L4.5 19.5A2 2 0 0 0 6.23 22h11.54a2 2 0 0 0 1.73-2.5L14 9.31V2"/></svg>',
     type: 'antibacterial',
     effectDesc: '+35% Kerusakan terhadap Seluruh Spesies Bakteri',
     lore: 'Enzim yang memecah ikatan beta-1,4 glikosidik antara asam N-asetilmuramat dan N-asetilglukosamin pada peptidoglikan.',
@@ -67,7 +67,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'respiratory_ros',
     title: 'NADPH Oksidase Hiperaktif',
-    icon: '☢️',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="2"/><path d="M4.93 4.93A10 10 0 0 1 12 2v4a6 6 0 0 0-4.24 1.76M19.07 4.93A10 10 0 0 1 22 12h-4a6 6 0 0 0-1.76-4.24M12 22a10 10 0 0 1-7.07-2.93l2.83-2.83A6 6 0 0 0 12 18z"/></svg>',
     type: 'burst',
     effectDesc: 'Serangan meninggalkan bercak Radikal Bebas (ROS) beracun selama 3 detik',
     lore: 'Produksi anion superoksida yang sangat reaktif untuk membunuh mikroba intraseluler.',
@@ -78,7 +78,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'phagolysosome_acid',
     title: 'Asidifikasi Fagolisosom',
-    icon: '❤️',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
     type: 'heal',
     effectDesc: '+50% Pemulihan HP dari Kills & +150 Max HP',
     lore: 'Penurunan pH vakuola fagositik hingga 4.5 untuk mengoptimalkan kinerja hidrolase asam.',
@@ -91,7 +91,7 @@ export const CYTOKINE_UPGRADES = [
   {
     id: 'antioxidant_shield',
     title: 'Glutation & Barrier Seluler',
-    icon: '🔰',
+    icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
     type: 'defense',
     effectDesc: 'Mendapatkan Barrier Pelindung yang Menyerap 120 Kerusakan tiap 12 detik',
     lore: 'Antioksidan tripeptida utama yang melindungi membran sel imun dari lisis autologus.',

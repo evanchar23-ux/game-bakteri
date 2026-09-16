@@ -26,7 +26,7 @@ export const IMMUNE_CELLS = {
     },
     basicAttack: {
       name: 'Pseudopodia Strike & Phagocytosis',
-      icon: '💥',
+      icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
       type: 'melee_swallow',
       damage: 65,
       range: 85,
@@ -45,7 +45,7 @@ export const IMMUNE_CELLS = {
     ultimateSkill: {
       name: 'Nitric Oxide & Lysosomal Burst',
       key: 'Q / E',
-      icon: '💥',
+      icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
       atpCost: 65,
       cooldown: 12.0,
       description: 'Melepaskan semburan enzim lisosom dan Reactive Nitrogen Species (RNS) dalam radius luas di sekitar Makrofag, menghancurkan biofilm dan dinding bakteri.'
@@ -150,7 +150,7 @@ export const IMMUNE_CELLS = {
     ultimateSkill: {
       name: 'Agglutination Detonation',
       key: 'Q / E',
-      icon: '💥',
+      icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>',
       atpCost: 75,
       cooldown: 15.0,
       description: 'Memadatkan semua patogen yang terikat antibodi menjadi gumpalan (aglutinasi) kemudian meledakkannya melalui aktivasi Komplemen Klasik!'

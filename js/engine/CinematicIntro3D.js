@@ -425,11 +425,11 @@ export class CinematicIntro3D {
         this.targetBracket.classList.remove('hidden');
         this.targetBracket.style.display = 'block';
         if (this.targetLabel) {
-          this.targetLabel.innerText = `⚠️ ANCAMAN BIOHAZARD MUTAN: APEX VIRUS LEVEL V`;
+          this.targetLabel.innerText = `ANCAMAN BIOHAZARD MUTAN: APEX VIRUS LEVEL V`;
         }
       }
       if (this.hudTelemetry) {
-        this.hudTelemetry.innerText = `⚠️ PERINGATAN: PATOGEN MUTAN MEROBEK MEMBRAN!`;
+        this.hudTelemetry.innerText = `PERINGATAN: PATOGEN MUTAN MEROBEK MEMBRAN!`;
       }
       const o2Drop = Math.max(74, 98.5 - p * 24.5);
       if (this.hudO2) this.hudO2.innerText = `${o2Drop.toFixed(1)}%`;

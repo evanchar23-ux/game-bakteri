@@ -304,8 +304,7 @@ export class Game {
       document.getElementById('btn-ok-settings').onclick = () => this.hideScreen(uiSettings);
       document.getElementById('btn-toggle-sound-settings').onclick = (e) => {
         const muted = sound.toggleMute();
-        e.target.innerText = muted ? '🔇 SENYAP' : '🔊 AKTIF';
-        document.getElementById('audio-icon').innerText = muted ? '🔇' : '🔊';
+        this.updateAudioIcons(muted);
       };
     }
 
@@ -529,7 +528,7 @@ export class Game {
     document.getElementById('audio-toggle').onclick = () => {
       sound.init();
       const muted = sound.toggleMute();
-      document.getElementById('audio-icon').innerText = muted ? '🔇' : '🔊';
+      this.updateAudioIcons(muted);
     };
 
     // Immunopedia Bio-Terminal Category Filters
@@ -623,6 +622,19 @@ export class Game {
     sound.playAmbientLoop();
   }
 
+  updateAudioIcons(muted) {
+    const volOnSvg = `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+    const volMuteSvg = `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`;
+    const soundBtn = document.getElementById('btn-toggle-sound-settings');
+    const audioIcon = document.getElementById('audio-icon');
+    if (soundBtn) {
+      soundBtn.innerHTML = muted ? `${volMuteSvg} <span>SENYAP</span>` : `${volOnSvg} <span>AKTIF</span>`;
+    }
+    if (audioIcon) {
+      audioIcon.innerHTML = muted ? volMuteSvg : `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+    }
+  }
+
   showScreen(targetOverlay) {
     const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser];
     const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && targetOverlay.id === 'settings-modal'));
@@ -635,7 +647,12 @@ export class Game {
       if (this.uiEntranceCinematic) this.uiEntranceCinematic.classList.remove('active');
     }
 
-    if (targetOverlay) targetOverlay.classList.remove('hidden');
+    if (targetOverlay) {
+      targetOverlay.classList.remove('hidden');
+      targetOverlay.scrollTop = 0;
+      const scrollables = targetOverlay.querySelectorAll('.modal-content, .cell-roster-dossier-col, .organ-dossier-panel, .bio-terminal-deck, .bio-chamber-layout');
+      scrollables.forEach((el) => { el.scrollTop = 0; });
+    }
 
     // Manage Menu Music based on target screen
     if (targetOverlay === this.uiMenu || targetOverlay === this.uiCharSelect || targetOverlay === this.uiOrganSelect) {
@@ -719,8 +736,8 @@ export class Game {
             <h3><span>${cell.avatar}</span> ${cell.name}</h3>
             <span class="cell-dossier-badge" style="color: ${cell.color}; border-color: ${cell.color}44; background: ${cell.color}15;">${cell.badge}</span>
           </div>
-          <div style="font-size: 11px; color: ${cell.color}; font-weight: 700; font-family: var(--font-display);">
-            STATUS: SIAP DISTRIBUSI ⚔️
+          <div style="font-size: 11px; color: ${cell.color}; font-weight: 700; font-family: var(--font-display); display: flex; align-items: center; gap: 6px;">
+            <span>STATUS: SIAP DISTRIBUSI</span> <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/><path d="M11 5l-6 6"/><path d="M8 8L4 4"/><path d="M5 3L3 5"/></svg>
           </div>
         </div>
 
@@ -729,7 +746,7 @@ export class Game {
         <div class="cell-stats-skills-grid">
           <!-- Left: Stats -->
           <div class="cell-stats-box">
-            <span class="box-micro-label">📊 STATISTIK BIOLOGIS</span>
+            <span class="box-micro-label"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> STATISTIK BIOLOGIS</span>
             
             <div class="stat-metric-row">
               <span class="stat-metric-name">Daya Tahan (HP)</span>
@@ -774,9 +791,9 @@ export class Game {
 
           <!-- Right: Arsenal & Skills -->
           <div class="cell-skills-box">
-            <span class="box-micro-label">⚡ ARSENAL & TAKTIK</span>
+            <span class="box-micro-label"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> ARSENAL & TAKTIK</span>
             <div class="cell-skill-row">
-              <span class="cell-skill-tag">💥 <strong>Utama:</strong> ${cell.basicAttack.name}</span>
+              <span class="cell-skill-tag"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> <strong>Utama:</strong> ${cell.basicAttack.name}</span>
               <span class="cell-skill-desc">${cell.basicAttack.description || ''}</span>
             </div>
             <div class="cell-skill-row">
@@ -784,20 +801,20 @@ export class Game {
               <span class="cell-skill-desc">${cell.tacticalSkill.description || ''}</span>
             </div>
             <div class="cell-skill-row">
-              <span class="cell-skill-tag">⚡ <strong>Bio-Ult:</strong> ${cell.ultimateSkill.name}</span>
+              <span class="cell-skill-tag"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg> <strong>Bio-Ult:</strong> ${cell.ultimateSkill.name}</span>
               <span class="cell-skill-desc">${cell.ultimateSkill.description || ''}</span>
             </div>
           </div>
         </div>
 
         <div class="cell-bio-fact">
-          <strong>🔬 CATATAN FISIOLOGI & IMUNOLOGI:</strong> ${cell.passive.description}
+          <strong><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> CATATAN FISIOLOGI & IMUNOLOGI:</strong> ${cell.passive.description}
         </div>
       `;
 
       if (btnNext) {
         btnNext.disabled = false;
-        btnNext.innerHTML = `PILIH ORGAN TUBUH UNTUK ${cell.name.toUpperCase()} ➔`;
+        btnNext.innerHTML = `PILIH ORGAN TUBUH UNTUK ${cell.name.toUpperCase()} <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
       }
     };
 
@@ -954,7 +971,7 @@ export class Game {
       }
 
       const enemyTagsHtml = Array.from(enemySet)
-        .map((type) => `<span class="pathogen-tag">● ${pathogenNameMap[type] || type}</span>`)
+        .map((type) => `<span class="pathogen-tag"><svg class="inline-icon" viewBox="0 0 24 24" fill="currentColor" width="8" height="8" style="vertical-align: middle; margin-right: 4px;"><circle cx="12" cy="12" r="6"/></svg>${pathogenNameMap[type] || type}</span>`)
         .join('');
 
       const bossTitle = bossKey ? (bossNameMap[bossKey] || bossKey) : 'Patogen Mutan Alfa';
@@ -979,12 +996,12 @@ export class Game {
 
         <div class="dossier-grid">
           <div class="dossier-subbox hazard-box">
-            <span class="subbox-label">⚡ LINGKUNGAN MIKRO & HAZARD</span>
+            <span class="subbox-label"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> LINGKUNGAN MIKRO & HAZARD</span>
             <span class="subbox-val-title">${organ.hazard.name}</span>
             <p class="subbox-desc">${organ.hazard.description}</p>
           </div>
           <div class="dossier-subbox threat-box">
-            <span class="subbox-label">☣️ INTELIJEN PATOGEN & BOSS</span>
+            <span class="subbox-label"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="12" cy="12" r="6"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg> INTELIJEN PATOGEN & BOSS</span>
             <span class="subbox-val-title" style="color: #ff5577;">BOSS: ${bossTitle}</span>
             <div class="pathogen-roster-tags">
               ${enemyTagsHtml}
@@ -993,13 +1010,13 @@ export class Game {
         </div>
 
         <div class="dossier-funfact">
-          <strong>KOLOM SAINS & EDUKASI:</strong> ${organ.funFact}
+          <strong><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg> KOLOM SAINS & EDUKASI:</strong> ${organ.funFact}
         </div>
       `;
 
       if (btnDeploy) {
         btnDeploy.disabled = false;
-        btnDeploy.innerHTML = `KERAHKAN SEL IMUN KE ${organ.name.toUpperCase()}! ⚔️`;
+        btnDeploy.innerHTML = `KERAHKAN SEL IMUN KE ${organ.name.toUpperCase()}! <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/><path d="M11 5l-6 6"/><path d="M8 8L4 4"/><path d="M5 3L3 5"/></svg>`;
       }
     };
 
@@ -1179,7 +1196,7 @@ export class Game {
 
       const firstName = item.name.split(' ')[0] || item.name;
       card.innerHTML = `
-        <span class="dock-card-icon">${item.icon || '🧬'}</span>
+        <span class="dock-card-icon">${item.icon || '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>'}</span>
         <div class="dock-card-info">
           <span class="dock-card-name">${firstName}</span>
           <span class="dock-card-tag">${item.specimenCode || 'SPEC'}</span>
@@ -1256,7 +1273,7 @@ export class Game {
     if (elName) elName.textContent = item.name;
 
     const elIcon = document.getElementById('terminal-spec-icon');
-    if (elIcon) elIcon.textContent = item.icon || '🧬';
+    if (elIcon) elIcon.innerHTML = item.icon || '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
 
     const elLatin = document.getElementById('terminal-latin-name');
     if (elLatin) elLatin.textContent = item.scientificName || '';
@@ -1505,7 +1522,7 @@ export class Game {
         sound.playAlarm();
         this.camera.shake(15, 0.6);
         this.postTelemetry(`[PERINGATAN PATOGEN APEX] ${enemy.def.name} MUNCUL!`);
-        this.showSwarmBanner(`⚠️ PERINGATAN: APEX PATOGEN ${enemy.def.name.toUpperCase()} MUNCUL!`);
+        this.showSwarmBanner(`PERINGATAN: APEX PATOGEN ${enemy.def.name.toUpperCase()} MUNCUL!`);
         break; // Boss never multiplies
       }
     }
@@ -1528,8 +1545,8 @@ export class Game {
       this.spawnSingleEnemy(chosenType, 1, scatterAngle, dist);
     }
 
-    this.postTelemetry(`[BIOHAZARD] ⚠️ KELOMPOK PATOGEN (${count}x ${chosenType.toUpperCase()}) MENDEKATI!`);
-    this.showSwarmBanner(`⚠️ PERINGATAN: KELOMPOK PATOGEN MENDEKATI!`);
+    this.postTelemetry(`[BIOHAZARD] KELOMPOK PATOGEN (${count}x ${chosenType.toUpperCase()}) MENDEKATI!`);
+    this.showSwarmBanner(`PERINGATAN: KELOMPOK PATOGEN MENDEKATI!`);
   }
 
   addExp(amount) {
@@ -1780,28 +1797,28 @@ export class Game {
       // Medal of Honor tailored to organ
       const medals = {
         lungs: {
-          icon: '🏅',
+          icon: '<svg class="inline-icon svg-medal-gold" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" width="38" height="38"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>',
           name: 'Medali Emas Sterilisasi Alveolar Pulmonal',
           desc: 'Dianugerahkan atas perlindungan alveolar dari droplet SARS-CoV-2 tanpa pneumonia fatal.'
         },
         gut: {
-          icon: '🎖️',
+          icon: '<svg class="inline-icon svg-medal-gold" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" width="38" height="38"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>',
           name: 'Medali Emas Integritas Mikrobioma Enterik',
           desc: 'Dianugerahkan atas pembersihan total endotoksin Salmonella & Shigella pada epitel vili.'
         },
         bloodstream: {
-          icon: '<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+          icon: '<svg class="inline-icon svg-medal-gold" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" width="38" height="38"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
           name: 'Salib Emas Proteksi Vaskular & Anti-Sepsis',
           desc: 'Dianugerahkan atas eliminasi bakteremia Staphylococcus sebelum memicu badai sepsis.'
         },
         skin: {
-          icon: '🌟',
+          icon: '<svg class="inline-icon svg-medal-gold" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" width="38" height="38"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
           name: 'Bintang Emas Regenerasi Epidermal Dermis',
           desc: 'Dianugerahkan atas pencegahan invasi luka terbuka dan pembentukan barier keratin kuat.'
         }
       };
       const curMedal = medals[this.selectedOrganKey] || medals.lungs;
-      if (this.debMedalIcon) this.debMedalIcon.innerText = curMedal.icon;
+      if (this.debMedalIcon) this.debMedalIcon.innerHTML = curMedal.icon;
       if (this.debMedalName) this.debMedalName.innerText = curMedal.name;
       if (this.debMedalDesc) this.debMedalDesc.innerText = curMedal.desc;
 
@@ -2116,10 +2133,10 @@ export class Game {
         this.hudVictoryCountdown.classList.remove('hidden');
 
         if (remainingEnemiesInWave <= 0) {
-          if (this.hudVictoryCountdownText) this.hudVictoryCountdownText.innerText = '🏆 STERILISASI JARINGAN 100% SUKSES!';
+          if (this.hudVictoryCountdownText) this.hudVictoryCountdownText.innerText = 'STERILISASI JARINGAN 100% SUKSES!';
         } else if (remainingEnemiesInWave <= 5) {
           if (this.hudVictoryCountdownText) {
-            this.hudVictoryCountdownText.innerText = `🎯 ${remainingEnemiesInWave} PATOGEN TERSISA MENUJU KEMENANGAN!`;
+            this.hudVictoryCountdownText.innerText = `${remainingEnemiesInWave} PATOGEN TERSISA MENUJU KEMENANGAN!`;
           }
           // Sound trigger & Telemetry when entering proximity or counter changes
           if (this.lastCountdownCount !== remainingEnemiesInWave) {
@@ -2128,7 +2145,7 @@ export class Game {
             this.postTelemetry(`[RADAR KLINIK] ${remainingEnemiesInWave} mikroba tersisa! Jaringan mendekati remisi total!`);
           }
         } else {
-          if (this.hudVictoryCountdownText) this.hudVictoryCountdownText.innerText = '⚡ FASE TERAKHIR: HABISI APEX PATOGEN!';
+          if (this.hudVictoryCountdownText) this.hudVictoryCountdownText.innerText = 'FASE TERAKHIR: HABISI APEX PATOGEN!';
         }
       } else {
         this.hudVictoryCountdown.classList.add('hidden');

@@ -577,8 +577,8 @@ export function getSpecimenIllustrationSVG(visualType) {
     default:
       return `
         <svg viewBox="0 0 320 320" width="100%" height="100%" class="specimen-svg">
-          <circle cx="160" cy="160" r="70" fill="#2fe7c8" opacity="0.8"/>
-          <text x="160" y="165" fill="#000" font-size="28" text-anchor="middle">🔬</text>
+          <circle cx="160" cy="160" r="70" fill="rgba(47, 231, 200, 0.2)" stroke="#2fe7c8" stroke-width="3"/>
+          <path d="M150 130h20v60h-20zm-15 70h50v8h-50zm25-100a20 20 0 0 1 20 20h-40a20 20 0 0 1 20-20z" fill="#2fe7c8"/>
         </svg>
       `;
   }

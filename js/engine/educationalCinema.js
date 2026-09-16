@@ -4,8 +4,8 @@
  * 
  * FITUR UTAMA:
  * 1. Multi-Voice Over Asli Studio ElevenLabs (24 File MP3 Jernih):
- *    - 👦 Kak Arya (Dokter / Host Sains Cerdas & Berwibawa)
- *    - 👧 Cia (Adik Cewek Ceria, Penasaran & Menggemaskan)
+ *    - Kak Arya (Dokter / Host Sains Cerdas & Berwibawa)
+ *    - Cia (Adik Cewek Ceria, Penasaran & Menggemaskan)
  * 2. Avatar Animasi 2D Interaktif (CharacterAvatars2D):
  *    - Mulut berbicara dinamis (Lip-Flap)
  *    - Kedipan mata alami (Eye Blink)
@@ -84,7 +84,7 @@ export class EducationalCinema {
         act: 1,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_0.mp3',
         estDuration: 5.5,
@@ -95,7 +95,7 @@ export class EducationalCinema {
         act: 1,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_1.mp3',
         estDuration: 4.5,
@@ -106,7 +106,7 @@ export class EducationalCinema {
         act: 1,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_2.mp3',
         estDuration: 7.5,
@@ -119,7 +119,7 @@ export class EducationalCinema {
         act: 2,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_3.mp3',
         estDuration: 3.5,
@@ -130,7 +130,7 @@ export class EducationalCinema {
         act: 2,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_4.mp3',
         estDuration: 6.0,
@@ -141,7 +141,7 @@ export class EducationalCinema {
         act: 2,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_5.mp3',
         estDuration: 4.8,
@@ -152,7 +152,7 @@ export class EducationalCinema {
         act: 2,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_6.mp3',
         estDuration: 5.0,
@@ -165,7 +165,7 @@ export class EducationalCinema {
         act: 3,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_7.mp3',
         estDuration: 3.8,
@@ -176,7 +176,7 @@ export class EducationalCinema {
         act: 3,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_8.mp3',
         estDuration: 6.0,
@@ -187,7 +187,7 @@ export class EducationalCinema {
         act: 3,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_9.mp3',
         estDuration: 4.2,
@@ -200,7 +200,7 @@ export class EducationalCinema {
         act: 4,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_10.mp3',
         estDuration: 5.5,
@@ -211,7 +211,7 @@ export class EducationalCinema {
         act: 4,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_11.mp3',
         estDuration: 4.8,
@@ -222,7 +222,7 @@ export class EducationalCinema {
         act: 4,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_12.mp3',
         estDuration: 4.5,
@@ -235,7 +235,7 @@ export class EducationalCinema {
         act: 5,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_13.mp3',
         estDuration: 4.5,
@@ -246,7 +246,7 @@ export class EducationalCinema {
         act: 5,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_14.mp3',
         estDuration: 12.5,
@@ -257,7 +257,7 @@ export class EducationalCinema {
         act: 5,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_15.mp3',
         estDuration: 4.2,
@@ -270,7 +270,7 @@ export class EducationalCinema {
         act: 6,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_16.mp3',
         estDuration: 10.0,
@@ -281,7 +281,7 @@ export class EducationalCinema {
         act: 6,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_17.mp3',
         estDuration: 3.5,
@@ -292,7 +292,7 @@ export class EducationalCinema {
         act: 6,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_18.mp3',
         estDuration: 6.8,
@@ -305,7 +305,7 @@ export class EducationalCinema {
         act: 7,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_19.mp3',
         estDuration: 8.5,
@@ -316,7 +316,7 @@ export class EducationalCinema {
         act: 7,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_20.mp3',
         estDuration: 4.8,
@@ -327,7 +327,7 @@ export class EducationalCinema {
         act: 7,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_21.mp3',
         estDuration: 5.5,
@@ -338,7 +338,7 @@ export class EducationalCinema {
         act: 7,
         speaker: 'arya',
         name: 'Kak Arya',
-        avatar: '👦',
+        speakerRole: 'host',
         badgeColor: '#00f2fe',
         audioSrc: 'assets/audio/edu/line_22.mp3',
         estDuration: 5.2,
@@ -349,7 +349,7 @@ export class EducationalCinema {
         act: 7,
         speaker: 'cia',
         name: 'Cia',
-        avatar: '👧',
+        speakerRole: 'guest',
         badgeColor: '#ff66cc',
         audioSrc: 'assets/audio/edu/line_23.mp3',
         estDuration: 3.5,
@@ -549,7 +549,7 @@ export class EducationalCinema {
     if (index >= this.dialogue.length) {
       // Selesai seluruh 24 dialog -> Tampilkan ajakan perang imun
       if (this.uiSubtitleText) {
-        this.uiSubtitleText.innerText = '⚔️ SIAPKAN PASUKAN! Waktunya terjun langsung ke medan tempur Viral Slayer!';
+        this.uiSubtitleText.innerText = 'SIAPKAN PASUKAN! Waktunya terjun langsung ke medan tempur Viral Slayer!';
       }
       this.avatars.setSpeaker('arya', 23, false);
       if (this.cardArya) this.cardArya.classList.remove('active-arya');
@@ -564,7 +564,11 @@ export class EducationalCinema {
     const line = this.dialogue[index];
 
     // 1. Update Subtitle UI
-    if (this.uiSpeakerAvatar) this.uiSpeakerAvatar.innerText = line.avatar;
+    if (this.uiSpeakerAvatar) {
+      this.uiSpeakerAvatar.innerHTML = line.speaker === 'cia'
+        ? `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="8" r="5"/><path d="M12 13v8"/><path d="M9 16l3-3 3 3"/></svg>`
+        : `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    }
     if (this.uiSpeakerName) {
       this.uiSpeakerName.innerText = line.name;
       this.uiSpeakerName.style.color = line.badgeColor;
@@ -675,7 +679,9 @@ export class EducationalCinema {
       this.bgmGain.gain.setValueAtTime(this.isMuted ? 0 : 0.16, sound.ctx.currentTime);
     }
     if (this.uiMuteIcon) {
-      this.uiMuteIcon.innerText = this.isMuted ? '🔇' : '🔊';
+      this.uiMuteIcon.innerHTML = this.isMuted
+        ? `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`
+        : `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
     }
   }
 
@@ -697,7 +703,9 @@ export class EducationalCinema {
 
   updateControlsUI() {
     if (this.uiPlayPauseIcon) {
-      this.uiPlayPauseIcon.innerText = this.isPaused ? '▶' : '⏸';
+      this.uiPlayPauseIcon.innerHTML = this.isPaused
+        ? `<svg class="inline-icon" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>`
+        : `<svg class="inline-icon" viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
     }
   }
 
@@ -1091,7 +1099,7 @@ export class EducationalCinema {
     ctx.save();
     ctx.font = '800 15px Outfit, sans-serif';
     ctx.fillStyle = '#00f2fe';
-    ctx.fillText('● BAKTERI: SEL MANDIRI MEMBELAH DIRI   vs   VIRUS: PARASIT PEMBAJAK', 45, 45);
+    ctx.fillText('// BAKTERI: SEL MANDIRI MEMBELAH DIRI   vs   VIRUS: PARASIT PEMBAJAK', 45, 45);
     ctx.restore();
 
     for (let b of this.bacteriaSwarm) {
@@ -1169,7 +1177,7 @@ export class EducationalCinema {
     ctx.save();
     ctx.font = '800 15px Outfit, sans-serif';
     ctx.fillStyle = '#ff9100';
-    ctx.fillText('● MAKROFAG: FAGOSITOSIS (MENELAN KUMAN)   &   NEUTROFIL: JALA DNA NETOSIS', 45, 45);
+    ctx.fillText('// MAKROFAG: FAGOSITOSIS (MENELAN KUMAN)   &   NEUTROFIL: JALA DNA NETOSIS', 45, 45);
     ctx.restore();
 
     const m = this.macrophage;
@@ -1201,7 +1209,7 @@ export class EducationalCinema {
     if (this.currentLineIndex === 4) {
       ctx.fillStyle = '#ffcc00';
       ctx.font = '800 16px Outfit, sans-serif';
-      ctx.fillText('⚡ FAGOSITOSIS', -60, -65);
+      ctx.fillText('FAGOSITOSIS AKTIF', -60, -65);
     }
 
     ctx.fillStyle = '#7a3800';
@@ -1235,7 +1243,7 @@ export class EducationalCinema {
     if (this.currentLineIndex === 6) {
       ctx.fillStyle = '#00f2fe';
       ctx.font = '800 16px Outfit, sans-serif';
-      ctx.fillText('🕸️ JARING NETosis', -65, -55);
+      ctx.fillText('JARING NETosis', -65, -55);
     }
 
     if (n.netActive) {
@@ -1263,7 +1271,7 @@ export class EducationalCinema {
     ctx.save();
     ctx.font = '800 15px Outfit, sans-serif';
     ctx.fillStyle = '#00f2fe';
-    ctx.fillText('● LIMFOSIT B: MEMPRODUKSI JUTAAN RUDAL ANTIBODI "Y" (OPSONISASI)', 45, 45);
+    ctx.fillText('// LIMFOSIT B: MEMPRODUKSI JUTAAN RUDAL ANTIBODI "Y" (OPSONISASI)', 45, 45);
     ctx.restore();
 
     const b = this.bCell;
@@ -1291,7 +1299,7 @@ export class EducationalCinema {
     if (this.currentLineIndex === 8) {
       ctx.fillStyle = '#ffd700';
       ctx.font = '800 16px Outfit, sans-serif';
-      ctx.fillText('🏭 PABRIK ANTIBODI', -75, -55);
+      ctx.fillText('PABRIK ANTIBODI', -75, -55);
     }
     ctx.restore();
 
@@ -1335,7 +1343,7 @@ export class EducationalCinema {
 
       ctx.fillStyle = '#ffd700';
       ctx.font = '700 9px monospace';
-      ctx.fillText('🔒 LOCKED', -22, -18);
+      ctx.fillText('TERIKAT ANTIBODI', -22, -18);
       ctx.restore();
     }
   }
@@ -1345,7 +1353,7 @@ export class EducationalCinema {
     ctx.save();
     ctx.font = '800 15px Outfit, sans-serif';
     ctx.fillStyle = '#ff0055';
-    ctx.fillText('● LIMFOSIT T SITOTOKSIK: TOMBAK PERFORIN & APOPTOSIS TERATUR', 45, 45);
+    ctx.fillText('// LIMFOSIT T SITOTOKSIK: TOMBAK PERFORIN & APOPTOSIS TERATUR', 45, 45);
     ctx.restore();
 
     const tc = this.tCell;
@@ -1372,7 +1380,7 @@ export class EducationalCinema {
     if (this.currentLineIndex === 10) {
       ctx.fillStyle = '#ff1744';
       ctx.font = '800 16px Outfit, sans-serif';
-      ctx.fillText('🥷 ASSASSIN SITOTOKSIK', -85, -55);
+      ctx.fillText('ASSASSIN SITOTOKSIK', -85, -55);
     }
     ctx.restore();
 
@@ -1439,12 +1447,12 @@ export class EducationalCinema {
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '800 12px Rajdhani, sans-serif';
-    ctx.fillText(host.apoptosisProgress > 0.5 ? '💀 APOPTOSIS' : 'SEL INANG TERINFEKSI', -58, 4);
+    ctx.fillText(host.apoptosisProgress > 0.5 ? 'APOPTOSIS TERPROGRAM' : 'SEL INANG TERINFEKSI', -58, 4);
     
     if (this.currentLineIndex >= 12 && host.apoptosisProgress > 0.5) {
       ctx.fillStyle = '#ff1744';
       ctx.font = '900 18px Outfit, sans-serif';
-      ctx.fillText('💥 MELEDAK HANCUR!', -80, -70);
+      ctx.fillText('LISIS PARSIAL HANCUR!', -80, -70);
     }
     ctx.restore();
   }
@@ -1454,7 +1462,7 @@ export class EducationalCinema {
     ctx.save();
     ctx.font = '800 15px Outfit, sans-serif';
     ctx.fillStyle = '#ffd700';
-    ctx.fillText('● VAKSINASI: SIMULASI MILITER & PEMBENTUKAN SEL MEMORI EMAS', 45, 45);
+    ctx.fillText('// VAKSINASI: SIMULASI MILITER & PEMBENTUKAN SEL MEMORI EMAS', 45, 45);
     ctx.restore();
 
     const mc = this.memoryCell;
@@ -1479,7 +1487,7 @@ export class EducationalCinema {
     // Ikon Kunci Memori DNA Emas
     ctx.fillStyle = '#fef08a';
     ctx.font = '700 10px monospace';
-    ctx.fillText('🧬 DATA ANTIGEN TERSIMPAN', -70, 32);
+    ctx.fillText('DATA ANTIGEN TERSIMPAN', -70, 32);
     ctx.restore();
   }
 
@@ -1488,7 +1496,7 @@ export class EducationalCinema {
     ctx.save();
     ctx.font = '800 15px Outfit, sans-serif';
     ctx.fillStyle = '#00e5ff';
-    ctx.fillText('● SALURAN CERNA: TRILIUNAN BAKTERI BAIK (MIKROBIOTA) PENJAGA TUBUH', 45, 45);
+    ctx.fillText('// SALURAN CERNA: TRILIUNAN BAKTERI BAIK (MIKROBIOTA) PENJAGA TUBUH', 45, 45);
     ctx.restore();
 
     for (let gb of this.goodBacteriaSwarm) {
@@ -1518,13 +1526,13 @@ export class EducationalCinema {
     ctx.textAlign = 'center';
     ctx.shadowColor = '#00f2fe';
     ctx.shadowBlur = 20;
-    ctx.fillText('🛡️ RAWAT SISTEM IMUN: CUCI TANGAN, NUTRISI & TIDUR CUKUP! 🛡️', this.width / 2, this.height / 2 - 20);
+    ctx.fillText('RAWAT SISTEM IMUN: CUCI TANGAN, NUTRISI & TIDUR CUKUP!', this.width / 2, this.height / 2 - 20);
 
     ctx.font = '700 16px Rajdhani, sans-serif';
     ctx.fillStyle = '#fef08a';
     ctx.shadowColor = '#fef08a';
     ctx.shadowBlur = 15;
-    ctx.fillText('⚔️ KLIK TOMBOL DI BAWAH UNTUK MEMIMPIN PASUKAN IMUN DI VIRAL SLAYER! ⚔️', this.width / 2, this.height / 2 + 25);
+    ctx.fillText('KLIK TOMBOL DI BAWAH UNTUK MEMIMPIN PASUKAN IMUN DI VIRAL SLAYER!', this.width / 2, this.height / 2 + 25);
     ctx.restore();
   }
 

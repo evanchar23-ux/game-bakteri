@@ -73,26 +73,38 @@ canvas#gameCanvas {
   height: 100%;
   z-index: 10;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   transform-origin: center;
 }
 
 .screen-overlay:not(#main-menu) {
-  background: rgba(2, 6, 16, 0.82);
+  background: rgba(2, 6, 16, 0.85);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  padding: 20px;
+  padding: 20px 16px;
   box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* CRITICAL: Prevents top edge clipping on smaller viewports */
 }
 
-.screen-overlay:not(.hidden) > .modal-content {
+.screen-overlay:not(#main-menu) > .modal-content,
+.screen-overlay:not(#main-menu) > .bio-terminal-wrapper {
+  margin: auto; /* Gracefully centers vertically when there's space, starts at top when tight */
+  flex-shrink: 0;
+}
+
+.screen-overlay:not(.hidden) > .modal-content,
+.screen-overlay:not(.hidden) > .bio-terminal-wrapper {
   animation: modalPopIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes modalPopIn {
-  0% { transform: scale(0.96) translateY(12px); opacity: 0; filter: blur(6px); }
+  0% { transform: scale(0.97) translateY(8px); opacity: 0; filter: blur(4px); }
   100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
 }
 
@@ -1552,21 +1564,24 @@ button {
    3D BIO-CHAMBER CHARACTER SELECTION MODAL
    ========================================================================== */
 .bio-chamber-modal {
-  max-width: 980px !important;
-  width: 92vw !important;
-  max-height: 92vh !important;
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
+  max-width: 1040px !important;
+  width: min(1040px, 94vw) !important;
+  max-height: calc(100vh - 40px) !important;
+  height: min(680px, calc(100vh - 40px)) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 20px 24px 16px 24px !important;
+  overflow: hidden !important;
 }
 
 .bio-chamber-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 12px;
+  padding-bottom: 10px;
+  flex-shrink: 0;
 }
 
 .bio-chamber-header-left h2 {
@@ -1587,6 +1602,7 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .bio-chamber-id-tag {
@@ -1605,10 +1621,11 @@ button {
 /* Two-Column Bio-Chamber Layout */
 .bio-chamber-layout {
   display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 20px;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
   align-items: stretch;
-  min-height: 420px;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -1623,8 +1640,9 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 12px;
-  min-height: 420px;
+  padding: 10px;
+  height: 100%;
+  min-height: 0;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.85);
 }
 
@@ -1670,6 +1688,7 @@ button {
   letter-spacing: 1px;
   color: #c9e2ff;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 .telemetry-live-dot {
@@ -1684,7 +1703,9 @@ button {
 .cell-3d-pod {
   position: relative;
   width: 100%;
-  height: 320px;
+  flex: 1;
+  min-height: 180px;
+  max-height: 320px;
   cursor: grab;
   touch-action: none;
   z-index: 2;
@@ -1719,15 +1740,17 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.05);
   z-index: 2;
   text-align: center;
+  flex-shrink: 0;
 }
 
 /* Right Column: Roster & Dossier */
 .cell-roster-dossier-col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   overflow-y: auto;
-  max-height: 440px;
+  height: 100%;
+  min-height: 0;
   padding-right: 4px;
 }
 
@@ -3638,13 +3661,14 @@ kbd {
 
 .human-scanner-modal {
   max-width: 1060px !important;
-  width: 95vw !important;
-  max-height: 92vh;
-  overflow-y: auto;
-  padding: 24px 28px !important;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  width: min(1060px, 95vw) !important;
+  max-height: calc(100vh - 40px) !important;
+  height: min(740px, calc(100vh - 40px));
+  overflow: hidden !important;
+  padding: 20px 24px 16px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px;
   background: linear-gradient(135deg, rgba(2, 12, 28, 0.95), rgba(4, 18, 38, 0.96)) !important;
   border: 1px solid rgba(0, 242, 254, 0.3) !important;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.15) !important;
@@ -3655,8 +3679,9 @@ kbd {
   justify-content: space-between;
   align-items: flex-start;
   border-bottom: 1px solid rgba(0, 242, 254, 0.15);
-  padding-bottom: 14px;
+  padding-bottom: 10px;
   text-align: left;
+  flex-shrink: 0;
 }
 
 .scanner-header-left {
@@ -3692,9 +3717,12 @@ kbd {
 /* Two-Column Layout */
 .scanner-layout {
   display: grid;
-  grid-template-columns: 330px 1fr;
-  gap: 22px;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
   align-items: stretch;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Left Column: Human Body Silhouette Viewport */
@@ -3708,8 +3736,9 @@ kbd {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 10px 10px 10px;
-  min-height: 520px;
+  padding: 10px;
+  height: 100%;
+  min-height: 0;
   box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.85);
 }
 
@@ -3963,15 +3992,17 @@ kbd {
 .organ-dossier-panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   background: rgba(2, 10, 24, 0.7);
   border: 1px solid rgba(0, 242, 254, 0.2);
   border-radius: 14px;
-  padding: 22px 24px;
+  padding: 16px 20px;
   backdrop-filter: blur(12px);
   text-align: left;
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
+  min-height: 0;
 }
 
 .dossier-top {
@@ -4127,8 +4158,9 @@ kbd {
 .organ-quick-chips-wrap {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   text-align: left;
+  flex-shrink: 0;
 }
 
 .quick-chips-title {
@@ -4142,17 +4174,17 @@ kbd {
 .organ-quick-chips {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .organ-chip-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 14px;
+  gap: 8px;
+  padding: 6px 12px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: 8px;
   color: #d0e2ff;
   font-family: var(--font-display);
   font-size: 11px;
@@ -4209,7 +4241,8 @@ kbd {
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 14px;
+  padding-top: 10px;
+  flex-shrink: 0;
 }
 
 .btn-deploy-large {
