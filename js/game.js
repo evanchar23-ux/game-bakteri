@@ -344,6 +344,21 @@ export class Game {
         const muted = sound.toggleMute();
         this.updateAudioIcons(muted);
       };
+      
+      const volumeSlider = document.getElementById('settings-volume-slider');
+      if (volumeSlider) {
+        volumeSlider.oninput = (e) => {
+          const vol = parseFloat(e.target.value);
+          sound.setVolume(vol);
+          if (vol === 0 && !sound.isMuted) {
+             const muted = sound.toggleMute();
+             this.updateAudioIcons(muted);
+          } else if (vol > 0 && sound.isMuted) {
+             const muted = sound.toggleMute();
+             this.updateAudioIcons(muted);
+          }
+        };
+      }
     }
 
     // Trailer preview click -> Launch Educational Cinema (60s+ Multi-Voice)
@@ -640,6 +655,10 @@ export class Game {
         } else if (e.key === 'Escape') {
           this.showScreen(this.uiOrganSelect);
         }
+      } else if (this.state === 'PLAYING' && (e.key === 'h' || e.key === 'H')) {
+        document.body.classList.toggle('minimal-ui');
+        const isMinimal = document.body.classList.contains('minimal-ui');
+        this.postTelemetry(isMinimal ? '[SISTEM] Mode UI Minimal diaktifkan.' : '[SISTEM] Mode UI Penuh diaktifkan.');
       }
     });
 

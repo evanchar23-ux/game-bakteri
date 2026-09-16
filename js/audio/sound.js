@@ -39,9 +39,17 @@ class SoundEngine {
   toggleMute() {
     this.isMuted = !this.isMuted;
     if (this.masterGain && this.ctx) {
-      this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : 0.85, this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.currentVolume || 0.85, this.ctx.currentTime);
     }
     return this.isMuted;
+  }
+
+  setVolume(vol) {
+    this.currentVolume = vol;
+    if (this.masterGain && this.ctx && !this.isMuted) {
+      // Small ramp to avoid clicking sounds when volume changes abruptly
+      this.masterGain.gain.linearRampToValueAtTime(vol, this.ctx.currentTime + 0.1);
+    }
   }
 
   // --- AUDIO SYNTHESIS SFX ---

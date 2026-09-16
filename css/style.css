@@ -5639,3 +5639,13 @@ kbd {
   color: #fff;
   line-height: 1.4;
 }
+
+/* Minimal UI Toggle */
+.minimal-ui .organ-panel,
+.minimal-ui .telemetry-panel,
+.minimal-ui .skills-hotbar,
+.minimal-ui .hud-onboarding-card,
+.minimal-ui .cytokine-exp-container {
+  display: none !important;
+}
+
