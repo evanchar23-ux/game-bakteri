@@ -5714,3 +5714,54 @@ kbd {
   100% { background-position: 100px 0; }
 }
 
+/* --- Enhancing Main Menu Buttons with more details --- */
+.menu-btn {
+  background: radial-gradient(circle at 100% 100%, rgba(255, 61, 120, 0.05) 0%, transparent 50%), var(--bg-panel);
+  border: 1px solid var(--line-soft);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+}
+
+.menu-btn:hover {
+  background: radial-gradient(circle at 100% 100%, rgba(255, 61, 120, 0.15) 0%, transparent 60%), var(--bg-panel);
+  border-color: rgba(255, 61, 120, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 61, 120, 0.2), inset 0 0 15px rgba(255, 61, 120, 0.1);
+  transform: translateY(-2px);
+}
+
+.menu-btn .label {
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  transition: color 0.3s ease;
+}
+
+.menu-btn:hover .label {
+  color: #fff;
+  text-shadow: 0 0 8px rgba(255, 61, 120, 0.6);
+}
+
+.menu-btn.primary {
+  background: linear-gradient(90deg, #0f4a44 0%, #123a52 100%);
+  border: 1px solid var(--antibody-cyan-dim);
+  box-shadow: 0 4px 20px rgba(47, 231, 200, 0.15), inset 0 0 12px rgba(47, 231, 200, 0.1);
+}
+
+.menu-btn.primary:hover {
+  background: linear-gradient(90deg, #135d55 0%, #174a69 100%);
+  border-color: var(--antibody-cyan);
+  box-shadow: 0 8px 30px rgba(47, 231, 200, 0.3), inset 0 0 20px rgba(47, 231, 200, 0.2);
+  transform: translateY(-3px);
+}
+
+.menu-btn.primary:hover .label {
+  text-shadow: 0 0 10px rgba(47, 231, 200, 0.8);
+}
+
+.menu-btn.primary .play-tri {
+  box-shadow: 0 0 15px var(--antibody-cyan);
+  transition: all 0.3s ease;
+}
+
+.menu-btn.primary:hover .play-tri {
+  transform: scale(1.1);
+  box-shadow: 0 0 25px var(--antibody-cyan), 0 0 10px #fff;
+}
