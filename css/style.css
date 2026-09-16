@@ -5688,44 +5688,23 @@ kbd {
 
   .cells-field use, .debris-field use{ transform-box: fill-box; transform-origin: 50% 50%; }
 
-/* --- Main Menu Button Blood/Slime Dripping Effect --- */
+/* ========================================================
+   MAIN MENU BUTTON EFFECTS — BIO-HORROR / VIRUS THEME
+   ======================================================== */
+
+/* Base button — overflow visible so slime hangs below */
 .menu-btn {
   position: relative;
-  overflow: hidden;
-}
-.menu-btn::after {
-  content: '';
-  position: absolute;
-  top: -20px;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L100,0 L100,10 Q90,20 80,10 T60,10 T40,15 T20,5 T0,10 Z' fill='%23ff3d78' opacity='0.7'/%3E%3C/svg%3E") repeat-x;
-  transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  pointer-events: none;
-  z-index: 10;
-}
-.menu-btn:hover::after {
-  top: 0;
-  animation: dripSlide 2s linear infinite;
-}
-@keyframes dripSlide {
-  0% { background-position: 0 0; }
-  100% { background-position: 100px 0; }
-}
-
-/* --- Enhancing Main Menu Buttons with more details --- */
-.menu-btn {
-  background: radial-gradient(circle at 100% 100%, rgba(255, 61, 120, 0.05) 0%, transparent 50%), var(--bg-panel);
-  border: 1px solid var(--line-soft);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.5);
-  transition: all 0.3s ease;
+  overflow: visible !important;
+  background: radial-gradient(circle at 100% 100%, rgba(255,61,120,0.05) 0%, transparent 50%), var(--bg-panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.03);
+  transition: all 0.35s ease;
 }
 
 .menu-btn:hover {
-  background: radial-gradient(circle at 100% 100%, rgba(255, 61, 120, 0.15) 0%, transparent 60%), var(--bg-panel);
-  border-color: rgba(255, 61, 120, 0.5);
-  box-shadow: 0 8px 25px rgba(255, 61, 120, 0.2), inset 0 0 15px rgba(255, 61, 120, 0.1);
+  border-color: rgba(255,61,120,0.45);
+  box-shadow: 0 8px 28px rgba(255,61,120,0.18), inset 0 0 18px rgba(255,61,120,0.08);
   transform: translateY(-2px);
 }
 
@@ -5733,132 +5712,135 @@ kbd {
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   transition: color 0.3s ease;
 }
-
 .menu-btn:hover .label {
   color: #fff;
-  text-shadow: 0 0 8px rgba(255, 61, 120, 0.6);
+  text-shadow: 0 0 8px rgba(255,61,120,0.6);
 }
 
+/* Primary button overrides */
 .menu-btn.primary {
   background: linear-gradient(90deg, #0f4a44 0%, #123a52 100%);
   border: 1px solid var(--antibody-cyan-dim);
-  box-shadow: 0 4px 20px rgba(47, 231, 200, 0.15), inset 0 0 12px rgba(47, 231, 200, 0.1);
+  box-shadow: 0 4px 20px rgba(47,231,200,0.15), inset 0 0 12px rgba(47,231,200,0.08);
 }
-
 .menu-btn.primary:hover {
   background: linear-gradient(90deg, #135d55 0%, #174a69 100%);
   border-color: var(--antibody-cyan);
-  box-shadow: 0 8px 30px rgba(47, 231, 200, 0.3), inset 0 0 20px rgba(47, 231, 200, 0.2);
+  box-shadow: 0 8px 30px rgba(47,231,200,0.3), inset 0 0 20px rgba(47,231,200,0.15);
   transform: translateY(-3px);
 }
-
 .menu-btn.primary:hover .label {
-  text-shadow: 0 0 10px rgba(47, 231, 200, 0.8);
+  text-shadow: 0 0 10px rgba(47,231,200,0.8);
 }
-
 .menu-btn.primary .play-tri {
   box-shadow: 0 0 15px var(--antibody-cyan);
   transition: all 0.3s ease;
 }
-
 .menu-btn.primary:hover .play-tri {
-  transform: scale(1.1);
-  box-shadow: 0 0 25px var(--antibody-cyan), 0 0 10px #fff;
-}
-/* --- Vertical Slime Drop & Syringe Effect --- */
-.menu-btn {
-  overflow: visible !important; /* override previous hidden to allow drops to fall out */
+  transform: scale(1.12);
+  box-shadow: 0 0 28px var(--antibody-cyan), 0 0 12px #fff;
 }
 
-/* Remove old drip slide */
-.menu-btn::after {
-  display: none !important; 
-}
-
-.slime-drip {
+/* ── Slime SVG hanging from bottom edge ── */
+.btn-slime-bottom {
   position: absolute;
-  bottom: 0px;
-  left: 20%;
-  width: 3px;
-  height: 0px;
-  background: var(--virus-pink);
-  border-radius: 3px;
-  z-index: 20;
-  opacity: 0;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 22px;
   pointer-events: none;
-  filter: drop-shadow(0 0 4px var(--virus-pink));
+  z-index: 15;
+  transform: translateY(100%);
+  transition: opacity 0.3s ease;
+}
+.menu-btn:hover .btn-slime-bottom {
+  opacity: 1;
 }
 
-.menu-btn:hover .slime-drip {
-  animation: slimeDrop 1.2s ease-in infinite;
-}
-
-.menu-btn:hover .slime-drip.delay-1 {
-  left: 50%;
-  animation-delay: 0.4s;
-}
-
-.menu-btn:hover .slime-drip.delay-2 {
-  left: 80%;
-  animation-delay: 0.8s;
-}
-
-@keyframes slimeDrop {
-  0% {
-    height: 0px;
-    bottom: 0px;
-    opacity: 0;
-  }
-  20% {
-    height: 8px;
-    bottom: -8px;
-    opacity: 1;
-  }
-  40% {
-    height: 14px;
-    bottom: -18px;
-    opacity: 1;
-  }
-  70% {
-    height: 6px;
-    bottom: -32px;
-    opacity: 0.7;
-  }
-  90% {
-    height: 2px;
-    bottom: -40px;
-    opacity: 0;
-  }
-  100% {
-    height: 0px;
-    bottom: -40px;
-    opacity: 0;
-  }
-}
-
-/* Syringe Decorative Element */
-.btn-syringe-wrapper {
+/* ── Syringe decoration (primary button) ── */
+.btn-deco-syringe {
   position: absolute;
-  right: -25px;
-  top: 50%;
-  transform: translateY(-50%) rotate(35deg);
+  right: -8px;
+  top: -12px;
+  width: 44px;
+  height: 44px;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 18;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: rotate(0deg);
+}
+.menu-btn.primary:hover .btn-deco-syringe {
+  opacity: 0.7;
+  transform: rotate(-8deg) translate(-4px, 4px);
+  filter: drop-shadow(0 0 6px rgba(47,231,200,0.5));
+}
+
+/* ── Virus spike decoration ── */
+.btn-deco-virus {
+  position: absolute;
+  right: -6px;
+  top: -6px;
   width: 36px;
   height: 36px;
-  opacity: 0.1;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   pointer-events: none;
-  z-index: 25;
+  z-index: 18;
+  opacity: 0.35;
+  transition: all 0.4s ease;
+  animation: virusFloat 4s ease-in-out infinite;
+}
+@keyframes virusFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-2px, 2px) rotate(15deg); }
+}
+.menu-btn:hover .btn-deco-virus {
+  opacity: 0.7;
+  filter: drop-shadow(0 0 5px rgba(255,61,120,0.5));
 }
 
-.btn-syringe-wrapper svg {
-  width: 100%;
-  height: 100%;
-  color: var(--virus-pink);
-  filter: drop-shadow(0 0 2px var(--virus-pink));
+/* ── Bacteria decoration ── */
+.btn-deco-bacteria {
+  position: absolute;
+  right: -4px;
+  top: -4px;
+  width: 42px;
+  height: 26px;
+  pointer-events: none;
+  z-index: 18;
+  opacity: 0.3;
+  transition: all 0.4s ease;
+  animation: bacteriaPulse 3.5s ease-in-out infinite;
+}
+@keyframes bacteriaPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.08) rotate(5deg); }
+}
+.menu-btn:hover .btn-deco-bacteria {
+  opacity: 0.65;
+  filter: drop-shadow(0 0 4px rgba(139,107,255,0.5));
 }
 
-.menu-btn.primary:hover .btn-syringe-wrapper {
-  opacity: 0.9;
-  transform: translateY(-50%) rotate(35deg) translate(-15px, 15px);
-  filter: drop-shadow(0 0 10px var(--virus-pink));
+/* ── Blood splatter decoration ── */
+.btn-deco-blood {
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 34px;
+  height: 34px;
+  pointer-events: none;
+  z-index: 18;
+  opacity: 0.3;
+  transition: all 0.4s ease;
 }
+.menu-btn:hover .btn-deco-blood {
+  opacity: 0.6;
+  filter: drop-shadow(0 0 4px rgba(255,61,120,0.5));
+}
+
+/* Hide old drip pseudo-elements */
+.menu-btn::after {
+  display: none !important;
+}
+
+
+
