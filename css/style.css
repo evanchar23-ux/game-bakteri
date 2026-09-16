@@ -94,7 +94,7 @@ canvas#gameCanvas {
 
 .screen-overlay:not(#main-menu) > .modal-content,
 .screen-overlay:not(#main-menu) > .bio-terminal-wrapper {
-  margin: auto; /* Gracefully centers vertically when there's space, starts at top when tight */
+  margin: 4vh auto;
   flex-shrink: 0;
 }
 

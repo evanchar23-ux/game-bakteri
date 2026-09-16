@@ -536,7 +536,11 @@ export class Game {
     if (btnStartBriefing) {
       btnStartBriefing.onclick = () => {
         if (this.chkSkipBriefing && this.chkSkipBriefing.checked) {
-          localStorage.setItem('viral_slayer_skip_briefing', 'true');
+          try {
+            localStorage.setItem('viral_slayer_skip_briefing', 'true');
+          } catch (e) {
+            console.warn('localStorage access denied', e);
+          }
         }
         if (window.sound) window.sound.playClick();
         this.startMission();
@@ -708,7 +712,7 @@ export class Game {
     const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiBriefing];
     const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && targetOverlay.id === 'settings-modal'));
 
-    if (!isModal && fullScreens.includes(targetOverlay)) {
+    if (!isModal && (targetOverlay === null || fullScreens.includes(targetOverlay))) {
       this.currentScreen = targetOverlay;
       fullScreens.forEach((el) => {
         if (el && el !== targetOverlay) el.classList.add('hidden');
@@ -1399,7 +1403,14 @@ export class Game {
   }
 
   openMissionBriefing() {
-    if (localStorage.getItem('viral_slayer_skip_briefing') === 'true') {
+    let skipBriefing = false;
+    try {
+      skipBriefing = localStorage.getItem('viral_slayer_skip_briefing') === 'true';
+    } catch (e) {
+      console.warn('localStorage access denied', e);
+    }
+    
+    if (skipBriefing) {
       this.startMission();
       return;
     }
@@ -1491,15 +1502,15 @@ export class Game {
 
     // Setup HUD Info
     this.hudCellName.innerText = cellDef.name;
-    this.hudAvatar.innerText = cellDef.avatar;
+    this.hudAvatar.innerHTML = cellDef.avatar;
     this.hudOrganName.innerText = this.organDef.name;
     this.hudOrganIcon.innerHTML = this.organDef.icon;
     this.skillBasicName.innerText = cellDef.basicAttack.name;
-    this.skillBasicIcon.innerText = cellDef.basicAttack.icon;
+    this.skillBasicIcon.innerHTML = cellDef.basicAttack.icon;
     this.skillTacticalName.innerText = cellDef.tacticalSkill.name;
-    this.skillTacticalIcon.innerText = cellDef.tacticalSkill.icon;
+    this.skillTacticalIcon.innerHTML = cellDef.tacticalSkill.icon;
     this.skillUltimateName.innerText = cellDef.ultimateSkill.name;
-    this.skillUltimateIcon.innerText = cellDef.ultimateSkill.icon;
+    this.skillUltimateIcon.innerHTML = cellDef.ultimateSkill.icon;
 
     // Load initial wave
     this.prepareWave(0);
