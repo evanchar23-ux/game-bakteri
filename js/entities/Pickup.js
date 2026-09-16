@@ -15,7 +15,13 @@ export class Pickup {
     this.radius = this.def.radius;
     this.color = this.def.color;
     this.glowColor = this.def.glowColor;
-    this.icon = this.def.icon || null;
+    if (this.def.canvasIcon) {
+      this.icon = this.def.canvasIcon;
+    } else if (this.def.icon) {
+      this.icon = this.def.icon.includes('<svg') ? '✚' : this.def.icon;
+    } else {
+      this.icon = null;
+    }
 
     this.bobOffset = Math.random() * Math.PI * 2;
     this.bobSpeed = 3;

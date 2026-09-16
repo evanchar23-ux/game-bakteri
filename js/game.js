@@ -647,7 +647,7 @@ export class Game {
     const unlockAudioAndStartMusic = () => {
       sound.init();
       sound.resume();
-      if (this.uiMenu && !this.uiMenu.classList.contains('hidden') && this.state !== 'PLAYING') {
+      if (this.uiMenu && this.currentScreen === this.uiMenu && this.state !== 'PLAYING') {
         sound.startMenuMusic();
       }
     };
@@ -747,6 +747,33 @@ export class Game {
         active.style.pointerEvents = 'auto';
       }
     }
+  }
+
+  showCommanderMessage(text, duration = 5000) {
+    const commsPanel = document.getElementById('hud-commander-comms');
+    const commsText = document.getElementById('comms-text-content');
+    if (!commsPanel || !commsText) return;
+
+    if (this.commsTimeout) clearTimeout(this.commsTimeout);
+
+    commsText.innerText = text;
+    commsPanel.classList.remove('hidden');
+    
+    // Force reflow for CSS transition
+    commsPanel.offsetHeight;
+    commsPanel.classList.add('active');
+
+    // Play comms sound if available
+    if (window.sound && window.sound.playPickup) {
+      window.sound.playPickup('buff');
+    }
+
+    this.commsTimeout = setTimeout(() => {
+      commsPanel.classList.remove('active');
+      setTimeout(() => {
+        commsPanel.classList.add('hidden');
+      }, 500); // Wait for CSS transition
+    }, duration);
   }
 
   initMenuLivingEngine() {
@@ -1545,7 +1572,7 @@ export class Game {
     this.camera.x = this.player.x - this.camera.viewportWidth / 2;
     this.camera.y = this.player.y - this.camera.viewportHeight / 2;
     this.camera.setZoom(0.62);
-    this.camera.zoomTo(1.0, 1.15);
+    this.camera.zoomTo(0.85, 1.15);
 
     // Play Epic Deep Sub-Bass Drop sound & stop menu music
     sound.init();
@@ -1618,8 +1645,21 @@ export class Game {
       this.enemiesRemainingToSpawn.push(waveData.boss);
     }
 
-    this.spawnTimer = 0.5;
     this.hudWaveNum.innerText = waveIdx + 1;
+
+    // Commander AI Narrative & Deployment Delay
+    if (waveIdx === 0) {
+      this.spawnTimer = 4.5; // 4.5 seconds delay before first enemy spawns
+      const cellDef = IMMUNE_CELLS[this.selectedCellKey] || IMMUNE_CELLS.macrophage;
+      this.showCommanderMessage(`Unit ${cellDef.name} berhasil diterjunkan. Tujuan utama: Basmi koloni patogen hingga Titer Antigen mencapai 0!`, 4000);
+    } else if (waveData.boss) {
+      this.spawnTimer = 3.5;
+      this.showCommanderMessage(`PERINGATAN: Anomali patogen masif terdeteksi! Siapkan diri untuk menghadapi Boss!`, 3000);
+    } else {
+      this.spawnTimer = 2.0;
+      this.showCommanderMessage(`Gelombang ${waveIdx + 1} mendekat! Lindungi integritas jaringan!`, 2000);
+    }
+
     this.postTelemetry(`[WAVE ${waveIdx + 1}] ${waveData.title}!`);
   }
 
