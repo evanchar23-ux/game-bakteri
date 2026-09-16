@@ -5742,100 +5742,118 @@ kbd {
   box-shadow: 0 0 28px var(--antibody-cyan), 0 0 12px #fff;
 }
 
-/* ── Slime SVG hanging from bottom edge ── */
+/* ── Slime SVG hanging from bottom edge — ALWAYS VISIBLE ── */
 .btn-slime-bottom {
   position: absolute;
   bottom: -1px;
   left: 0;
   width: 100%;
-  height: 22px;
+  height: 40px;
   pointer-events: none;
   z-index: 15;
   transform: translateY(100%);
-  transition: opacity 0.3s ease;
+  opacity: 1;
+  filter: drop-shadow(0 2px 6px rgba(255,61,120,0.4));
 }
 .menu-btn:hover .btn-slime-bottom {
-  opacity: 1;
+  filter: drop-shadow(0 4px 12px rgba(255,61,120,0.7));
 }
 
-/* ── Syringe decoration (primary button) ── */
+/* ── Syringe decoration — ALWAYS VISIBLE on primary button ── */
 .btn-deco-syringe {
   position: absolute;
-  right: -8px;
-  top: -12px;
-  width: 44px;
-  height: 44px;
-  opacity: 0.25;
+  right: -12px;
+  top: -16px;
+  width: 56px;
+  height: 56px;
+  opacity: 0.6;
   pointer-events: none;
   z-index: 18;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform: rotate(0deg);
+  filter: drop-shadow(0 0 8px rgba(47,231,200,0.4));
+  animation: syringePulse 3s ease-in-out infinite;
+}
+@keyframes syringePulse {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(47,231,200,0.4)); opacity: 0.6; }
+  50% { filter: drop-shadow(0 0 16px rgba(47,231,200,0.8)); opacity: 0.85; }
 }
 .menu-btn.primary:hover .btn-deco-syringe {
-  opacity: 0.7;
-  transform: rotate(-8deg) translate(-4px, 4px);
-  filter: drop-shadow(0 0 6px rgba(47,231,200,0.5));
+  opacity: 1;
+  transform: rotate(-10deg) translate(-6px, 6px);
+  filter: drop-shadow(0 0 20px rgba(47,231,200,0.9));
 }
 
-/* ── Virus spike decoration ── */
+/* ── Virus spike decoration — ALWAYS VISIBLE ── */
 .btn-deco-virus {
   position: absolute;
-  right: -6px;
-  top: -6px;
-  width: 36px;
-  height: 36px;
+  right: -10px;
+  top: -10px;
+  width: 48px;
+  height: 48px;
   pointer-events: none;
   z-index: 18;
-  opacity: 0.35;
+  opacity: 0.6;
   transition: all 0.4s ease;
   animation: virusFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(255,61,120,0.4));
 }
 @keyframes virusFloat {
-  0%, 100% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(-2px, 2px) rotate(15deg); }
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
+  50% { transform: translate(-3px, 3px) rotate(20deg); opacity: 0.85; }
 }
 .menu-btn:hover .btn-deco-virus {
-  opacity: 0.7;
-  filter: drop-shadow(0 0 5px rgba(255,61,120,0.5));
+  opacity: 1;
+  filter: drop-shadow(0 0 14px rgba(255,61,120,0.8));
+  transform: scale(1.15);
 }
 
-/* ── Bacteria decoration ── */
+/* ── Bacteria decoration — ALWAYS VISIBLE ── */
 .btn-deco-bacteria {
   position: absolute;
-  right: -4px;
-  top: -4px;
-  width: 42px;
-  height: 26px;
-  pointer-events: none;
-  z-index: 18;
-  opacity: 0.3;
-  transition: all 0.4s ease;
-  animation: bacteriaPulse 3.5s ease-in-out infinite;
-}
-@keyframes bacteriaPulse {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.08) rotate(5deg); }
-}
-.menu-btn:hover .btn-deco-bacteria {
-  opacity: 0.65;
-  filter: drop-shadow(0 0 4px rgba(139,107,255,0.5));
-}
-
-/* ── Blood splatter decoration ── */
-.btn-deco-blood {
-  position: absolute;
-  right: -2px;
-  top: -2px;
-  width: 34px;
+  right: -8px;
+  top: -6px;
+  width: 54px;
   height: 34px;
   pointer-events: none;
   z-index: 18;
-  opacity: 0.3;
+  opacity: 0.55;
   transition: all 0.4s ease;
+  animation: bacteriaPulse 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px rgba(139,107,255,0.4));
+}
+@keyframes bacteriaPulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.55; }
+  50% { transform: scale(1.12) rotate(8deg); opacity: 0.8; }
+}
+.menu-btn:hover .btn-deco-bacteria {
+  opacity: 1;
+  filter: drop-shadow(0 0 12px rgba(139,107,255,0.7));
+  transform: scale(1.2);
+}
+
+/* ── Blood splatter decoration — ALWAYS VISIBLE ── */
+.btn-deco-blood {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+  z-index: 18;
+  opacity: 0.5;
+  transition: all 0.4s ease;
+  filter: drop-shadow(0 0 5px rgba(255,61,120,0.3));
+  animation: bloodPulse 2.8s ease-in-out infinite;
+}
+@keyframes bloodPulse {
+  0%, 100% { opacity: 0.5; filter: drop-shadow(0 0 5px rgba(255,61,120,0.3)); }
+  50% { opacity: 0.75; filter: drop-shadow(0 0 12px rgba(255,61,120,0.6)); }
 }
 .menu-btn:hover .btn-deco-blood {
-  opacity: 0.6;
-  filter: drop-shadow(0 0 4px rgba(255,61,120,0.5));
+  opacity: 1;
+  filter: drop-shadow(0 0 15px rgba(255,61,120,0.8));
+  transform: scale(1.15);
 }
 
 /* Hide old drip pseudo-elements */
@@ -5843,5 +5861,11 @@ kbd {
   display: none !important;
 }
 
-
-
+/* ── Pulsing bio-border for all non-primary buttons ── */
+.menu-btn:not(.primary) {
+  animation: btnBioPulse 4s ease-in-out infinite;
+}
+@keyframes btnBioPulse {
+  0%, 100% { border-color: var(--line); box-shadow: 0 4px 15px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.03); }
+  50% { border-color: rgba(255,61,120,0.25); box-shadow: 0 4px 15px rgba(255,61,120,0.08), inset 0 0 8px rgba(255,61,120,0.04); }
+}
