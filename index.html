@@ -211,6 +211,50 @@
           <p class="victory-banner-sub">Organ tubuh telah berhasil diamankan dari kolonisasi patogen. Membuka laporan evaluasi & reward...</p>
         </div>
       </div>
+
+      <!-- Interactive Micro-Tutorial Checklist (Panduan Cepat di Layar) -->
+      <div id="hud-onboarding-card" class="hud-onboarding-card">
+        <div class="onboarding-head">
+          <div class="pulse-beacon-cyan"></div>
+          <span>PROTOKOL ADAPTASI TEMPUR</span>
+        </div>
+        <div class="onboarding-items">
+          <div class="onboarding-step" id="step-move">
+            <span class="step-check"><svg class="inline-icon ic-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/></svg><svg class="inline-icon ic-checked" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="step-text">Gerakkan Sel <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span>
+          </div>
+          <div class="onboarding-step" id="step-attack">
+            <span class="step-check"><svg class="inline-icon ic-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/></svg><svg class="inline-icon ic-checked" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="step-text">Bidik &amp; Tembak <kbd>L-CLICK</kbd></span>
+          </div>
+          <div class="onboarding-step" id="step-pickup">
+            <span class="step-check"><svg class="inline-icon ic-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/></svg><svg class="inline-icon ic-checked" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="step-text">Ambil Kapsul Nutrisi / Vitamin</span>
+          </div>
+          <div class="onboarding-step" id="step-skill">
+            <span class="step-check"><svg class="inline-icon ic-unchecked" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><circle cx="12" cy="12" r="10"/></svg><svg class="inline-icon ic-checked" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg></span>
+            <span class="step-text">Picu Skill Taktis <kbd>SPASI</kbd> / <kbd>Q</kbd></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Combo Kill Streak Announcer -->
+      <div id="hud-combo-banner" class="hud-combo-banner hidden">
+        <div class="combo-glow-layer"></div>
+        <div class="combo-title" id="hud-combo-title">DOUBLE FAGOSITOSIS!</div>
+        <div class="combo-sub" id="hud-combo-sub">2 PATOGEN DILISISKAN</div>
+      </div>
+
+      <!-- Organ Emergency Event Banner -->
+      <div id="hud-emergency-banner" class="hud-emergency-banner hidden">
+        <div class="emergency-icon" id="hud-emergency-icon">
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <div class="emergency-info">
+          <div class="emergency-title" id="hud-emergency-title">EVENT FISIOLOGIS AKTIF</div>
+          <div class="emergency-desc" id="hud-emergency-desc">Respon darurat organ telah dipicu!</div>
+        </div>
+      </div>
     </div>
 
     <!-- SAVAGE 3D CINEMATIC BIOSKOP DIVE INTRO (FULL 60 FPS CANVAS MOVIE) -->
@@ -604,6 +648,113 @@
         <div class="modal-actions scanner-modal-actions">
           <button id="btn-back-to-char" class="btn-outline"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="vertical-align: middle; margin-right: 6px;"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>KEMBALI KE PILIH SEL</button>
           <button id="btn-deploy-mission" class="btn-primary glow-btn btn-deploy-large">KERAHKAN SEL IMUN KE ARENA! <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/><path d="M11 5l-6 6"/><path d="M8 8L4 4"/><path d="M5 3L3 5"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MISSION BRIEFING MODAL (TAKLIMAT OPERASI BIOLOGIS) -->
+    <div id="mission-briefing-modal" class="screen-overlay hidden">
+      <div class="modal-content glass-card mission-briefing-card">
+        <div class="modal-header briefing-header">
+          <div class="briefing-tag">
+            <span class="pulse-beacon"></span>
+            <span>TAKLIMAT OPERASI BIOLOGIS // PROTOKOL PERTAHANAN INANG</span>
+          </div>
+          <h2 id="briefing-title">MISI STERILISASI: PARU-PARU (PULMO)</h2>
+          <p id="briefing-subtitle">Pahami sasaran tempur, kondisi kemenangan, dan protokol pertahanan selular sebelum diterjunkan.</p>
+          <button id="btn-close-briefing" class="btn-icon-close" title="Batal & Kembali ke Pemilihan Organ"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+
+        <div class="briefing-body">
+          <!-- Target & Vitals Deployment Summary Banner -->
+          <div class="briefing-deploy-summary">
+            <div class="briefing-unit-badge">
+              <div class="unit-icon-box" id="briefing-cell-icon"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div class="unit-meta">
+                <span class="unit-role">UNIT TEMPUR AKTIF</span>
+                <span class="unit-name" id="briefing-cell-name">Makrofag Alveolar</span>
+              </div>
+            </div>
+            <div class="briefing-arrow-sep">
+              <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div class="briefing-organ-badge">
+              <div class="organ-icon-box" id="briefing-organ-icon"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="26" height="26"><path d="M12 4v7"/><path d="M7 11c-1.5 0-3 1.5-3 3 0 1.5.5 3.5 1.5 5.5.5 1 1.5 1.5 2.5 1.5s2-.5 2.5-1.5c.5-.5 1-1.5 1.5-2.5"/><path d="M17 11c1.5 0 3 1.5 3 3 0 1.5-.5 3.5-1.5 5.5-.5 1-1.5 1.5-2.5 1.5s-2-.5-2.5-1.5c-.5-.5-1-1.5-1.5-2.5"/></svg></div>
+              <div class="organ-meta">
+                <span class="organ-role">SEKTOR ANATOMIS TARGET</span>
+                <span class="organ-name" id="briefing-organ-name">Paru-Paru (Pulmo)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Tactical Columns: Objectives, Win/Lose, Controls -->
+          <div class="briefing-grid">
+            <!-- Col 1: Sasaran Operasi -->
+            <div class="briefing-col">
+              <div class="briefing-col-head">
+                <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                <span>OBJEKTIF UTAMA MISI</span>
+              </div>
+              <ul class="briefing-list">
+                <li>
+                  <strong>Tahan 3 Gelombang Invasi:</strong> Habisi patogen yang menyerbu secara bertahap dalam 3 fase pertempuran.
+                </li>
+                <li>
+                  <strong>Eliminasi Superbug Boss:</strong> Di gelombang terakhir, patogen mutan raksasa akan muncul memimpin invasi.
+                </li>
+                <li>
+                  <strong>Jaga Kebersihan Jaringan:</strong> Bersihkan populasi kuman hingga mencapai Remisi Total 100%.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Col 2: Kondisi Menang & Kalah -->
+            <div class="briefing-col">
+              <div class="briefing-col-head alert">
+                <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>KONDISI MENANG &amp; KALAH</span>
+              </div>
+              <div class="rule-box win-rule">
+                <div class="rule-title"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="#2fe7c8" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> SYARAT MENANG (VICTORY):</div>
+                <p>Bersihkan 3 Gelombang patogen dan kalahkan <strong>Superbug Boss</strong> hingga jaringan pulih total.</p>
+              </div>
+              <div class="rule-box lose-rule">
+                <div class="rule-title"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="#ff3d78" stroke-width="2.5" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> SYARAT KALAH (DEFEAT):</div>
+                <p>HP Sel Imun Anda habis (<strong>0 HP</strong>) <em>ATAU</em> Integritas Organ hancur turun ke <strong>0%</strong> akibat serangan kuman!</p>
+              </div>
+            </div>
+
+            <!-- Col 3: Panduan Kendali Kilat & Taktik -->
+            <div class="briefing-col">
+              <div class="briefing-col-head highlight">
+                <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <span>KENDALI KILAT &amp; KIAT</span>
+              </div>
+              <div class="controls-roster">
+                <div class="ctrl-item"><div class="kbds"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div> <span>Gerakkan Sel Imun</span></div>
+                <div class="ctrl-item"><div class="kbds"><kbd>L-CLICK</kbd></div> <span>Bidik &amp; Tembak Kuman</span></div>
+                <div class="ctrl-item"><div class="kbds"><kbd>SPASI</kbd> / <kbd>R-CLICK</kbd></div> <span>Skill Taktis</span></div>
+                <div class="ctrl-item"><div class="kbds"><kbd>Q</kbd> / <kbd>E</kbd></div> <span>Respons Sitokin (Ultimate)</span></div>
+              </div>
+              <div class="briefing-tip">
+                <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" width="14" height="14"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span><strong>Kiat Medis:</strong> Dekati tetesan Vitamin &amp; Kapsul ATP yang dijatuhkan musuh untuk regenerasi HP dan memicu Mutasi Sitokin!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Action -->
+        <div class="modal-actions briefing-actions">
+          <label class="skip-briefing-label">
+            <input type="checkbox" id="chk-skip-briefing">
+            <span>Jangan tampilkan lagi (langsung luncurkan)</span>
+          </label>
+          <button id="btn-start-from-briefing" class="btn-primary glow-btn btn-deploy-large">
+            <span>LUNCURKAN SEL KE MEDAN TEMPUR!</span>
+            <kbd class="btn-shortcut-hint">SPASI / ENTER</kbd>
+            <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </button>
         </div>
       </div>
     </div>

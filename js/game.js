@@ -249,6 +249,44 @@ export class Game {
     this.skillUltimateName = document.getElementById('skill-ultimate-name');
     this.skillUltimateIcon = document.getElementById('skill-ultimate-icon');
 
+    // Mission Briefing Modal
+    this.uiBriefing = document.getElementById('mission-briefing-modal');
+    this.briefingTitle = document.getElementById('briefing-title');
+    this.briefingSubtitle = document.getElementById('briefing-subtitle');
+    this.briefingCellIcon = document.getElementById('briefing-cell-icon');
+    this.briefingCellName = document.getElementById('briefing-cell-name');
+    this.briefingOrganIcon = document.getElementById('briefing-organ-icon');
+    this.briefingOrganName = document.getElementById('briefing-organ-name');
+    this.chkSkipBriefing = document.getElementById('chk-skip-briefing');
+
+    // Onboarding Coach & Combat Enhancement
+    this.hudOnboardingCard = document.getElementById('hud-onboarding-card');
+    this.stepMove = document.getElementById('step-move');
+    this.stepAttack = document.getElementById('step-attack');
+    this.stepPickup = document.getElementById('step-pickup');
+    this.stepSkill = document.getElementById('step-skill');
+    this.hudComboBanner = document.getElementById('hud-combo-banner');
+    this.hudComboTitle = document.getElementById('hud-combo-title');
+    this.hudComboSub = document.getElementById('hud-combo-sub');
+    this.hudEmergencyBanner = document.getElementById('hud-emergency-banner');
+    this.hudEmergencyTitle = document.getElementById('hud-emergency-title');
+    this.hudEmergencyDesc = document.getElementById('hud-emergency-desc');
+
+    this.onboarding = {
+      moved: false,
+      attacked: false,
+      pickedUp: false,
+      usedSkill: false,
+      completed: false,
+      timer: 0
+    };
+
+    this.comboStreak = 0;
+    this.lastKillTime = 0;
+    this.comboTimeout = null;
+    this.emergencyTriggered = false;
+    this.floatingTexts = [];
+
     // Setup interactive buttons
     this.setupButtonEvents();
     this.renderCharacterSelectionCards();
@@ -478,9 +516,32 @@ export class Game {
       };
     }
 
-    document.getElementById('btn-deploy-mission').onclick = () => {
-      this.startMission();
-    };
+    const btnDeploy = document.getElementById('btn-deploy-mission');
+    if (btnDeploy) {
+      btnDeploy.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.openMissionBriefing();
+      };
+    }
+
+    const btnCloseBriefing = document.getElementById('btn-close-briefing');
+    if (btnCloseBriefing) {
+      btnCloseBriefing.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showScreen(this.uiOrganSelect);
+      };
+    }
+
+    const btnStartBriefing = document.getElementById('btn-start-from-briefing');
+    if (btnStartBriefing) {
+      btnStartBriefing.onclick = () => {
+        if (this.chkSkipBriefing && this.chkSkipBriefing.checked) {
+          localStorage.setItem('viral_slayer_skip_briefing', 'true');
+        }
+        if (window.sound) window.sound.playClick();
+        this.startMission();
+      };
+    }
 
     // Debriefing actions
     const btnVictoryHome = document.getElementById('btn-victory-home');
@@ -557,7 +618,7 @@ export class Game {
       };
     }
 
-    // Bio-Terminal Keyboard shortcuts
+    // Modal Keyboard shortcuts
     window.addEventListener('keydown', (e) => {
       if (this.uiImmunopedia && !this.uiImmunopedia.classList.contains('hidden')) {
         if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
@@ -566,6 +627,14 @@ export class Game {
           this.navigateTerminalSpecimen(1);
         } else if (e.key === 'Escape') {
           this.hideScreen(this.uiImmunopedia);
+        }
+      } else if (this.uiBriefing && !this.uiBriefing.classList.contains('hidden')) {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          const btnStart = document.getElementById('btn-start-from-briefing');
+          if (btnStart) btnStart.click();
+        } else if (e.key === 'Escape') {
+          this.showScreen(this.uiOrganSelect);
         }
       }
     });
@@ -636,7 +705,7 @@ export class Game {
   }
 
   showScreen(targetOverlay) {
-    const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser];
+    const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiBriefing];
     const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && targetOverlay.id === 'settings-modal'));
 
     if (!isModal && fullScreens.includes(targetOverlay)) {
@@ -650,12 +719,12 @@ export class Game {
     if (targetOverlay) {
       targetOverlay.classList.remove('hidden');
       targetOverlay.scrollTop = 0;
-      const scrollables = targetOverlay.querySelectorAll('.modal-content, .cell-roster-dossier-col, .organ-dossier-panel, .bio-terminal-deck, .bio-chamber-layout');
+      const scrollables = targetOverlay.querySelectorAll('.modal-content, .cell-roster-dossier-col, .organ-dossier-panel, .bio-terminal-deck, .bio-chamber-layout, .briefing-body');
       scrollables.forEach((el) => { el.scrollTop = 0; });
     }
 
     // Manage Menu Music based on target screen
-    if (targetOverlay === this.uiMenu || targetOverlay === this.uiCharSelect || targetOverlay === this.uiOrganSelect) {
+    if (targetOverlay === this.uiMenu || targetOverlay === this.uiCharSelect || targetOverlay === this.uiOrganSelect || targetOverlay === this.uiBriefing) {
       if (sound) sound.startMenuMusic();
     } else if (targetOverlay === this.uiTeaser || targetOverlay === this.uiVictory || targetOverlay === this.uiGameOver) {
       if (sound) sound.stopMenuMusic();
@@ -1081,7 +1150,7 @@ export class Game {
       // Double click or direct click deploy
       node.ondblclick = () => {
         selectOrgan(organKey, true);
-        this.startMission();
+        this.openMissionBriefing();
       };
       node.onmouseenter = () => {
         if (window.sound) window.sound.playHover();
@@ -1329,6 +1398,25 @@ export class Game {
     }
   }
 
+  openMissionBriefing() {
+    if (localStorage.getItem('viral_slayer_skip_briefing') === 'true') {
+      this.startMission();
+      return;
+    }
+
+    const organ = ORGAN_STAGES[this.selectedOrganKey] || ORGAN_STAGES.lungs;
+    const cell = IMMUNE_CELLS[this.selectedCellKey] || IMMUNE_CELLS.macrophage;
+
+    if (this.briefingTitle) this.briefingTitle.innerText = `MISI STERILISASI: ${organ.name.toUpperCase()}`;
+    if (this.briefingSubtitle) this.briefingSubtitle.innerText = `Netralisir ancaman ${organ.subtitle || 'patogen'} & pertahankan homeostasis inang.`;
+    if (this.briefingCellIcon) this.briefingCellIcon.innerHTML = cell.icon || '';
+    if (this.briefingCellName) this.briefingCellName.innerText = cell.name;
+    if (this.briefingOrganIcon) this.briefingOrganIcon.innerHTML = organ.icon || '';
+    if (this.briefingOrganName) this.briefingOrganName.innerText = organ.name;
+
+    this.showScreen(this.uiBriefing);
+  }
+
   startMission() {
     this.organDef = ORGAN_STAGES[this.selectedOrganKey] || ORGAN_STAGES.lungs;
     const cellDef = IMMUNE_CELLS[this.selectedCellKey] || IMMUNE_CELLS.macrophage;
@@ -1364,9 +1452,33 @@ export class Game {
     this.isVictorySequenceActive = false;
     this.lastCountdownCount = -1;
 
-    // Reset HUD victory banners
+    // Reset HUD victory banners, combo, and emergency states
     if (this.hudVictoryBanner) this.hudVictoryBanner.classList.add('hidden');
     if (this.hudVictoryCountdown) this.hudVictoryCountdown.classList.add('hidden');
+    if (this.hudComboBanner) this.hudComboBanner.classList.add('hidden');
+    if (this.hudEmergencyBanner) this.hudEmergencyBanner.classList.add('hidden');
+
+    this.comboStreak = 0;
+    this.lastKillTime = 0;
+    this.emergencyTriggered = false;
+    this.floatingTexts = [];
+
+    // Reset Onboarding Checklist
+    this.onboarding = {
+      moved: false,
+      attacked: false,
+      pickedUp: false,
+      usedSkill: false,
+      completed: false,
+      timer: 0
+    };
+    if (this.hudOnboardingCard) {
+      this.hudOnboardingCard.classList.remove('hidden');
+      if (this.stepMove) this.stepMove.classList.remove('completed');
+      if (this.stepAttack) this.stepAttack.classList.remove('completed');
+      if (this.stepPickup) this.stepPickup.classList.remove('completed');
+      if (this.stepSkill) this.stepSkill.classList.remove('completed');
+    }
 
     // Re-seed dense ambient biological particles tailored to this specific organ (erythrocytes, platelets, nutrients)
     this.particles.initAmbientCells(this.worldWidth, this.worldHeight, 260, this.organDef.themeType || this.selectedOrganKey);
@@ -1707,6 +1819,29 @@ export class Game {
     sound.playLysis();
     this.particles.spawnLysis(enemy.x, enemy.y, enemy.color, enemy.isBoss ? 40 : 16, enemy.def.type);
 
+    // Combo Streak Tracking
+    const now = Date.now();
+    if (now - this.lastKillTime < 3200) {
+      this.comboStreak++;
+    } else {
+      this.comboStreak = 1;
+    }
+    this.lastKillTime = now;
+
+    if (this.comboStreak >= 2) {
+      this.triggerComboBanner(this.comboStreak);
+    }
+
+    // Onboarding checklist trigger
+    if (this.onboarding && !this.onboarding.attacked) {
+      this.onboarding.attacked = true;
+      if (this.stepAttack) this.stepAttack.classList.add('completed');
+      sound.playLevelUp();
+    }
+
+    // Floating text on kill
+    this.spawnFloatingText(enemy.x, enemy.y, enemy.isBoss ? 'BOSS LISIS!' : '+1 CFU', enemy.isBoss ? '#ffd700' : '#2fe7c8', enemy.isBoss ? 20 : 14, enemy.isBoss);
+
     // Cleansing pathogens restores organ health
     this.organIntegrity = Math.min(100, this.organIntegrity + 0.35);
 
@@ -1974,6 +2109,7 @@ export class Game {
           this.camera.shake(6, 0.2);
           sound.playHit();
           this.particles.spawnDamageText(this.player.x, this.player.y, hit.damage, false, false);
+          this.spawnFloatingText(this.player.x, this.player.y, `-${hit.damage}`, '#ff3d78', 16, true);
           if (hit.dead) {
             this.triggerGameOver('Sel imun mengalami kerusakan membran parah akibat toksin virus.');
           }
@@ -1996,6 +2132,7 @@ export class Game {
 
             const res = p.takeDamage(dmg, isCrit, this.player.ignoreArmor);
             this.particles.spawnDamageText(p.x, p.y, res.damage, isCrit);
+            this.spawnFloatingText(p.x, p.y, `${isCrit ? 'CRIT -' : '-'}${res.damage}`, isCrit ? '#ffd700' : '#ffffff', isCrit ? 18 : 14, isCrit);
 
             // Visual biological feedback: Bacteria peptidoglycan armor absorption
             if (res.blocked > 3 && p.def.type === 'bacteria' && Math.random() < 0.4) {
@@ -2040,6 +2177,12 @@ export class Game {
       if (collected) {
         pu.def.apply(this.player, this);
         sound.playPickup(pu.def.type);
+        this.spawnFloatingText(pu.x, pu.y, `+${pu.def.name}`, '#ffd700', 16, true);
+        if (this.onboarding && !this.onboarding.pickedUp) {
+          this.onboarding.pickedUp = true;
+          if (this.stepPickup) this.stepPickup.classList.add('completed');
+          sound.playLevelUp();
+        }
         this.pickups.splice(i, 1);
       } else if (pu.dead) {
         this.pickups.splice(i, 1);
@@ -2069,6 +2212,39 @@ export class Game {
       if (this.organIntegrity <= 0) {
         this.organIntegrity = 0;
         this.triggerGameOver('Integritas organ kolaps akibat kegagalan eliminasi patogen masif (Sepsis).');
+      }
+    }
+
+    // 8.5 Organ Emergency Event Trigger
+    if (this.organIntegrity <= 55 && !this.emergencyTriggered) {
+      this.triggerOrganEmergencyEvent();
+    }
+
+    // 8.6 Update Onboarding & Floating Combat Texts
+    this.updateFloatingCombatTexts(dt);
+
+    if (this.onboarding && !this.onboarding.completed) {
+      if (!this.onboarding.moved && this.input) {
+        const k = this.input.keys;
+        if (k['KeyW'] || k['KeyA'] || k['KeyS'] || k['KeyD'] || k['ArrowUp'] || k['ArrowLeft'] || k['ArrowDown'] || k['ArrowRight']) {
+          this.onboarding.moved = true;
+          if (this.stepMove) this.stepMove.classList.add('completed');
+          sound.playLevelUp();
+        }
+      }
+      if (!this.onboarding.usedSkill && this.input) {
+        if (this.input.spacePressed || this.input.qPressed || this.input.ePressed) {
+          this.onboarding.usedSkill = true;
+          if (this.stepSkill) this.stepSkill.classList.add('completed');
+          sound.playLevelUp();
+        }
+      }
+      this.onboarding.timer += dt;
+      if ((this.onboarding.moved && this.onboarding.attacked && this.onboarding.pickedUp && this.onboarding.usedSkill) || this.onboarding.timer > 16) {
+        this.onboarding.completed = true;
+        setTimeout(() => {
+          if (this.hudOnboardingCard) this.hudOnboardingCard.classList.add('hidden');
+        }, 1800);
       }
     }
 
@@ -2207,7 +2383,338 @@ export class Game {
       this.particles.renderForeground(this.ctx, this.camera);
 
       this.ctx.restore();
+
+      // 7. Off-Screen Threat Radar & Floating Combat Texts (Rendered on Canvas HUD overlay)
+      if (this.state === 'PLAYING') {
+        this.renderOffScreenRadar(this.ctx);
+        this.renderFloatingCombatTexts(this.ctx, this.camera);
+      }
     }
+  }
+
+  triggerComboBanner(streak) {
+    if (!this.hudComboBanner) return;
+
+    let title = 'DOUBLE FAGOSITOSIS!';
+    let sub = '2 PATOGEN DILISISKAN CEPAT!';
+    if (streak === 3) {
+      title = 'FAGOSITOSIS TRIPLE!';
+      sub = '3 PATOGEN DIMUSNAHKAN BERUNTUN!';
+    } else if (streak === 4) {
+      title = 'QUADRA LISIS!';
+      sub = '4 PATOGEN HANCUR BERUNTUN!';
+    } else if (streak >= 5 && streak < 8) {
+      title = 'SIKLUS STERILISASI SEMPURNA!';
+      sub = `KILL STREAK x${streak} BERUNTUN!`;
+    } else if (streak >= 8) {
+      title = 'BADAI SITOKIN ANARKIS!';
+      sub = `DOMINASI TOTAL: ${streak} PATOGEN DIBASMI!`;
+    }
+
+    if (this.hudComboTitle) this.hudComboTitle.innerText = title;
+    if (this.hudComboSub) this.hudComboSub.innerText = sub;
+
+    this.hudComboBanner.classList.remove('hidden');
+    clearTimeout(this.comboTimeout);
+    this.comboTimeout = setTimeout(() => {
+      if (this.hudComboBanner) this.hudComboBanner.classList.add('hidden');
+    }, 2200);
+
+    if (sound && sound.playLevelUp) sound.playLevelUp();
+  }
+
+  triggerOrganEmergencyEvent() {
+    if (this.emergencyTriggered || this.state !== 'PLAYING') return;
+    this.emergencyTriggered = true;
+
+    let eventTitle = 'EVENT DARURAT FISIOLOGIS';
+    let eventDesc = 'Respon pertahanan inang aktif!';
+
+    const organKey = this.selectedOrganKey;
+
+    if (organKey === 'lungs') {
+      eventTitle = 'BATUK REFLEKS ALVEOLAR!';
+      eventDesc = 'Gelombang kejut batuk menghempaskan & men-stun seluruh patogen selama 3 detik!';
+      this.camera.shake(14, 0.5);
+      if (sound) sound.playAlarm();
+
+      for (let p of this.pathogens) {
+        if (p.dead) continue;
+        const dx = p.x - this.player.x;
+        const dy = p.y - this.player.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        p.x += (dx / dist) * 280;
+        p.y += (dy / dist) * 280;
+        p.slowTimer = 3.0;
+        this.particles.spawnLysis(p.x, p.y, '#00f2fe', 8);
+      }
+      this.particles.spawnDeploymentShockwave(this.player.x, this.player.y, '#00f2fe');
+    } else if (organKey === 'gut') {
+      eventTitle = 'SEMBURAN ASAM LAMBUNG!';
+      eventDesc = 'Gelombang asam lambung membakar 35% HP seluruh patogen!';
+      this.camera.shake(10, 0.4);
+      if (sound) sound.playAlarm();
+
+      for (let p of this.pathogens) {
+        if (p.dead) continue;
+        const dmg = Math.round(p.hp * 0.35) + 30;
+        const res = p.takeDamage(dmg, true, true);
+        this.spawnFloatingText(p.x, p.y, `-${dmg} ASAM`, '#00ff88', 15, true);
+        this.particles.spawnLysis(p.x, p.y, '#39ff14', 10);
+        if (res.dead) this.handleEnemyDeath(p);
+      }
+    } else if (organKey === 'bloodstream') {
+      eventTitle = 'ADRENALIN SURGE IN-VIVO!';
+      eventDesc = 'Denyut jantung melonjak! Kecepatan gerak & tembakan +50% selama 7 detik!';
+      if (sound) sound.playAlarm();
+
+      this.applyBuff('adrenaline_surge', 'ADRENALIN IN-VIVO (+50% SPD & ROF)', 7.0, () => {
+        this.player.stats.speed *= 1.5;
+        this.player.attackRateMultiplier = (this.player.attackRateMultiplier || 1) * 1.5;
+      }, () => {
+        this.player.stats.speed /= 1.5;
+        this.player.attackRateMultiplier = (this.player.attackRateMultiplier || 1) / 1.5;
+      });
+    } else if (organKey === 'skin') {
+      eventTitle = 'JARING FIBRIN & PEMBEKUAN!';
+      eventDesc = 'Trombosit membentuk lapisan pelindung: Memulihkan 300 HP sel imun & men-stun musuh!';
+      if (sound) sound.playAlarm();
+
+      this.player.hp = Math.min(this.player.stats.maxHp, this.player.hp + 300);
+      this.spawnFloatingText(this.player.x, this.player.y, '+300 HP FIBRIN', '#2fe7c8', 18, true);
+      this.particles.spawnDeploymentShockwave(this.player.x, this.player.y, '#ffd700');
+
+      for (let p of this.pathogens) {
+        if (p.dead) continue;
+        const dist = Math.hypot(p.x - this.player.x, p.y - this.player.y);
+        if (dist < 420) {
+          p.slowTimer = 3.5;
+          this.particles.spawnDamageText(p.x, p.y, 'TERJERAT FIBRIN', true);
+        }
+      }
+    }
+
+    if (this.hudEmergencyTitle) this.hudEmergencyTitle.innerText = eventTitle;
+    if (this.hudEmergencyDesc) this.hudEmergencyDesc.innerText = eventDesc;
+    if (this.hudEmergencyBanner) {
+      this.hudEmergencyBanner.classList.remove('hidden');
+      setTimeout(() => {
+        if (this.hudEmergencyBanner) this.hudEmergencyBanner.classList.add('hidden');
+      }, 4200);
+    }
+    this.postTelemetry(`[DARURAT] ${eventTitle}`);
+  }
+
+  spawnFloatingText(x, y, text, color = '#ffffff', size = 15, isCrit = false) {
+    this.floatingTexts.push({
+      x,
+      y,
+      text,
+      color,
+      size,
+      isCrit,
+      vy: -40 - Math.random() * 20,
+      life: 0.85,
+      maxLife: 0.85
+    });
+  }
+
+  updateFloatingCombatTexts(dt) {
+    for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+      const ft = this.floatingTexts[i];
+      ft.y += ft.vy * dt;
+      ft.life -= dt;
+      if (ft.life <= 0) {
+        this.floatingTexts.splice(i, 1);
+      }
+    }
+  }
+
+  renderFloatingCombatTexts(ctx, camera) {
+    if (this.floatingTexts.length === 0) return;
+    ctx.save();
+    for (let ft of this.floatingTexts) {
+      const screenX = ft.x - camera.x;
+      const screenY = ft.y - camera.y;
+
+      if (screenX < -50 || screenX > this.canvas.width + 50 || screenY < -50 || screenY > this.canvas.height + 50) {
+        continue;
+      }
+
+      const alpha = Math.max(0, ft.life / ft.maxLife);
+      ctx.globalAlpha = alpha;
+      ctx.font = `${ft.isCrit ? '900' : '800'} ${ft.size}px 'Rajdhani', sans-serif`;
+      ctx.textAlign = 'center';
+
+      // Glow & Shadow
+      ctx.shadowColor = ft.color;
+      ctx.shadowBlur = ft.isCrit ? 12 : 6;
+      ctx.fillStyle = ft.color;
+      ctx.fillText(ft.text, screenX, screenY);
+    }
+    ctx.restore();
+  }
+
+  renderOffScreenRadar(ctx) {
+    if (!this.player || this.state !== 'PLAYING') return;
+
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const margin = 32;
+
+    // Viewport world bounds
+    const minX = this.camera.x;
+    const maxX = this.camera.x + w;
+    const minY = this.camera.y;
+    const maxY = this.camera.y + h;
+
+    ctx.save();
+
+    // 1. Pathogen & Boss Indicators
+    const offScreenEnemies = [];
+    for (let p of this.pathogens) {
+      if (p.dead) continue;
+      if (p.x < minX || p.x > maxX || p.y < minY || p.y > maxY) {
+        const dist = Math.hypot(p.x - this.player.x, p.y - this.player.y);
+        offScreenEnemies.push({ p, dist });
+      }
+    }
+
+    offScreenEnemies.sort((a, b) => {
+      if (a.p.isBoss) return -1;
+      if (b.p.isBoss) return 1;
+      return a.dist - b.dist;
+    });
+
+    const toDraw = offScreenEnemies.slice(0, 6);
+
+    for (let item of toDraw) {
+      const p = item.p;
+      const dist = Math.round(item.dist);
+
+      const screenTargetX = p.x - this.camera.x;
+      const screenTargetY = p.y - this.camera.y;
+      const cx = w / 2;
+      const cy = h / 2;
+      const dx = screenTargetX - cx;
+      const dy = screenTargetY - cy;
+      const angle = Math.atan2(dy, dx);
+
+      let edgeX = cx;
+      let edgeY = cy;
+
+      const halfW = (w / 2) - margin;
+      const halfH = (h / 2) - margin;
+
+      const tan = dy / (dx || 0.0001);
+
+      if (Math.abs(tan) < halfH / halfW) {
+        if (dx > 0) {
+          edgeX = cx + halfW;
+          edgeY = cy + halfW * tan;
+        } else {
+          edgeX = cx - halfW;
+          edgeY = cy - halfW * tan;
+        }
+      } else {
+        const cot = dx / (dy || 0.0001);
+        if (dy > 0) {
+          edgeY = cy + halfH;
+          edgeX = cx + halfH * cot;
+        } else {
+          edgeY = cy - halfH;
+          edgeX = cx - halfH * cot;
+        }
+      }
+
+      ctx.save();
+      ctx.translate(edgeX, edgeY);
+      ctx.rotate(angle);
+
+      const isBoss = p.isBoss;
+      const color = isBoss ? '#ff0055' : (p.def.type === 'virus' ? '#ff3d78' : '#00f2fe');
+      const arrowSize = isBoss ? 16 : 10;
+
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = isBoss ? 16 : 8;
+
+      ctx.beginPath();
+      ctx.moveTo(arrowSize, 0);
+      ctx.lineTo(-arrowSize * 0.8, -arrowSize * 0.6);
+      ctx.lineTo(-arrowSize * 0.4, 0);
+      ctx.lineTo(-arrowSize * 0.8, arrowSize * 0.6);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+
+      if (isBoss) {
+        ctx.save();
+        ctx.font = 'bold 11px Rajdhani, sans-serif';
+        ctx.fillStyle = '#ff0055';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#ff0055';
+        ctx.shadowBlur = 8;
+        ctx.fillText(`BOSS (${dist})`, edgeX, edgeY + (dy > 0 ? -14 : 18));
+        ctx.restore();
+      }
+    }
+
+    // 2. Rare Pickup Indicators
+    for (let pu of this.pickups) {
+      if (pu.dead) continue;
+      if (pu.def.type === 'vitamin_c' || pu.def.type === 'zinc' || pu.def.type === 'vitamin_d3') {
+        if (pu.x < minX || pu.x > maxX || pu.y < minY || pu.y > maxY) {
+          const screenTargetX = pu.x - this.camera.x;
+          const screenTargetY = pu.y - this.camera.y;
+          const cx = w / 2;
+          const cy = h / 2;
+          const dx = screenTargetX - cx;
+          const dy = screenTargetY - cy;
+          const angle = Math.atan2(dy, dx);
+
+          const halfW = (w / 2) - margin;
+          const halfH = (h / 2) - margin;
+          const tan = dy / (dx || 0.0001);
+
+          let edgeX = cx;
+          let edgeY = cy;
+          if (Math.abs(tan) < halfH / halfW) {
+            edgeX = dx > 0 ? cx + halfW : cx - halfW;
+            edgeY = cy + (dx > 0 ? halfW : -halfW) * tan;
+          } else {
+            const cot = dx / (dy || 0.0001);
+            edgeY = dy > 0 ? cy + halfH : cy - halfH;
+            edgeX = cx + (dy > 0 ? halfH : -halfH) * cot;
+          }
+
+          ctx.save();
+          ctx.translate(edgeX, edgeY);
+          ctx.rotate(angle);
+          ctx.fillStyle = '#ffd700';
+          ctx.shadowColor = '#ffd700';
+          ctx.shadowBlur = 10;
+          ctx.beginPath();
+          ctx.moveTo(11, 0);
+          ctx.lineTo(-9, -6);
+          ctx.lineTo(-5, 0);
+          ctx.lineTo(-9, 6);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+
+          ctx.save();
+          ctx.font = 'bold 10px Rajdhani, sans-serif';
+          ctx.fillStyle = '#ffd700';
+          ctx.textAlign = 'center';
+          ctx.fillText('NUTRISI', edgeX, edgeY + (dy > 0 ? -12 : 16));
+          ctx.restore();
+        }
+      }
+    }
+
+    ctx.restore();
   }
 }
 
