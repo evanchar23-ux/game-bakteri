@@ -5765,3 +5765,100 @@ kbd {
   transform: scale(1.1);
   box-shadow: 0 0 25px var(--antibody-cyan), 0 0 10px #fff;
 }
+/* --- Vertical Slime Drop & Syringe Effect --- */
+.menu-btn {
+  overflow: visible !important; /* override previous hidden to allow drops to fall out */
+}
+
+/* Remove old drip slide */
+.menu-btn::after {
+  display: none !important; 
+}
+
+.slime-drip {
+  position: absolute;
+  bottom: 0px;
+  left: 20%;
+  width: 3px;
+  height: 0px;
+  background: var(--virus-pink);
+  border-radius: 3px;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px var(--virus-pink));
+}
+
+.menu-btn:hover .slime-drip {
+  animation: slimeDrop 1.2s ease-in infinite;
+}
+
+.menu-btn:hover .slime-drip.delay-1 {
+  left: 50%;
+  animation-delay: 0.4s;
+}
+
+.menu-btn:hover .slime-drip.delay-2 {
+  left: 80%;
+  animation-delay: 0.8s;
+}
+
+@keyframes slimeDrop {
+  0% {
+    height: 0px;
+    bottom: 0px;
+    opacity: 0;
+  }
+  20% {
+    height: 8px;
+    bottom: -8px;
+    opacity: 1;
+  }
+  40% {
+    height: 14px;
+    bottom: -18px;
+    opacity: 1;
+  }
+  70% {
+    height: 6px;
+    bottom: -32px;
+    opacity: 0.7;
+  }
+  90% {
+    height: 2px;
+    bottom: -40px;
+    opacity: 0;
+  }
+  100% {
+    height: 0px;
+    bottom: -40px;
+    opacity: 0;
+  }
+}
+
+/* Syringe Decorative Element */
+.btn-syringe-wrapper {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  transform: translateY(-50%) rotate(35deg);
+  width: 36px;
+  height: 36px;
+  opacity: 0.1;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  z-index: 25;
+}
+
+.btn-syringe-wrapper svg {
+  width: 100%;
+  height: 100%;
+  color: var(--virus-pink);
+  filter: drop-shadow(0 0 2px var(--virus-pink));
+}
+
+.menu-btn.primary:hover .btn-syringe-wrapper {
+  opacity: 0.9;
+  transform: translateY(-50%) rotate(35deg) translate(-15px, 15px);
+  filter: drop-shadow(0 0 10px var(--virus-pink));
+}
