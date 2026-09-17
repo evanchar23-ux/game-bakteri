@@ -1023,17 +1023,22 @@ export class Game {
 
         const nodeHtml = `
           <g class="organ-hotspot-node" id="hotspot-${organKey}" data-organ="${organKey}" transform="translate(${orgDef.cx}, ${orgDef.cy})">
-            <circle class="hotspot-pulse-ring" r="23"/>
-            <circle class="hotspot-pulse-ring-outer" r="34"/>
+            <circle class="hotspot-pulse-ring" r="22"/>
+            <circle class="hotspot-pulse-ring-outer" r="32"/>
             <circle class="hotspot-core" r="14"/>
             <g transform="translate(-7, -7) scale(0.6)">
               ${svgIcon}
             </g>
-            <text class="hotspot-label" x="${alignLeft ? -28 : 32}" y="${orgDef.cy > 180 ? 22 : -4}">${labelText}</text>
+            <text class="hotspot-label" x="${alignLeft ? -24 : 24}" y="0" text-anchor="${alignLeft ? 'end' : 'start'}">${labelText}</text>
           </g>
         `;
         svgGroup.insertAdjacentHTML('beforeend', nodeHtml);
       });
+
+      if (this.hologram3d) {
+        this.hologram3d.handleResize();
+        this.hologram3d.updateHotspotsProjection();
+      }
     }
 
     // Default select first organ of this subject

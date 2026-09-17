@@ -8,6 +8,7 @@ export class Hologram3DViewer {
   constructor(options = {}) {
     this.container = options.container || document.getElementById('mannequin-container');
     this.canvas = options.canvas || document.getElementById('hologram3dCanvas');
+    this.svg = options.svg || document.getElementById('human-mannequin-svg');
     this.angleDisplay = options.angleDisplay || document.getElementById('holo-angle-display');
 
     this.scene = null;
@@ -21,6 +22,8 @@ export class Hologram3DViewer {
     this.clock = null;
     this.isInitialized = false;
     this.isAutoOrbit = true;
+    this.lastWidth = 0;
+    this.lastHeight = 0;
 
     this.init();
   }
@@ -122,9 +125,19 @@ export class Hologram3DViewer {
     if (!this.container || !this.renderer || !this.camera) return;
     const width = this.container.clientWidth || 340;
     const height = this.container.clientHeight || 460;
+    if (width === 0 || height === 0) return;
+
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
+
+    if (!this.svg) {
+      this.svg = document.getElementById('human-mannequin-svg');
+    }
+    if (this.svg) {
+      this.svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      this.svg.removeAttribute('preserveAspectRatio');
+    }
   }
 
   createHoloPedestal() {
@@ -494,8 +507,9 @@ export class Hologram3DViewer {
 
   updateHotspotsProjection() {
     if (!this.camera || !this.container) return;
-    const width = 340;  // SVG coordinate system width
-    const height = 600; // SVG coordinate system height
+    const width = this.container.clientWidth || 340;
+    const height = this.container.clientHeight || 460;
+    if (width === 0 || height === 0) return;
 
     const tempV = new THREE.Vector3();
     const camDir = new THREE.Vector3();
@@ -514,11 +528,23 @@ export class Hologram3DViewer {
       // Project 3D vector to Normalized Device Coordinates (-1 to +1)
       tempV.project(this.camera);
 
-      // Convert NDC to SVG viewBox (0 to 340, 0 to 600)
+      // Convert NDC to 1:1 SVG pixel coords (0 to width, 0 to height)
       const screenX = (tempV.x * 0.5 + 0.5) * width;
       const screenY = (-tempV.y * 0.5 + 0.5) * height;
 
       node.setAttribute('transform', `translate(${screenX.toFixed(1)}, ${screenY.toFixed(1)})`);
+
+      // Dynamic label alignment to avoid overlapping the central pin
+      const label = node.querySelector('.hotspot-label');
+      if (label) {
+        if (screenX < width * 0.5) {
+          label.setAttribute('x', '-24');
+          label.setAttribute('text-anchor', 'end');
+        } else {
+          label.setAttribute('x', '24');
+          label.setAttribute('text-anchor', 'start');
+        }
+      }
 
       // Depth Occlusion: when organ is on backside of the 3D model
       if (tempV.z > 0.98 || dot < 0.2) {
@@ -556,6 +582,15 @@ export class Hologram3DViewer {
     const organSelectModal = document.getElementById('organ-select');
     const isVisible = organSelectModal && !organSelectModal.classList.contains('hidden');
     if (!isVisible) return;
+
+    // Detect dimension changes (e.g. when modal just unhid or viewport changed)
+    const cWidth = this.container ? this.container.clientWidth : 0;
+    const cHeight = this.container ? this.container.clientHeight : 0;
+    if (cWidth > 0 && cHeight > 0 && (cWidth !== this.lastWidth || cHeight !== this.lastHeight)) {
+      this.lastWidth = cWidth;
+      this.lastHeight = cHeight;
+      this.handleResize();
+    }
 
     const time = this.clock ? this.clock.getElapsedTime() : performance.now() * 0.001;
 

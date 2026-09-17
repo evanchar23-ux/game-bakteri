@@ -3784,7 +3784,8 @@ kbd {
 
 .mannequin-container {
   width: 100%;
-  height: 460px;
+  flex: 1 1 auto;
+  min-height: 240px;
   position: relative;
   display: flex;
   align-items: center;
@@ -3826,7 +3827,7 @@ kbd {
 .organ-hotspot-node {
   pointer-events: auto;
   cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
 .organ-hotspot-node .hotspot-pulse-ring {
@@ -3835,7 +3836,8 @@ kbd {
   stroke-width: 1.5;
   opacity: 0.45;
   animation: sonarPing 2.2s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
-  transform-origin: 0 0;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .organ-hotspot-node .hotspot-pulse-ring-outer {
@@ -3844,7 +3846,8 @@ kbd {
   stroke-width: 1;
   opacity: 0.25;
   animation: sonarPing 2.2s infinite cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s;
-  transform-origin: 0 0;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 @keyframes sonarPing {
@@ -3857,7 +3860,9 @@ kbd {
   stroke: var(--hotspot-color, #00f2fe);
   stroke-width: 2.5;
   filter: drop-shadow(0 0 8px var(--hotspot-color, #00f2fe));
-  transition: all 0.25s ease;
+  transition: transform 0.25s ease, stroke-width 0.25s ease, fill 0.25s ease;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .organ-hotspot-node:hover .hotspot-core {
@@ -3872,7 +3877,7 @@ kbd {
   filter: drop-shadow(0 0 16px var(--hotspot-color, #00f2fe));
 }
 
-.organ-hotspot-node.active .hotspot-core path {
+.organ-hotspot-node.active path {
   stroke: #020914 !important;
 }
 
@@ -3882,9 +3887,9 @@ kbd {
   font-weight: 800;
   letter-spacing: 1px;
   fill: #e0ecff;
-  text-anchor: middle;
-  dominant-baseline: middle;
+  dominant-baseline: central;
   pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
   transition: fill 0.2s ease;
 }
 
