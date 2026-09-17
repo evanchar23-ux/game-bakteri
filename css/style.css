@@ -1450,6 +1450,111 @@ button {
   text-overflow: ellipsis;
 }
 
+/* Floating Cytokine Mutation Ready Badge (Non-Intrusive Level Up Queue) */
+.hud-mutation-badge {
+  position: absolute;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px;
+  background: linear-gradient(135deg, rgba(2, 28, 20, 0.94), rgba(4, 48, 34, 0.96));
+  border: 1.5px solid var(--bio-green);
+  border-radius: 30px;
+  color: #fff;
+  cursor: pointer;
+  z-index: 100;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 255, 136, 0.35);
+  animation: mutationBadgeFloat 2.2s ease-in-out infinite, mutationBorderPulse 1.8s infinite;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  pointer-events: auto;
+}
+
+.hud-mutation-badge:hover {
+  transform: translateX(-50%) translateY(-3px) scale(1.04);
+  background: linear-gradient(135deg, rgba(2, 40, 28, 0.98), rgba(6, 62, 44, 0.98));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 28px rgba(0, 255, 136, 0.6);
+  border-color: #55ffaa;
+}
+
+@keyframes mutationBadgeFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes mutationBorderPulse {
+  0%, 100% { border-color: rgba(0, 255, 136, 0.6); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 255, 136, 0.3); }
+  50% { border-color: rgba(0, 255, 136, 1); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 28px rgba(0, 255, 136, 0.6); }
+}
+
+.mutation-badge-beacon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 255, 136, 0.2);
+  color: var(--bio-green);
+  flex-shrink: 0;
+}
+
+.mutation-pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--bio-green);
+  border-radius: 50%;
+  animation: sonarPing 1.8s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.mutation-badge-text {
+  text-align: left;
+}
+
+.mutation-badge-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--bio-green);
+  line-height: 1.2;
+}
+
+.mutation-badge-sub {
+  font-size: 11px;
+  color: #c0d8d0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.mutation-badge-sub kbd {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 136, 0.4);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.mutation-badge-count {
+  font-weight: 800;
+  background: var(--bio-green);
+  color: #020914 !important;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  display: inline-block;
+  line-height: 1.2;
+}
+
 /* Bottom Center: Skills Hotbar */
 .skills-hotbar {
   position: absolute;
@@ -2098,6 +2203,66 @@ button {
   line-height: 1.4;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 8px;
+}
+
+/* Quick shortcut key inside upgrade card */
+.upgrade-card {
+  position: relative;
+}
+
+.upgrade-card-key {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--bio-green);
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+
+.upgrade-card:hover .upgrade-card-key {
+  border-color: var(--bio-green);
+  background: rgba(0, 255, 136, 0.2);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.upgrade-pending-badge {
+  display: inline-block;
+  margin-left: 8px;
+  background: rgba(0, 255, 136, 0.15);
+  border: 1px solid var(--bio-green);
+  color: var(--bio-green);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.upgrade-modal-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 14px;
+}
+
+.upgrade-modal-footer kbd {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 /* ==========================================================================

@@ -287,6 +287,12 @@ export class Game {
     this.emergencyTriggered = false;
     this.floatingTexts = [];
 
+    // Cytokine Level Up Mutation Queue (Non-intrusive)
+    this.hudMutationBadge = document.getElementById('hud-mutation-badge');
+    this.mutationPendingCount = document.getElementById('mutation-pending-count');
+    this.pendingUpgrades = 0;
+    this.currentUpgradeChoices = [];
+
     // Setup interactive buttons
     this.setupButtonEvents();
     this.renderCharacterSelectionCards();
@@ -604,6 +610,23 @@ export class Game {
       };
     }
 
+    // Floating Mutation Badge & Modal Events
+    if (this.hudMutationBadge) {
+      this.hudMutationBadge.onclick = () => {
+        if (this.state === 'PLAYING' && this.pendingUpgrades > 0) {
+          if (window.sound) window.sound.playClick();
+          this.openUpgradeModal();
+        }
+      };
+    }
+    const btnCloseUpgrade = document.getElementById('btn-close-upgrade');
+    if (btnCloseUpgrade) {
+      btnCloseUpgrade.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.closeUpgradeModal();
+      };
+    }
+
     // Audio toggle
     document.getElementById('audio-toggle').onclick = () => {
       sound.init();
@@ -655,10 +678,29 @@ export class Game {
         } else if (e.key === 'Escape') {
           this.showScreen(this.uiOrganSelect);
         }
-      } else if (this.state === 'PLAYING' && (e.key === 'h' || e.key === 'H')) {
-        document.body.classList.toggle('minimal-ui');
-        const isMinimal = document.body.classList.contains('minimal-ui');
-        this.postTelemetry(isMinimal ? '[SISTEM] Mode UI Minimal diaktifkan.' : '[SISTEM] Mode UI Penuh diaktifkan.');
+      } else if (this.state === 'PLAYING') {
+        if (e.key === 'h' || e.key === 'H') {
+          document.body.classList.toggle('minimal-ui');
+          const isMinimal = document.body.classList.contains('minimal-ui');
+          this.postTelemetry(isMinimal ? '[SISTEM] Mode UI Minimal diaktifkan.' : '[SISTEM] Mode UI Penuh diaktifkan.');
+        } else if ((e.key === 'b' || e.key === 'B' || e.key === 'Tab' || e.key === 'u' || e.key === 'U') && this.pendingUpgrades > 0) {
+          e.preventDefault();
+          this.openUpgradeModal();
+        }
+      } else if (this.state === 'UPGRADE') {
+        if (e.key === '1' && this.currentUpgradeChoices && this.currentUpgradeChoices[0]) {
+          e.preventDefault();
+          this.selectUpgrade(this.currentUpgradeChoices[0]);
+        } else if (e.key === '2' && this.currentUpgradeChoices && this.currentUpgradeChoices[1]) {
+          e.preventDefault();
+          this.selectUpgrade(this.currentUpgradeChoices[1]);
+        } else if (e.key === '3' && this.currentUpgradeChoices && this.currentUpgradeChoices[2]) {
+          e.preventDefault();
+          this.selectUpgrade(this.currentUpgradeChoices[2]);
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          this.closeUpgradeModal();
+        }
       }
     });
 
@@ -1524,6 +1566,9 @@ export class Game {
     this.lastKillTime = 0;
     this.emergencyTriggered = false;
     this.floatingTexts = [];
+    this.pendingUpgrades = 0;
+    this.currentUpgradeChoices = [];
+    this.updateMutationBadge();
 
     // Reset Onboarding Checklist
     this.onboarding = {
@@ -1741,42 +1786,97 @@ export class Game {
     this.player.exp += amount;
     this.antigenTiter += Math.round(amount * 0.5);
 
-    if (this.player.exp >= this.player.expNext) {
+    let leveledUp = false;
+    while (this.player.exp >= this.player.expNext) {
       this.player.exp -= this.player.expNext;
       this.player.expNext = Math.round(this.player.expNext * 1.5);
       this.player.level += 1;
+      this.pendingUpgrades = (this.pendingUpgrades || 0) + 1;
+      leveledUp = true;
+    }
+
+    if (leveledUp) {
       sound.playLevelUp();
-      this.postTelemetry(`[DIFERENSIASI] Sel imun berevolusi ke Level ${this.player.level}!`);
-      this.openUpgradeModal();
+      this.postTelemetry(`[DIFERENSIASI] Level ${this.player.level}! Mutasi Sitokin Siap (${this.pendingUpgrades}x). Tekan [B] / [TAB]`);
+      this.updateMutationBadge();
+    }
+  }
+
+  updateMutationBadge() {
+    if (!this.hudMutationBadge) {
+      this.hudMutationBadge = document.getElementById('hud-mutation-badge');
+      this.mutationPendingCount = document.getElementById('mutation-pending-count');
+    }
+    if (!this.hudMutationBadge) return;
+
+    if (this.pendingUpgrades > 0 && this.state === 'PLAYING') {
+      this.hudMutationBadge.classList.remove('hidden');
+      if (this.mutationPendingCount) {
+        this.mutationPendingCount.innerText = this.pendingUpgrades;
+      }
+    } else {
+      this.hudMutationBadge.classList.add('hidden');
     }
   }
 
   openUpgradeModal() {
+    if (this.pendingUpgrades <= 0) return;
     this.state = 'UPGRADE';
     this.uiUpgrade.classList.remove('hidden');
+    this.updateMutationBadge();
+
+    const tagEl = document.getElementById('upgrade-modal-tag');
+    if (tagEl) {
+      tagEl.innerHTML = `DIFERENSIASI IMUN TERCAPAI! <span class="upgrade-pending-badge">${this.pendingUpgrades}x Mutasi Tersedia</span>`;
+    }
+
     const container = document.getElementById('upgrade-choices-container');
     container.innerHTML = '';
 
     // Pick 3 random distinct upgrades
     const pool = [...CYTOKINE_UPGRADES].sort(() => Math.random() - 0.5).slice(0, 3);
+    this.currentUpgradeChoices = pool;
 
-    pool.forEach((upg) => {
+    pool.forEach((upg, idx) => {
       const card = document.createElement('div');
       card.className = 'upgrade-card';
       card.innerHTML = `
+        <div class="upgrade-card-key">[ ${idx + 1} ]</div>
         <div class="upgrade-icon">${upg.icon}</div>
         <div class="upgrade-title">${upg.title}</div>
         <div class="upgrade-effect">${upg.effectDesc}</div>
         <div class="upgrade-bio-lore">${upg.lore}</div>
       `;
       card.onclick = () => {
-        upg.apply(this.player, this);
-        this.uiUpgrade.classList.add('hidden');
-        this.state = 'PLAYING';
-        this.postTelemetry(`[MUTASI DIAKTIFKAN] ${upg.title}`);
+        this.selectUpgrade(upg);
       };
       container.appendChild(card);
     });
+  }
+
+  selectUpgrade(upg) {
+    if (!upg) return;
+    upg.apply(this.player, this);
+    this.pendingUpgrades = Math.max(0, (this.pendingUpgrades || 1) - 1);
+    this.postTelemetry(`[MUTASI DIAKTIFKAN] ${upg.title}`);
+    if (window.sound) window.sound.playClick();
+
+    if (this.pendingUpgrades > 0) {
+      // Masih ada mutasi antrean, buka pilihan berikutnya langsung
+      this.openUpgradeModal();
+    } else {
+      // Selesai memilih semua mutasi, tutup dan lanjutkan pertempuran
+      this.uiUpgrade.classList.add('hidden');
+      this.state = 'PLAYING';
+      this.updateMutationBadge();
+    }
+  }
+
+  closeUpgradeModal() {
+    this.uiUpgrade.classList.add('hidden');
+    this.state = 'PLAYING';
+    this.updateMutationBadge();
+    this.postTelemetry(`[MUTASI DITUNDA] ${this.pendingUpgrades}x Mutasi tersimpan. Tekan [B] atau klik badge saat aman.`);
   }
 
   postTelemetry(msg) {

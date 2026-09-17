@@ -162,6 +162,22 @@
         </div>
       </div>
 
+      <!-- Floating Cytokine Mutation Ready Badge (Non-Intrusive Level Up Queue) -->
+      <button type="button" id="hud-mutation-badge" class="hud-mutation-badge hidden" title="Pilih Mutasi Sitokin (Tekan B / TAB)">
+        <div class="mutation-badge-beacon">
+          <span class="mutation-pulse-ring"></span>
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <div class="mutation-badge-text">
+          <div class="mutation-badge-title">MUTASI SITOKIN SIAP!</div>
+          <div class="mutation-badge-sub">
+            <span class="mutation-badge-count" id="mutation-pending-count">1</span>x Mutasi Siap &bull; Tekan <kbd>B</kbd> / <kbd>TAB</kbd>
+          </div>
+        </div>
+      </button>
+
       <!-- Bottom Center: Skills Hotbar -->
       <div class="skills-hotbar">
         <!-- Basic Attack Indicator -->
@@ -956,13 +972,22 @@
     <div id="upgrade-modal" class="screen-overlay hidden">
       <div class="modal-content glass-card modal-standard upgrade-modal-card">
         <div class="modal-header upgrade-header">
-          <div class="upgrade-tag">DIFERENSIASI IMUN TERCAPAI!</div>
-          <h2>PILIH SINYAL SITOKIN / MUTASI</h2>
-          <p>Pilih salah satu adaptasi imunologik untuk memperkuat sel dalam pertempuran ini:</p>
+          <div class="header-split">
+            <div class="header-split-text">
+              <div class="upgrade-tag" id="upgrade-modal-tag">DIFERENSIASI IMUN TERCAPAI!</div>
+              <h2>PILIH SINYAL SITOKIN / MUTASI</h2>
+              <p>Pilih salah satu adaptasi imunologik untuk memperkuat sel dalam pertempuran ini:</p>
+            </div>
+            <button id="btn-close-upgrade" class="btn-icon-close" title="Tunda & Kembali Bertarung (ESC)"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+          </div>
         </div>
 
         <div class="upgrade-choices-grid" id="upgrade-choices-container">
-          <!-- 3 Upgrade options injected via JS -->
+          <!-- 3 Upgrade options injected via JS with [1], [2], [3] key hints -->
+        </div>
+
+        <div class="upgrade-modal-footer">
+          <span class="upgrade-defer-hint">Tekan angka <kbd>1</kbd>, <kbd>2</kbd>, <kbd>3</kbd> untuk memilih langsung &bull; Tekan <kbd>ESC</kbd> untuk menunda</span>
         </div>
       </div>
     </div>
