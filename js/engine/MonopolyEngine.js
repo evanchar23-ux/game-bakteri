@@ -1,5 +1,6 @@
 // js/engine/MonopolyEngine.js
 // Mesin Utama Permainan Papan Bio-Monopoly (Monopoli Imunologis)
+// 100% Bebas Emoji - Dilengkapi Panduan Interaktif & Indikator Aksi Real-time
 
 import { BOARD_TILES, PAWN_TYPES } from '../data/monopolyBoardData.js';
 import { MONOPOLY_QUESTIONS } from '../data/monopolyQuestions.js';
@@ -28,6 +29,7 @@ export class MonopolyEngine {
     this.diceEl = document.getElementById('monopoly-dice-cube');
     this.btnRoll = document.getElementById('btn-monopoly-roll');
     this.turnBanner = document.getElementById('monopoly-turn-banner');
+    this.stepHintEl = document.getElementById('mono-hub-step-hint');
     this.playersListEl = document.getElementById('monopoly-players-list');
     this.logListEl = document.getElementById('monopoly-log-list');
 
@@ -37,6 +39,7 @@ export class MonopolyEngine {
     this.propertyModal = document.getElementById('monopoly-property-modal');
     this.winnerModal = document.getElementById('monopoly-winner-modal');
     this.setupModal = document.getElementById('monopoly-setup-modal');
+    this.guideModal = document.getElementById('monopoly-guide-modal');
 
     this.timerInterval = null;
     this.setupListeners();
@@ -50,6 +53,22 @@ export class MonopolyEngine {
     const btnCloseMonopoly = document.getElementById('btn-close-monopoly');
     if (btnCloseMonopoly) {
       btnCloseMonopoly.onclick = () => this.exitMonopoly();
+    }
+
+    // Guide Modal
+    const btnGuide = document.getElementById('btn-mono-guide');
+    if (btnGuide) {
+      btnGuide.onclick = () => this.openGuide();
+    }
+
+    const btnCloseGuide = document.getElementById('btn-close-mono-guide');
+    if (btnCloseGuide) {
+      btnCloseGuide.onclick = () => this.closeGuide();
+    }
+
+    const btnGuideOk = document.getElementById('btn-mono-guide-ok');
+    if (btnGuideOk) {
+      btnGuideOk.onclick = () => this.closeGuide();
     }
 
     // Setup mode buttons
@@ -74,6 +93,18 @@ export class MonopolyEngine {
     }
   }
 
+  openGuide() {
+    if (this.guideModal) {
+      this.guideModal.classList.remove('hidden');
+    }
+  }
+
+  closeGuide() {
+    if (this.guideModal) {
+      this.guideModal.classList.add('hidden');
+    }
+  }
+
   openSetup() {
     this.resetBoardState();
     if (this.setupModal) {
@@ -81,6 +112,9 @@ export class MonopolyEngine {
     }
     if (this.winnerModal) {
       this.winnerModal.classList.add('hidden');
+    }
+    if (this.guideModal) {
+      this.guideModal.classList.add('hidden');
     }
   }
 
@@ -152,7 +186,7 @@ export class MonopolyEngine {
 
     this.renderBoard();
     this.updateHUD();
-    this.addLog(`🎲 Permainan Monopoli Imun dimulai! Giliran ${this.getCurrentPlayer().name}.`);
+    this.addLog(`<span class="mono-log-tag tag-start">START</span> Sesi Monopoli Imun dimulai. Giliran awal: <b>${this.getCurrentPlayer().name}</b>.`);
     this.updateTurnUI();
   }
 
@@ -165,6 +199,12 @@ export class MonopolyEngine {
 
   getCurrentPlayer() {
     return this.players[this.currentPlayerIdx];
+  }
+
+  setStepHint(text) {
+    if (this.stepHintEl) {
+      this.stepHintEl.innerText = text;
+    }
   }
 
   renderBoard() {
@@ -220,7 +260,7 @@ export class MonopolyEngine {
         pawnEl.style.borderColor = player.color;
         pawnEl.style.boxShadow = `0 0 10px ${player.color}`;
         pawnEl.title = `${player.name} (${player.atp} ATP)`;
-        pawnEl.innerHTML = `<span>${player.pawn.icon}</span>`;
+        pawnEl.innerHTML = player.pawn.icon;
         pContainer.appendChild(pawnEl);
       }
     });
@@ -272,10 +312,15 @@ export class MonopolyEngine {
       if (player.isAI) {
         this.btnRoll.disabled = true;
         this.btnRoll.innerHTML = `<span>MEMPROSES GILIRAN AI...</span>`;
+        this.setStepHint(`GILIRAN ${player.name.toUpperCase()}: SEDANG MENGHITUNG STRATEGI...`);
         setTimeout(() => this.handleAIRoll(), 900);
       } else {
         this.btnRoll.disabled = false;
-        this.btnRoll.innerHTML = `<span>KOCOK DADU IMUN! 🎲</span>`;
+        this.btnRoll.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>
+          <span>KOCOK DADU IMUN</span>
+        `;
+        this.setStepHint(`GILIRAN ANDA: KLIK TOMBOL KOCOK DADU DI BAWAH`);
       }
     }
   }
@@ -303,11 +348,14 @@ export class MonopolyEngine {
     // Check jail condition
     if (player.inJailTurns > 0) {
       player.inJailTurns--;
-      this.addLog(`🏥 ${player.name} menjalani masa karantina dan istirahat di petak isolasi.`);
+      this.addLog(`<span class="mono-log-tag tag-jail">ISOLASI</span> ${player.name} menjalani masa karantina dan istirahat di petak isolasi.`);
+      this.setStepHint(`ISOLASI MEDIS: ${player.name} menyelesaikan masa karantina.`);
       this.isRolling = false;
       setTimeout(() => this.nextTurn(), 1200);
       return;
     }
+
+    this.setStepHint(`MENGUMPULKAN ENERGI & MENGINJAK SIRKUIT...`);
 
     // Play rolling animation
     if (window.sound && window.sound.playClick) {
@@ -327,7 +375,8 @@ export class MonopolyEngine {
         this.setDiceFace(rollValue);
       }
 
-      this.addLog(`🎲 ${player.name} melempar dadu dan mendapatkan angka <b>${rollValue}</b>!`);
+      this.addLog(`<span class="mono-log-tag tag-roll">DADU</span> ${player.name} melempar dadu dan mendapatkan angka <b>${rollValue}</b>.`);
+      this.setStepHint(`MELANGKAH ${rollValue} PETAK DI JALUR ORGAN...`);
       this.movePlayerSteps(player, rollValue);
     }, 850);
   }
@@ -348,7 +397,7 @@ export class MonopolyEngine {
         // Passed START
         if (player.position === 0) {
           player.atp += 200;
-          this.addLog(`🌟 ${player.name} melintasi Sumsum Tulang (+200 ATP energi baru)!`);
+          this.addLog(`<span class="mono-log-tag tag-start">PASOKAN</span> ${player.name} melintasi Sumsum Tulang (+200 ATP suplai leukosit)!`);
           this.showToast(`+200 ATP (Sumsum Tulang)!`, '#00f2fe');
         }
 
@@ -369,13 +418,14 @@ export class MonopolyEngine {
   handleTileLanding(player) {
     this.isTurnProcessing = true;
     const tile = this.tiles[player.position];
-    this.addLog(`📍 ${player.name} mendarat di <b>${tile.name}</b> (${tile.sub}).`);
+    this.addLog(`<span class="mono-log-tag tag-info">SEKTOR</span> ${player.name} tiba di <b>${tile.name}</b> (${tile.sub}).`);
 
     switch (tile.type) {
       case 'start':
         player.atp += 100;
-        this.addLog(`⭐ ${player.name} tepat mendarat di Base Sumsum Tulang (Bonus ekstra +100 ATP)!`);
+        this.addLog(`<span class="mono-log-tag tag-start">BONUS</span> ${player.name} mendarat tepat di Base Sumsum Tulang (+100 ATP)!`);
         this.showToast(`Bonus Tepat Start +100 ATP!`, '#00f2fe');
+        this.setStepHint(`BONUS TEPAT START: +100 ATP!`);
         setTimeout(() => this.finishTileAction(), 1000);
         break;
 
@@ -393,14 +443,16 @@ export class MonopolyEngine {
 
       case 'parking':
         player.atp += 50;
-        this.addLog(`🍃 ${player.name} menikmati relaksasi detoksifikasi hati (+50 ATP).`);
+        this.addLog(`<span class="mono-log-tag tag-start">DETOKS</span> ${player.name} menikmati relaksasi detoksifikasi hati (+50 ATP).`);
         this.showToast(`Detoksifikasi Hepar +50 ATP!`, '#00ffcc');
+        this.setStepHint(`DETOKSIFIKASI HEPAR: +50 ATP`);
         setTimeout(() => this.finishTileAction(), 1000);
         break;
 
       case 'go_to_jail':
-        this.addLog(`🚨 ALARM: ${player.name} terpapar infeksi dan dipindahkan ke Ruang Karantina!`);
+        this.addLog(`<span class="mono-log-tag tag-jail">BAHAYA</span> ${player.name} terpapar patogen dan dipindahkan ke Ruang Karantina!`);
         this.showToast(`Masuk Ruang Karantina!`, '#ff3d78');
+        this.setStepHint(`TERPAPAR INFEKSI: Masuk Ruang Karantina.`);
         player.position = 5; // Jail tile
         player.inJailTurns = 1;
         this.renderPawns();
@@ -408,14 +460,16 @@ export class MonopolyEngine {
         break;
 
       case 'jail':
-        this.addLog(`🏥 ${player.name} sedang singgah di pos pengawasan isolasi.`);
+        this.addLog(`<span class="mono-log-tag tag-jail">SINGGAH</span> ${player.name} sedang singgah di pos pengawasan isolasi.`);
+        this.setStepHint(`SINGGAH AMAN: Pos Isolasi`);
         setTimeout(() => this.finishTileAction(), 800);
         break;
 
       case 'booster':
         player.atp += 100;
-        this.addLog(`🔬 ${player.name} menerima booster klinik imunisasi (+100 ATP)!`);
+        this.addLog(`<span class="mono-log-tag tag-start">KLINIK</span> ${player.name} menerima booster klinik imunisasi (+100 ATP)!`);
         this.showToast(`Klinik Vaksinasi +100 ATP!`, '#4cc9f0');
+        this.setStepHint(`KLINIK VAKSINASI: +100 ATP`);
         setTimeout(() => this.finishTileAction(), 1000);
         break;
 
@@ -433,14 +487,15 @@ export class MonopolyEngine {
           player.atp -= tile.price;
           tile.owner = player;
           player.properties.push(tile);
-          this.addLog(`🏢 AI ${player.name} membeli Pos Pertahanan di <b>${tile.name}</b> seharga ${tile.price} ATP.`);
+          this.addLog(`<span class="mono-log-tag tag-prop">POS</span> AI ${player.name} mendirikan Pos di <b>${tile.name}</b> seharga ${tile.price} ATP.`);
           this.renderBoard();
         } else {
-          this.addLog(`🏢 AI ${player.name} melewati kesempatan mendirikan pos di ${tile.name}.`);
+          this.addLog(`<span class="mono-log-tag tag-prop">LEWATI</span> AI ${player.name} melewati kesempatan pos di ${tile.name}.`);
         }
         setTimeout(() => this.finishTileAction(), 1000);
       } else {
         // Human player: Show Buy Modal
+        this.setStepHint(`KEPUTUSAN: DIRIKAN POS PERTAHANAN ATAU LEWATI`);
         this.showPropertyBuyModal(player, tile);
       }
     } else if (tile.owner.id === player.id) {
@@ -451,11 +506,12 @@ export class MonopolyEngine {
           player.atp -= upgradeCost;
           tile.level++;
           tile.rent = Math.round(tile.rent * 1.5);
-          this.addLog(`⭐ AI ${player.name} meningkatkan Pos ${tile.name} ke Level ${tile.level} (Sewa: ${tile.rent} ATP)!`);
+          this.addLog(`<span class="mono-log-tag tag-prop">UPGRADE</span> AI ${player.name} meningkatkan Pos ${tile.name} ke Level ${tile.level} (Sewa: ${tile.rent} ATP).`);
           this.renderBoard();
         }
         setTimeout(() => this.finishTileAction(), 1000);
       } else {
+        this.setStepHint(`UPGRADE ORGAN: PERKUAT BENTENG PERTAHANAN ANDA`);
         this.showPropertyUpgradeModal(player, tile);
       }
     } else {
@@ -465,8 +521,9 @@ export class MonopolyEngine {
       player.atp -= actualRent;
       tile.owner.atp += actualRent;
 
-      this.addLog(`💸 ${player.name} melintasi pos kekuasaan ${tile.owner.name} di <b>${tile.name}</b> dan membayar sewa ${actualRent} ATP!`);
+      this.addLog(`<span class="mono-log-tag tag-rent">SEWA</span> ${player.name} singgah di sektor ${tile.owner.name} (${tile.name}) dan bayar sewa ${actualRent} ATP.`);
       this.showToast(`Bayar Sewa ${actualRent} ATP ke ${tile.owner.name}`, '#ffaa00');
+      this.setStepHint(`BAYAR SEWA: -${actualRent} ATP ke ${tile.owner.name}`);
 
       if (player.atp <= 0) {
         this.handleBankruptcy(player, tile.owner);
@@ -492,7 +549,7 @@ export class MonopolyEngine {
     const btnSkip = document.getElementById('btn-mono-prop-skip');
 
     if (titleEl) titleEl.innerText = tile.name;
-    if (descEl) descEl.innerText = `${tile.sub} — Wilayah barier pertahanan tubuh yang strategis.`;
+    if (descEl) descEl.innerText = `${tile.sub} — Sektor anatomis strategis untuk mendirikan pos imun.`;
     if (priceEl) priceEl.innerText = `${tile.price} ATP`;
     if (rentEl) rentEl.innerText = `${tile.rent} ATP`;
 
@@ -504,7 +561,7 @@ export class MonopolyEngine {
           player.atp -= tile.price;
           tile.owner = player;
           player.properties.push(tile);
-          this.addLog(`🏰 ${player.name} berhasil mendirikan Pos Pertahanan di <b>${tile.name}</b> (${tile.price} ATP)!`);
+          this.addLog(`<span class="mono-log-tag tag-prop">POS</span> ${player.name} berhasil mendirikan Pos Pertahanan di <b>${tile.name}</b> (${tile.price} ATP)!`);
           this.showToast(`Mendirikan Pos di ${tile.name}!`, '#00f2fe');
           this.renderBoard();
           this.updateHUD();
@@ -517,7 +574,7 @@ export class MonopolyEngine {
     if (btnSkip) {
       btnSkip.onclick = () => {
         this.propertyModal.classList.add('hidden');
-        this.addLog(`${player.name} melewati penawaran pos di ${tile.name}.`);
+        this.addLog(`<span class="mono-log-tag tag-prop">LEWATI</span> ${player.name} melewati penawaran pos di ${tile.name}.`);
         this.finishTileAction();
       };
     }
@@ -555,13 +612,13 @@ export class MonopolyEngine {
           player.atp -= upgradeCost;
           tile.level++;
           tile.rent = newRent;
-          this.addLog(`⭐ ${player.name} meng-upgrade Pos ${tile.name} ke Level ${tile.level}!`);
+          this.addLog(`<span class="mono-log-tag tag-prop">UPGRADE</span> ${player.name} meng-upgrade Pos ${tile.name} ke Level ${tile.level}!`);
           this.showToast(`Pos Naik ke Lvl ${tile.level}!`, '#00ffcc');
           this.renderBoard();
           this.updateHUD();
         }
         this.propertyModal.classList.add('hidden');
-        btnBuy.innerText = 'DIRIKAN POS';
+        btnBuy.innerText = 'DIRIKAN POS PERTAHANAN';
         this.finishTileAction();
       };
     }
@@ -569,7 +626,7 @@ export class MonopolyEngine {
     if (btnSkip) {
       btnSkip.onclick = () => {
         this.propertyModal.classList.add('hidden');
-        btnBuy.innerText = 'DIRIKAN POS';
+        btnBuy.innerText = 'DIRIKAN POS PERTAHANAN';
         this.finishTileAction();
       };
     }
@@ -592,12 +649,12 @@ export class MonopolyEngine {
       setTimeout(() => {
         if (isCorrect) {
           player.atp += question.rewardATP;
-          this.addLog(`🧠 AI ${player.name} menjawab kuis biologi dengan benar (+${question.rewardATP} ATP)!`);
+          this.addLog(`<span class="mono-log-tag tag-quiz">KUIS</span> AI ${player.name} menjawab kuis dengan benar (+${question.rewardATP} ATP).`);
           this.showToast(`AI Benar +${question.rewardATP} ATP`, '#38ef7d');
         } else {
           const penalty = Math.min(player.atp, question.penaltyATP);
           player.atp -= penalty;
-          this.addLog(`❌ AI ${player.name} salah menjawab kuis biologi (-${penalty} ATP)!`);
+          this.addLog(`<span class="mono-log-tag tag-quiz">KUIS</span> AI ${player.name} salah menjawab kuis (-${penalty} ATP).`);
         }
         this.updateHUD();
         this.finishTileAction();
@@ -606,6 +663,7 @@ export class MonopolyEngine {
     }
 
     // Human player: Show Quiz Modal
+    this.setStepHint(`TANTANGAN KUIS: PILIH JAWABAN SAINS SEBELUM WAKTU HABIS`);
     this.showQuizModal(player, question);
   }
 
@@ -674,12 +732,12 @@ export class MonopolyEngine {
     const isCorrect = selectedIdx === question.correct;
     if (isCorrect) {
       player.atp += question.rewardATP;
-      this.addLog(`🎉 ${player.name} menjawab benar kuis biologi (+${question.rewardATP} ATP)!`);
+      this.addLog(`<span class="mono-log-tag tag-quiz">KUIS</span> ${player.name} menjawab benar kuis biologi (+${question.rewardATP} ATP)!`);
       this.showToast(`Jawaban Benar! +${question.rewardATP} ATP`, '#38ef7d');
     } else {
       const penalty = Math.min(player.atp, question.penaltyATP);
       player.atp -= penalty;
-      this.addLog(`❌ ${player.name} salah menjawab kuis biologi (-${penalty} ATP).`);
+      this.addLog(`<span class="mono-log-tag tag-quiz">KUIS</span> ${player.name} salah menjawab kuis biologi (-${penalty} ATP).`);
       this.showToast(`Salah Jawab (-${penalty} ATP)`, '#ff3d78');
     }
 
@@ -718,7 +776,7 @@ export class MonopolyEngine {
 
     if (player.isAI) {
       const logText = event.apply(player, this);
-      this.addLog(`⚡ EVENT: ${logText}`);
+      this.addLog(`<span class="mono-log-tag tag-event">EVENT</span> ${logText}`);
       if (event.moveSteps) {
         player.position = (player.position + event.moveSteps + this.tiles.length) % this.tiles.length;
         this.renderPawns();
@@ -733,6 +791,7 @@ export class MonopolyEngine {
     }
 
     // Human player: Show Event Modal
+    this.setStepHint(`KARTU MEDIS BIO-HAZARD: BACA EFEK DAN TEKAN TERAPKAN`);
     this.showEventModal(player, event);
   }
 
@@ -748,7 +807,7 @@ export class MonopolyEngine {
     const effectEl = document.getElementById('mono-event-effect');
     const btnOk = document.getElementById('btn-mono-event-ok');
 
-    if (iconEl) iconEl.innerText = event.icon;
+    if (iconEl) iconEl.innerHTML = event.icon;
     if (titleEl) titleEl.innerText = event.title;
     if (descEl) descEl.innerText = event.description;
     if (effectEl) {
@@ -760,7 +819,7 @@ export class MonopolyEngine {
       btnOk.onclick = () => {
         this.eventModal.classList.add('hidden');
         const logText = event.apply(player, this);
-        this.addLog(`⚡ EVENT: ${logText}`);
+        this.addLog(`<span class="mono-log-tag tag-event">EVENT</span> ${logText}`);
 
         if (event.moveSteps) {
           player.position = (player.position + event.moveSteps + this.tiles.length) % this.tiles.length;
@@ -803,7 +862,7 @@ export class MonopolyEngine {
   }
 
   handleBankruptcy(bankruptPlayer, recipient) {
-    this.addLog(`💀 ${bankruptPlayer.name} kehabisan seluruh energi ATP dan mengalami apoptosis/eliminasi!`);
+    this.addLog(`<span class="mono-log-tag tag-jail">BANGKRUT</span> ${bankruptPlayer.name} kehabisan seluruh energi ATP dan tereliminasi!`);
     this.declareWinner(recipient, `${bankruptPlayer.name} bangkrut dan tereliminasi dari pertempuran!`);
   }
 
@@ -824,7 +883,8 @@ export class MonopolyEngine {
     if (winnerPropsEl) winnerPropsEl.innerText = `${winner.properties.length} Pos Organ`;
 
     this.winnerModal.classList.remove('hidden');
-    this.addLog(`🏆 KEMENANGAN MUTLAK DIRAUK OLEH ${winner.name}!`);
+    this.addLog(`<span class="mono-log-tag tag-start">MENANG</span> Kemenangan mutlak diraih oleh <b>${winner.name}</b>!`);
+    this.setStepHint(`MISI SELESAI: ${winner.name} MEMENANGKAN PERMAINAN`);
   }
 
   nextTurn() {

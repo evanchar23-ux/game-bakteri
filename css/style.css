@@ -8370,9 +8370,15 @@ body.mobile-controls-active .telemetry-panel {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
   background: #020712;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.mono-player-pawn-avatar svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 .mono-player-meta {
@@ -8568,9 +8574,19 @@ body.mobile-controls-active .telemetry-panel {
 }
 
 .mono-tile-icon {
-  font-size: 16px;
-  line-height: 1;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 2px;
+  flex-shrink: 0;
+}
+
+.mono-tile-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 .mono-tile-name {
@@ -8606,16 +8622,22 @@ body.mobile-controls-active .telemetry-panel {
 }
 
 .mono-pawn-token {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 1.5px solid #00f2fe;
   background: #020814;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
   animation: pawnBounce 0.4s ease;
+  overflow: hidden;
+}
+
+.mono-pawn-token svg {
+  width: 13px;
+  height: 13px;
+  display: block;
 }
 
 @keyframes pawnBounce {
@@ -9138,6 +9160,193 @@ body.mobile-controls-active .telemetry-panel {
   opacity: 0;
   transform: translate(-50%, -15px);
   transition: all 0.35s ease;
+}
+
+/* Guide Button in Topbar */
+.mono-guide-btn {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.22), rgba(56, 239, 125, 0.25));
+  border: 1px solid #00f2fe;
+  color: #fff;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+}
+
+.mono-guide-btn:hover {
+  background: linear-gradient(135deg, rgba(0, 242, 254, 0.4), rgba(56, 239, 125, 0.45));
+  box-shadow: 0 0 18px rgba(0, 242, 254, 0.6);
+  transform: translateY(-1px);
+}
+
+.mono-guide-btn svg {
+  color: #00f2fe;
+  flex-shrink: 0;
+}
+
+/* Real-time Turn Callout Badge in Center Hub */
+.mono-hub-step-callout {
+  background: rgba(0, 242, 254, 0.14);
+  border: 1px solid rgba(0, 242, 254, 0.45);
+  color: #00f2fe;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-align: center;
+  max-width: 95%;
+  line-height: 1.25;
+  margin-bottom: 6px;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+  animation: pulseCallout 2.2s infinite ease-in-out;
+}
+
+@keyframes pulseCallout {
+  0%, 100% { border-color: rgba(0, 242, 254, 0.35); box-shadow: 0 0 6px rgba(0, 242, 254, 0.15); }
+  50% { border-color: #00f2fe; box-shadow: 0 0 14px rgba(0, 242, 254, 0.55); }
+}
+
+/* Comprehensive How-To-Play Guide Modal */
+.mono-guide-card {
+  max-width: 680px;
+  width: 95%;
+  max-height: 88vh;
+  overflow-y: auto;
+  align-items: stretch;
+  padding: 16px 20px;
+}
+
+.mono-guide-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 242, 254, 0.25);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.mgh-left h2 {
+  font-size: 16px;
+  color: #fff;
+  margin: 3px 0 0;
+  letter-spacing: 0.8px;
+}
+
+.mono-guide-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.guide-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.guide-box {
+  background: rgba(3, 11, 24, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  transition: border-color 0.2s ease;
+}
+
+.guide-box:hover {
+  border-color: rgba(0, 242, 254, 0.45);
+}
+
+.gb-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.gb-content h4 {
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 3px;
+}
+
+.gb-content p {
+  font-size: 9.5px;
+  color: #c4d7ec;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.mono-guide-foot {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Event & Trophy SVG Containers */
+.event-icon-circle svg {
+  width: 26px;
+  height: 26px;
+  display: block;
+}
+
+.winner-trophy svg {
+  width: 52px;
+  height: 52px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Log Tag Badges in Sidebar Activity Log (Replacing Emojis) */
+.mono-log-tag {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 7.5px;
+  font-weight: 800;
+  border-radius: 3px;
+  margin-right: 4px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.mono-log-tag.tag-roll  { background: rgba(0, 242, 254, 0.25); color: #00f2fe; border: 1px solid #00f2fe; }
+.mono-log-tag.tag-start { background: rgba(0, 255, 204, 0.25); color: #00ffcc; border: 1px solid #00ffcc; }
+.mono-log-tag.tag-prop  { background: rgba(255, 170, 0, 0.25); color: #ffaa00; border: 1px solid #ffaa00; }
+.mono-log-tag.tag-quiz  { background: rgba(56, 239, 125, 0.25); color: #38ef7d; border: 1px solid #38ef7d; }
+.mono-log-tag.tag-event { background: rgba(255, 61, 120, 0.25); color: #ff3d78; border: 1px solid #ff3d78; }
+.mono-log-tag.tag-jail  { background: rgba(255, 193, 7, 0.25); color: #ffc107; border: 1px solid #ffc107; }
+.mono-log-tag.tag-rent  { background: rgba(157, 78, 221, 0.25); color: #c77dff; border: 1px solid #9d4edd; }
+.mono-log-tag.tag-info  { background: rgba(255, 255, 255, 0.15); color: #fff; }
+
+/* Mobile Landscape for Guide Modal */
+@media screen and (max-height: 600px) {
+  .mono-guide-card {
+    max-height: 94vh;
+    padding: 10px 14px;
+  }
+  .guide-section-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .guide-box {
+    padding: 6px 8px;
+  }
+  .gb-content p {
+    font-size: 8.5px;
+  }
 }
 
 /* ==========================================================================

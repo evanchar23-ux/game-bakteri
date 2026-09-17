@@ -737,7 +737,7 @@
 
             <button type="button" id="btn-open-monopoly" class="menu-btn primary glow-btn" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.22), rgba(255, 61, 120, 0.28)); border-color: #00f2fe;">
               <div class="play-tri" style="background: #00f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px;">
-                <span style="font-size: 13px; line-height: 1;">🎲</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#070c14" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5" fill="#070c14"/><circle cx="16" cy="8" r="1.5" fill="#070c14"/><circle cx="12" cy="12" r="1.5" fill="#070c14"/><circle cx="8" cy="16" r="1.5" fill="#070c14"/><circle cx="16" cy="16" r="1.5" fill="#070c14"/></svg>
               </div>
               <div class="label" style="font-weight: 700; color: #fff;">Monopoli Imun</div>
               <div class="tag" style="background: #ff3d78; color: #fff; font-weight: 800;">BARU / BOARD GAME</div>
@@ -1631,7 +1631,9 @@
         <!-- Topbar -->
         <div class="monopoly-topbar">
           <div class="mono-brand">
-            <span class="mono-dice-icon">🎲</span>
+            <span class="mono-dice-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5" fill="#00f2fe"/><circle cx="16" cy="8" r="1.5" fill="#00f2fe"/><circle cx="12" cy="12" r="1.5" fill="#00f2fe"/><circle cx="8" cy="16" r="1.5" fill="#00f2fe"/><circle cx="16" cy="16" r="1.5" fill="#00f2fe"/></svg>
+            </span>
             <div class="mono-titles">
               <h2>BIO-MONOPOLY</h2>
               <span>PAPAN STRATEGI &amp; EDUKASI PERTAHANAN SELULAR</span>
@@ -1642,6 +1644,10 @@
             <span>MEMULAI SESI MONOPOLI...</span>
           </div>
           <div class="mono-topbar-actions">
+            <button type="button" id="btn-mono-guide" class="mono-guide-btn" title="Panduan Lengkap Cara Bermain">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>PANDUAN &amp; CARA MAIN</span>
+            </button>
             <button type="button" id="btn-close-monopoly" class="btn-icon-close" title="Keluar ke Menu Utama">
               <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
             </button>
@@ -1683,16 +1689,23 @@
                 <div class="mono-hub-decor">
                   <span class="hub-tag">BIO-ENGINE CONTROL</span>
                 </div>
+
+                <!-- Turn Callout Instruction Badge -->
+                <div class="mono-hub-step-callout" id="mono-hub-step-hint">
+                  GILIRAN ANDA: KLIK TOMBOL KOCOK DADU DI BAWAH
+                </div>
+
                 <div class="mono-dice-stage">
                   <div class="mono-dice-cube" id="monopoly-dice-cube" data-value="1">
                     1
                   </div>
                 </div>
                 <button type="button" id="btn-monopoly-roll" class="btn-primary glow-btn btn-roll-dice">
-                  <span>KOCOK DADU IMUN! 🎲</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>
+                  <span>KOCOK DADU IMUN</span>
                 </button>
                 <div class="mono-hub-hint">
-                  <span>Kocok dadu untuk menjelajahi 20 petak organ inang &amp; mensterilkan infeksi!</span>
+                  <span>Jelajahi 20 petak organ tubuh inang, dirikan pos pertahanan, dan raih 2.500 ATP!</span>
                 </div>
               </div>
             </div>
@@ -1711,14 +1724,18 @@
             </div>
             <div class="mono-setup-options">
               <div class="mono-mode-card" id="btn-mono-start-ai">
-                <div class="mode-icon-wrap">🤖</div>
+                <div class="mode-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8" width="36" height="36"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="8.5" cy="16" r="1.5" fill="#00f2fe"/><circle cx="15.5" cy="16" r="1.5" fill="#00f2fe"/><path d="M12 2v5M8 7h8"/></svg>
+                </div>
                 <h3>1 PEMAIN VS AI</h3>
                 <span class="mode-sub">Tanding Melawan Superbug Komputer</span>
                 <p>Uji kecerdasan sains dan monopolimu melawan AI Patogen cerdas!</p>
                 <button type="button" class="btn-primary glow-btn" style="width: 100%; margin-top: 10px;">MULAI VS AI</button>
               </div>
               <div class="mono-mode-card" id="btn-mono-start-pass">
-                <div class="mode-icon-wrap">👥</div>
+                <div class="mode-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#38ef7d" stroke-width="1.8" width="36" height="36"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
                 <h3>2 PEMAIN (PASS &amp; PLAY)</h3>
                 <span class="mode-sub">Mabar Bergantian 1 Layar</span>
                 <p>Main bareng teman di satu HP / Laptop bergantian melempar dadu dan menjawab kuis!</p>
@@ -1737,7 +1754,8 @@
                 <span class="quiz-category" id="mono-quiz-category">BIOLOGI // UMUM</span>
               </div>
               <div class="quiz-timer-badge">
-                <span>⏱️</span> <span id="mono-quiz-timer">18s</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" class="inline-icon"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="mono-quiz-timer">18s</span>
               </div>
             </div>
             <h3 class="quiz-question-text" id="mono-quiz-text">Pertanyaan kuis akan muncul di sini...</h3>
@@ -1753,7 +1771,9 @@
         <!-- 3. Bio-Hazard Event Modal -->
         <div id="monopoly-event-modal" class="mono-overlay-modal hidden">
           <div class="mono-modal-card glass-card event-card">
-            <div class="event-icon-circle" id="mono-event-icon">⚡</div>
+            <div class="event-icon-circle" id="mono-event-icon">
+              <!-- SVG Injected dynamically -->
+            </div>
             <span class="event-header-badge">KARTU KEJADIAN MEDIS &amp; BIO-HAZARD</span>
             <h3 class="event-title" id="mono-event-title">Judul Event</h3>
             <p class="event-desc" id="mono-event-desc">Deskripsi event...</p>
@@ -1790,7 +1810,9 @@
         <!-- 5. Winner Podium Modal -->
         <div id="monopoly-winner-modal" class="mono-overlay-modal hidden">
           <div class="mono-modal-card glass-card winner-card">
-            <div class="winner-trophy">🏆</div>
+            <div class="winner-trophy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#ffaa00" stroke-width="1.8" width="48" height="48"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-2M6 3h12v7a6 6 0 0 1-12 0V3zM9 21h6M12 16v5"/></svg>
+            </div>
             <span class="winner-subtitle">MISI STERILISASI MONOPOLI BERAKHIR!</span>
             <h2 class="winner-title" id="mono-winner-name">PEMAIN (SEL IMUN)</h2>
             <p class="winner-reason" id="mono-winner-reason">Berhasil mengumpulkan 2500 ATP!</p>
@@ -1805,8 +1827,95 @@
               </div>
             </div>
             <div class="winner-actions-row">
-              <button type="button" id="btn-mono-winner-again" class="btn-primary glow-btn" style="padding: 9px 20px;">MAIN LAGI 🎲</button>
+              <button type="button" id="btn-mono-winner-again" class="btn-primary glow-btn" style="padding: 9px 20px;">MAIN LAGI</button>
               <button type="button" id="btn-mono-winner-menu" class="btn-secondary" style="padding: 9px 20px;">MENU UTAMA</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Comprehensive How-To-Play Guide Modal -->
+        <div id="monopoly-guide-modal" class="mono-overlay-modal hidden">
+          <div class="mono-modal-card glass-card mono-guide-card">
+            <div class="mono-guide-head">
+              <div class="mgh-left">
+                <span class="modal-subtitle-tag">DOKTRIN &amp; STRATEGI PERMAINAN</span>
+                <h2>CARA BERMAIN MONOPOLI IMUN</h2>
+              </div>
+              <button type="button" id="btn-close-mono-guide" class="btn-icon-close" title="Tutup Panduan">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            <div class="mono-guide-body">
+              <div class="guide-section-grid">
+                <!-- Step 1: Goal -->
+                <div class="guide-box">
+                  <div class="gb-icon" style="color: #00f2fe;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+                  </div>
+                  <div class="gb-content">
+                    <h4>1. Tujuan &amp; Kemenangan</h4>
+                    <p>Kumpulkan cadangan energi seluler hingga <b>2.500 ATP</b> atau buat lawan kehabisan energi (0 ATP / Bangkrut) untuk memenangkan pertempuran organ!</p>
+                  </div>
+                </div>
+
+                <!-- Step 2: Movement -->
+                <div class="guide-box">
+                  <div class="gb-icon" style="color: #38ef7d;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5" fill="currentColor"/><circle cx="16" cy="8" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="8" cy="16" r="1.5" fill="currentColor"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>
+                  </div>
+                  <div class="gb-content">
+                    <h4>2. Giliran &amp; Kocok Dadu</h4>
+                    <p>Klik tombol <b>KOCOK DADU IMUN</b> saat giliranmu tiba. Bidakmu melangkah searah jarum jam sebanyak 1 hingga 6 petak mengitari 20 sektor anatomis.</p>
+                  </div>
+                </div>
+
+                <!-- Step 3: Organ Properties & Rent -->
+                <div class="guide-box">
+                  <div class="gb-icon" style="color: #ffaa00;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M12 2L4 6v6c0 5.5 3.5 10 8 11 4.5-1 8-5.5 8-11V6l-8-4z"/><path d="M12 7v10M8 11h8"/></svg>
+                  </div>
+                  <div class="gb-content">
+                    <h4>3. Pos Organ &amp; Biaya Sewa</h4>
+                    <p>Mendarat di organ kosong (Kulit, Paru, Lambung, dll) memberi opsi untuk <b>Membeli Pos</b>. Jika lawan mendarat di pos milikmu, lawan <b>wajib bayar sewa ATP</b> kepadamu!</p>
+                  </div>
+                </div>
+
+                <!-- Step 4: Science Quiz -->
+                <div class="guide-box">
+                  <div class="gb-icon" style="color: #4cc9f0;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="9.5"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2.5"/></svg>
+                  </div>
+                  <div class="gb-content">
+                    <h4>4. Petak Kuis Sains Biologi</h4>
+                    <p>Peluang emas! Mendarat di petak kuis memberimu 1 soal medis (18 detik). Jawaban benar menghasilkan <b>+120 s/d +160 ATP</b>!</p>
+                  </div>
+                </div>
+
+                <!-- Step 5: Bio-Hazard Events -->
+                <div class="guide-box">
+                  <div class="gb-icon" style="color: #ff3d78;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><circle cx="12" cy="12" r="2.5"/><path d="M12 9.5a4 4 0 1 0-3.5 5.5M12 9.5a4 4 0 1 1 3.5 5.5M8.5 15a4 4 0 1 0 7 0M12 2v3M5.5 19.5l2.6-1.5M18.5 19.5l-2.6-1.5"/></svg>
+                  </div>
+                  <div class="gb-content">
+                    <h4>5. Kartu Bio-Hazard &amp; Medis</h4>
+                    <p>Memicu kejadian biologis acak: suntikan vaksin booster (+ATP), suplemen vitamin, arus darah kencang (maju langkah), atau badai sitokin (-ATP).</p>
+                  </div>
+                </div>
+
+                <!-- Step 6: Start & Quarantine -->
+                <div class="guide-box">
+                  <div class="gb-icon" style="color: #9d4edd;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><rect x="4" y="10" width="16" height="12" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v4M9 16h6"/></svg>
+                  </div>
+                  <div class="gb-content">
+                    <h4>6. Sumsum Tulang &amp; Karantina</h4>
+                    <p>Melewati petak <b>START</b> memberi pasokan sel baru <b>+200 ATP</b>. Namun hati-hati mendarat di petak 15 karena kamu akan dikirim ke <b>Ruang Karantina</b> dan absen 1 putaran!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mono-guide-foot">
+              <button type="button" id="btn-mono-guide-ok" class="btn-primary glow-btn" style="padding: 9px 28px;">SAYA PAHAM, MULAI MAIN!</button>
             </div>
           </div>
         </div>
