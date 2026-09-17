@@ -102,10 +102,12 @@ export class TouchControls {
 
   updateControlsVisibility() {
     if (!this.mobileControls) return;
-    const isMobileSize = window.innerWidth <= 1024 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerHeight <= 600);
+    const isExplicitDesktop = document.body.classList.contains('mode-desktop');
+    const isExplicitMobile = document.body.classList.contains('mode-mobile');
+    const isMobileDevice = isExplicitMobile || (!isExplicitDesktop && (window.innerWidth <= 1024 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerHeight <= 600)));
     const isPlaying = this.game && this.game.state === 'PLAYING';
 
-    if (isMobileSize && isPlaying) {
+    if (isMobileDevice && isPlaying && !isExplicitDesktop) {
       this.mobileControls.classList.remove('hidden');
       document.body.classList.add('mobile-controls-active');
     } else {

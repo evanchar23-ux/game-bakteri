@@ -45,6 +45,78 @@
       </div>
     </div>
 
+    <!-- DEVICE MODE SELECTION MODAL (SMARTPHONE VS DESKTOP) -->
+    <div id="device-mode-modal" class="screen-overlay device-mode-overlay hidden">
+      <div class="modal-content glass-card device-mode-card">
+        <div class="modal-header device-mode-header">
+          <div class="device-mode-header-tag">
+            <span class="pulse-beacon-cyan"></span>
+            <span>KONFIGURASI SISTEM // PILIH PLATFORM KONTROL</span>
+          </div>
+          <h2>PILIH MODE PERMAINAN</h2>
+          <p>Pilih mode kontrol dan tampilan yang paling optimal untuk perangkat Anda saat ini.</p>
+        </div>
+
+        <div class="device-mode-grid">
+          <!-- Option 1: Smartphone / Tablet (Landscape) -->
+          <div class="device-mode-option" id="card-mode-mobile" data-mode="mobile">
+            <div class="device-mode-badge-top">DIREKOMENDASIKAN UNTUK HP</div>
+            <div class="device-mode-icon-wrap mobile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+                <rect x="2" y="6" width="20" height="12" rx="2" ry="2"/>
+                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                <path d="M5 12h.01M19 12h.01"/>
+              </svg>
+            </div>
+            <h3 class="device-mode-title">MODE SMARTPHONE / TABLET</h3>
+            <span class="device-mode-tag mobile">LANDSCAPE LAYAR SENTUH</span>
+            <ul class="device-mode-features">
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Virtual Joystick &amp; Tombol Serang Sentuh</li>
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Auto-Aim Cerdas Patogen Terdekat</li>
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> UI Ringkas &amp; Terkalibrasi Layar Miring</li>
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Layar Penuh Otomatis (Full Immersion)</li>
+            </ul>
+            <button type="button" id="btn-select-mobile-mode" class="btn-primary glow-btn btn-mode-action">
+              <span>PILIH MODE HP</span>
+              <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+          <!-- Option 2: PC / Laptop / Desktop -->
+          <div class="device-mode-option" id="card-mode-desktop" data-mode="desktop">
+            <div class="device-mode-badge-top desktop">DIREKOMENDASIKAN UNTUK PC</div>
+            <div class="device-mode-icon-wrap desktop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="40" height="40">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h3 class="device-mode-title">MODE DESKTOP / LAPTOP</h3>
+            <span class="device-mode-tag desktop">KEYBOARD + MOUSE</span>
+            <ul class="device-mode-features">
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Gerak WASD &amp; Arahkan Kursor Bebas</li>
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Klik Kiri Tembak, Spasi / Klik Kanan Skill</li>
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Layout Holografik Widescreen HD</li>
+              <li><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Hotbar Skill 1, 2, 3 Cooldown Visual</li>
+            </ul>
+            <button type="button" id="btn-select-desktop-mode" class="btn-outline btn-mode-action">
+              <span>PILIH MODE DESKTOP</span>
+              <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="device-mode-footer">
+          <label class="device-mode-remember">
+            <input type="checkbox" id="chk-remember-device-mode" checked>
+            <span>Ingat pilihan saya (Dapat diganti kapan saja via tombol Topbar atau Pengaturan)</span>
+          </label>
+          <button type="button" id="btn-close-device-mode" class="btn-secondary" style="font-size: 11px; padding: 6px 14px;">Tutup</button>
+        </div>
+      </div>
+    </div>
+
     <!-- CINEMATIC STAGE ENTRANCE OVERLAY -->
     <div id="entrance-cinematic" class="entrance-cinematic-overlay hidden">
       <!-- Widescreen Letterbox Bars -->
@@ -623,8 +695,14 @@
           </svg>
           <div class="brand-name">VIRAL <b>SLAYER</b></div>
         </div>
-        <div class="nav-strip">
-          <span>EDUKASI</span><span class="sep">//</span><span>AKSI</span><span class="sep">//</span><span class="active">IMUNOLOGI</span>
+        <div class="topbar-right-dock">
+          <button type="button" id="btn-topbar-device-mode" class="topbar-mode-badge" title="Ganti Mode Tampilan (Smartphone / Desktop)">
+            <span class="mode-badge-icon" id="topbar-mode-icon">📱</span>
+            <span class="mode-badge-text" id="topbar-mode-text">MODE HP</span>
+          </button>
+          <div class="nav-strip">
+            <span>EDUKASI</span><span class="sep">//</span><span>AKSI</span><span class="sep">//</span><span class="active">IMUNOLOGI</span>
+          </div>
         </div>
       </div>
 
@@ -1504,6 +1582,15 @@
             </div>
             <button type="button" id="btn-toggle-autoaim-settings" class="btn-secondary" style="padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
               <span id="autoaim-status-text">AKTIF</span>
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="display: block; font-weight: 600;">Mode Tampilan &amp; Kontrol</span>
+              <small style="color: var(--text-muted); font-size: 11px;">Pilih optimalisasi Smartphone atau Desktop</small>
+            </div>
+            <button type="button" id="btn-toggle-device-mode-settings" class="btn-secondary" style="padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+              <span id="settings-device-mode-text">📱 MODE HP</span>
             </button>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center;">

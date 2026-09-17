@@ -88,6 +88,7 @@ export class Game {
 
     // UI Cache
     this.bindUIElements();
+    this.initDeviceMode();
     this.initMenuLivingEngine();
     this.particles.initAmbientCells(this.worldWidth, this.worldHeight, 80);
 
@@ -437,6 +438,70 @@ export class Game {
 
       document.addEventListener('fullscreenchange', updateFullscreenUI);
       document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
+    }
+
+    // Device Mode Switcher Events (Topbar & Settings & Modal Cards)
+    const btnTopbarMode = document.getElementById('btn-topbar-device-mode');
+    if (btnTopbarMode) {
+      btnTopbarMode.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showDeviceModeModal();
+      };
+    }
+
+    const btnToggleModeSettings = document.getElementById('btn-toggle-device-mode-settings');
+    if (btnToggleModeSettings) {
+      btnToggleModeSettings.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showDeviceModeModal();
+      };
+    }
+
+    const btnSelectMobile = document.getElementById('btn-select-mobile-mode');
+    const btnSelectDesktop = document.getElementById('btn-select-desktop-mode');
+    const btnCloseDeviceMode = document.getElementById('btn-close-device-mode');
+    const cardMobile = document.getElementById('card-mode-mobile');
+    const cardDesktop = document.getElementById('card-mode-desktop');
+
+    if (btnSelectMobile) {
+      btnSelectMobile.onclick = (e) => {
+        e.stopPropagation();
+        if (window.sound) window.sound.playClick();
+        this.setDeviceMode('mobile', true);
+        this.hideDeviceModeModal();
+        this.postTelemetry('[SISTEM] Mode Smartphone Aktif: Kontrol sentuh & layout landscape dioptimalkan.');
+      };
+    }
+    if (cardMobile) {
+      cardMobile.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.setDeviceMode('mobile', true);
+        this.hideDeviceModeModal();
+        this.postTelemetry('[SISTEM] Mode Smartphone Aktif: Kontrol sentuh & layout landscape dioptimalkan.');
+      };
+    }
+    if (btnSelectDesktop) {
+      btnSelectDesktop.onclick = (e) => {
+        e.stopPropagation();
+        if (window.sound) window.sound.playClick();
+        this.setDeviceMode('desktop', true);
+        this.hideDeviceModeModal();
+        this.postTelemetry('[SISTEM] Mode Desktop Aktif: Keyboard WASD & Mouse dioptimalkan.');
+      };
+    }
+    if (cardDesktop) {
+      cardDesktop.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.setDeviceMode('desktop', true);
+        this.hideDeviceModeModal();
+        this.postTelemetry('[SISTEM] Mode Desktop Aktif: Keyboard WASD & Mouse dioptimalkan.');
+      };
+    }
+    if (btnCloseDeviceMode) {
+      btnCloseDeviceMode.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.hideDeviceModeModal();
+      };
     }
 
     // Trailer preview click -> Launch Educational Cinema (60s+ Multi-Voice)
@@ -789,6 +854,99 @@ export class Game {
     window.addEventListener('keydown', unlockAudioAndStartMusic, { once: false });
   }
 
+  initDeviceMode() {
+    let savedMode = null;
+    try {
+      savedMode = localStorage.getItem('viral_slayer_device_mode');
+    } catch (e) {
+      console.warn('localStorage error', e);
+    }
+
+    const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 950) || (window.innerHeight <= 600);
+
+    if (savedMode === 'mobile' || savedMode === 'desktop') {
+      this.setDeviceMode(savedMode, false);
+    } else {
+      const initial = isTouch ? 'mobile' : 'desktop';
+      this.setDeviceMode(initial, false);
+    }
+  }
+
+  setDeviceMode(mode, save = true) {
+    this.deviceMode = mode;
+    const body = document.body;
+
+    if (mode === 'mobile') {
+      body.classList.add('mode-mobile');
+      body.classList.remove('mode-desktop');
+      if (this.touch) {
+        this.touch.setAutoAim(true);
+      }
+    } else {
+      body.classList.add('mode-desktop');
+      body.classList.remove('mode-mobile');
+    }
+
+    if (save) {
+      const chkRemember = document.getElementById('chk-remember-device-mode');
+      const remember = chkRemember ? chkRemember.checked : true;
+      if (remember) {
+        try {
+          localStorage.setItem('viral_slayer_device_mode', mode);
+        } catch (e) {
+          console.warn('localStorage access denied', e);
+        }
+      }
+    }
+
+    // Update Topbar
+    const topbarIcon = document.getElementById('topbar-mode-icon');
+    const topbarText = document.getElementById('topbar-mode-text');
+    if (topbarIcon && topbarText) {
+      if (mode === 'mobile') {
+        topbarIcon.innerText = '📱';
+        topbarText.innerText = 'MODE HP';
+      } else {
+        topbarIcon.innerText = '💻';
+        topbarText.innerText = 'MODE PC';
+      }
+    }
+
+    // Update Settings
+    const settingsModeText = document.getElementById('settings-device-mode-text');
+    if (settingsModeText) {
+      settingsModeText.innerText = mode === 'mobile' ? '📱 MODE HP (LANDSCAPE)' : '💻 MODE PC (DESKTOP)';
+    }
+
+    // Update Modal Cards Selected State
+    const cardMobile = document.getElementById('card-mode-mobile');
+    const cardDesktop = document.getElementById('card-mode-desktop');
+    if (cardMobile && cardDesktop) {
+      cardMobile.classList.toggle('selected', mode === 'mobile');
+      cardDesktop.classList.toggle('selected', mode === 'desktop');
+    }
+
+    if (this.touch) {
+      this.touch.updateControlsVisibility();
+    }
+
+    this.handleResize();
+  }
+
+  showDeviceModeModal() {
+    const modal = document.getElementById('device-mode-modal');
+    if (modal) {
+      modal.classList.remove('hidden');
+    }
+  }
+
+  hideDeviceModeModal() {
+    const modal = document.getElementById('device-mode-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+    }
+  }
+
   finishPrologue() {
     if (this.isPrologueFinished) return;
     this.isPrologueFinished = true;
@@ -827,6 +985,13 @@ export class Game {
     sound.init();
     sound.playCinematicMenuWhoosh();
     sound.playAmbientLoop();
+
+    // Check if device mode has been chosen, if not, prompt player
+    try {
+      if (!localStorage.getItem('viral_slayer_device_mode')) {
+        setTimeout(() => this.showDeviceModeModal(), 400);
+      }
+    } catch (e) {}
   }
 
   updateAudioIcons(muted) {
@@ -844,7 +1009,7 @@ export class Game {
 
   showScreen(targetOverlay) {
     const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiBriefing];
-    const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && targetOverlay.id === 'settings-modal'));
+    const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && (targetOverlay.id === 'settings-modal' || targetOverlay.id === 'device-mode-modal')));
 
     if (!isModal && (targetOverlay === null || fullScreens.includes(targetOverlay))) {
       this.currentScreen = targetOverlay;
@@ -857,7 +1022,7 @@ export class Game {
     if (targetOverlay) {
       targetOverlay.classList.remove('hidden');
       targetOverlay.scrollTop = 0;
-      const scrollables = targetOverlay.querySelectorAll('.modal-content, .cell-roster-dossier-col, .organ-dossier-panel, .bio-terminal-deck, .bio-chamber-layout, .briefing-body');
+      const scrollables = targetOverlay.querySelectorAll('.modal-content, .cell-roster-dossier-col, .cell-dossier-card, .organ-dossier-panel, .bio-terminal-deck, .bio-chamber-layout, .briefing-body');
       scrollables.forEach((el) => { el.scrollTop = 0; });
     }
 
@@ -976,6 +1141,11 @@ export class Game {
           <div style="font-size: 11px; color: ${cell.color}; font-weight: 700; font-family: var(--font-display); display: flex; align-items: center; gap: 6px;">
             <span>STATUS: SIAP DISTRIBUSI</span> <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/><path d="M9.5 6.5L21 18v3h-3L6.5 9.5"/><path d="M11 5l-6 6"/><path d="M8 8L4 4"/><path d="M5 3L3 5"/></svg>
           </div>
+        </div>
+
+        <div class="dossier-scroll-cue">
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+          <span>GULIR KE BAWAH UNTUK LIHAT INFO LENGKAP</span>
         </div>
 
         <p class="cell-dossier-lore">${cell.lore}</p>
@@ -1097,6 +1267,11 @@ export class Game {
       tile.onmouseenter = () => { if (window.sound) window.sound.playHover(); };
       chipsContainer.appendChild(tile);
     });
+
+    // Ensure touch scrolling on dossier panel propagates smoothly without interruption
+    dossierContainer.addEventListener('touchmove', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
 
     // Initial select
     selectCell(this.selectedCellKey, false);

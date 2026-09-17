@@ -108,10 +108,12 @@ canvas#gameCanvas {
   100% { transform: scale(1) translateY(0); opacity: 1; filter: blur(0); }
 }
 
-.screen-overlay.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+.screen-overlay.hidden,
+.device-mode-overlay.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* ==========================================================================
@@ -6219,6 +6221,278 @@ body.mobile-controls-active .telemetry-panel {
   display: none !important;
 }
 
+/* ================= TOPBAR MODE SWITCHER BADGE ================= */
+.topbar-right-dock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-mode-badge {
+  background: rgba(0, 242, 254, 0.08);
+  border: 1px solid rgba(0, 242, 254, 0.28);
+  border-radius: 20px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #00f2fe;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.topbar-mode-badge:hover {
+  background: rgba(0, 242, 254, 0.2);
+  border-color: #00f2fe;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.35);
+  transform: translateY(-1px);
+}
+
+.mode-badge-icon {
+  font-size: 13px;
+}
+
+/* ================= DEVICE MODE SELECTION MODAL ================= */
+.device-mode-overlay {
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 6, 14, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.device-mode-card {
+  max-width: 760px;
+  width: 95vw;
+  max-height: 94vh;
+  background: linear-gradient(145deg, rgba(8, 20, 38, 0.95), rgba(4, 12, 24, 0.98));
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 40px rgba(0, 242, 254, 0.15), 0 20px 50px rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.device-mode-header {
+  text-align: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.device-mode-header-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--primary-cyan, #00f2fe);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.device-mode-header h2 {
+  font-family: var(--font-heading, 'Teko', sans-serif);
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: #fff;
+  margin: 2px 0 4px;
+  text-shadow: 0 0 16px rgba(0, 242, 254, 0.4);
+}
+
+.device-mode-header p {
+  font-size: 12.5px;
+  color: #a0aec0;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.device-mode-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 10px 0 16px;
+}
+
+.device-mode-option {
+  position: relative;
+  background: rgba(13, 27, 48, 0.65);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.device-mode-option:hover {
+  background: rgba(18, 38, 68, 0.85);
+  border-color: rgba(0, 242, 254, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 242, 254, 0.2);
+}
+
+.device-mode-option.selected {
+  background: rgba(0, 242, 254, 0.1);
+  border-color: var(--primary-cyan, #00f2fe);
+  box-shadow: 0 0 24px rgba(0, 242, 254, 0.3);
+}
+
+.device-mode-badge-top {
+  position: absolute;
+  top: -9px;
+  font-size: 8.5px;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #00f2fe, #4facfe);
+  color: #030a16;
+  padding: 2px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 242, 254, 0.4);
+}
+
+.device-mode-badge-top.desktop {
+  background: linear-gradient(90deg, #a855f7, #ec4899);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4);
+}
+
+.device-mode-icon-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 6px 0 10px;
+  transition: all 0.25s ease;
+}
+
+.device-mode-icon-wrap.mobile {
+  background: rgba(0, 242, 254, 0.12);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--primary-cyan, #00f2fe);
+}
+
+.device-mode-icon-wrap.desktop {
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #d8b4fe;
+}
+
+.device-mode-option:hover .device-mode-icon-wrap {
+  transform: scale(1.08);
+}
+
+.device-mode-title {
+  font-family: var(--font-heading, 'Teko', sans-serif);
+  font-size: 19px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.device-mode-tag {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.device-mode-tag.mobile {
+  background: rgba(0, 242, 254, 0.12);
+  color: #00f2fe;
+  border: 1px solid rgba(0, 242, 254, 0.25);
+}
+
+.device-mode-tag.desktop {
+  background: rgba(168, 85, 247, 0.12);
+  color: #d8b4fe;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.device-mode-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.device-mode-features li {
+  font-size: 11px;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1.3;
+}
+
+.device-mode-features li svg {
+  color: #00ff88;
+  flex-shrink: 0;
+}
+
+.btn-mode-action {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: auto;
+  border-radius: 8px;
+}
+
+.device-mode-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.device-mode-remember {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.device-mode-remember input {
+  cursor: pointer;
+  accent-color: var(--primary-cyan, #00f2fe);
+}
+
 /* 5. Media Queries: Mobile Landscape & Compact Screen Layout */
 @media screen and (max-height: 600px) and (orientation: landscape), screen and (max-width: 950px) {
   /* ================= MAIN MENU LANDSCAPE ================= */
@@ -6470,10 +6744,101 @@ body.mobile-controls-active .telemetry-panel {
 
   .modal-standard, .debrief-card, .human-scanner-modal, .bio-terminal-wrapper,
   .upgrade-modal-card, .bio-chamber-modal, .mission-briefing-card, .guide-card,
-  .settings-card, .edu-cinema-card {
+  .settings-card, .edu-cinema-card, .device-mode-card {
     max-height: calc(100vh - 8px) !important;
     max-width: 98vw !important;
     box-sizing: border-box !important;
+  }
+
+  /* ================= 0. DEVICE MODE SELECTION MODAL ================= */
+  .device-mode-card {
+    padding: 6px 12px !important;
+    max-height: calc(100vh - 8px) !important;
+    width: 96vw !important;
+    max-width: 720px !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .device-mode-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+  .device-mode-header-tag {
+    font-size: 7.5px !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 0 !important;
+  }
+  .device-mode-header h2 {
+    font-size: 15px !important;
+    margin: 1px 0 !important;
+  }
+  .device-mode-header p {
+    display: none !important;
+  }
+  .device-mode-grid {
+    margin: 4px 0 6px !important;
+    gap: 8px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
+  .device-mode-option {
+    padding: 6px 8px !important;
+    border-radius: 8px !important;
+  }
+  .device-mode-badge-top {
+    font-size: 7px !important;
+    padding: 1px 7px !important;
+    top: -7px !important;
+  }
+  .device-mode-icon-wrap {
+    width: 26px !important;
+    height: 26px !important;
+    margin: 1px 0 3px !important;
+  }
+  .device-mode-icon-wrap svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .device-mode-title {
+    font-size: 12px !important;
+    margin: 0 0 1px !important;
+  }
+  .device-mode-tag {
+    font-size: 7.5px !important;
+    margin-bottom: 4px !important;
+    padding: 1px 5px !important;
+  }
+  .device-mode-features {
+    gap: 2px !important;
+    margin-bottom: 6px !important;
+  }
+  .device-mode-features li {
+    font-size: 8px !important;
+    gap: 4px !important;
+    line-height: 1.2 !important;
+  }
+  .device-mode-features li svg {
+    width: 11px !important;
+    height: 11px !important;
+  }
+  .btn-mode-action {
+    padding: 4px 10px !important;
+    font-size: 9.5px !important;
+    border-radius: 6px !important;
+  }
+  .device-mode-footer {
+    padding-top: 3px !important;
+    flex-shrink: 0 !important;
+  }
+  .device-mode-remember {
+    font-size: 8.5px !important;
+    gap: 4px !important;
+  }
+  .device-mode-footer button {
+    padding: 2px 8px !important;
+    font-size: 9px !important;
   }
 
   /* ================= 1. CHARACTER SELECTION (BIO-CHAMBER) ================= */
@@ -6535,6 +6900,7 @@ body.mobile-controls-active .telemetry-panel {
     height: 100% !important;
     min-height: 0 !important;
     overflow: hidden !important;
+    position: relative !important;
   }
 
   .cell-quick-selector {
@@ -6545,19 +6911,162 @@ body.mobile-controls-active .telemetry-panel {
     flex-shrink: 0 !important;
   }
 
-  .cell-chip {
-    padding: 3px 4px !important;
-    font-size: 9px !important;
+  .cell-tile-btn {
+    padding: 3px 2px !important;
     border-radius: 6px !important;
+    gap: 2px !important;
+    min-height: 0 !important;
+  }
+
+  .cell-tile-avatar {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 11px !important;
+    margin-bottom: 1px !important;
+  }
+
+  .cell-tile-name {
+    font-size: 8px !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+
+  .cell-tile-sub {
+    display: none !important;
   }
 
   .cell-dossier-card {
-    flex: 1 1 auto !important;
+    flex: 1 1 0px !important;
+    height: 0 !important;
     min-height: 0 !important;
     max-height: 100% !important;
-    overflow-y: auto !important;
-    padding: 6px 10px !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+    padding: 6px 8px !important;
     border-radius: 8px !important;
+    display: block !important;
+    position: relative !important;
+    background: rgba(4, 14, 28, 0.85) !important;
+    border: 1px solid rgba(0, 242, 254, 0.25) !important;
+  }
+
+  .cell-dossier-card::-webkit-scrollbar {
+    width: 6px !important;
+  }
+
+  .cell-dossier-card::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.35) !important;
+    border-radius: 4px !important;
+  }
+
+  .cell-dossier-card::-webkit-scrollbar-thumb {
+    background: var(--primary-cyan, #00f2fe) !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .cell-dossier-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .cell-dossier-title-wrap h3 {
+    font-size: 13px !important;
+    gap: 4px !important;
+    margin: 0 !important;
+  }
+
+  .cell-dossier-badge {
+    font-size: 8px !important;
+    padding: 1px 5px !important;
+  }
+
+  .cell-dossier-lore {
+    font-size: 9px !important;
+    line-height: 1.3 !important;
+    margin: 3px 0 6px 0 !important;
+  }
+
+  .cell-stats-skills-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .cell-stats-box, .cell-skills-box {
+    padding: 5px 6px !important;
+    border-radius: 6px !important;
+    gap: 4px !important;
+  }
+
+  .box-micro-label {
+    font-size: 8px !important;
+    margin-bottom: 1px !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .stat-metric-row {
+    font-size: 8px !important;
+    gap: 4px !important;
+  }
+
+  .stat-metric-name {
+    font-size: 7.5px !important;
+  }
+
+  .stat-metric-bar {
+    height: 4px !important;
+  }
+
+  .stat-metric-val {
+    font-size: 8px !important;
+  }
+
+  .cell-skill-row {
+    gap: 1px !important;
+    margin-bottom: 3px !important;
+  }
+
+  .cell-skill-tag {
+    font-size: 8px !important;
+  }
+
+  .cell-skill-desc {
+    font-size: 7.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  .cell-bio-fact {
+    font-size: 8px !important;
+    line-height: 1.25 !important;
+    padding: 4px 6px !important;
+    margin-top: 4px !important;
+    border-radius: 6px !important;
+  }
+
+  .dossier-scroll-cue {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    font-size: 8px !important;
+    font-family: var(--font-display) !important;
+    color: var(--primary-cyan, #00f2fe) !important;
+    background: rgba(0, 242, 254, 0.08) !important;
+    border: 1px dashed rgba(0, 242, 254, 0.35) !important;
+    border-radius: 4px !important;
+    padding: 2px 6px !important;
+    margin-bottom: 6px !important;
   }
 
   .bio-chamber-actions {
