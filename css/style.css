@@ -145,7 +145,7 @@ canvas#gameCanvas {
     radial-gradient(ellipse 900px 500px at 82% 15%, rgba(255,61,120,0.10), transparent 60%),
     radial-gradient(ellipse 700px 600px at 10% 85%, rgba(47,231,200,0.08), transparent 60%),
     linear-gradient(180deg, #060a11 0%, #070c14 40%, #050810 100%);
-  padding: clamp(16px, 2.5vh, 30px) clamp(32px, 5vw, 80px) clamp(14px, 2vh, 22px);
+  padding: clamp(16px, 2.8vh, 32px) clamp(36px, 5.5vw, 84px) clamp(14px, 2.2vh, 24px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -182,7 +182,7 @@ canvas#gameCanvas {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: clamp(10px, 1.6vh, 18px);
+  padding-bottom: clamp(12px, 1.8vh, 18px);
   border-bottom: 1px solid var(--line-soft);
 }
 #main-menu .brand {
@@ -191,13 +191,13 @@ canvas#gameCanvas {
   gap: 14px;
 }
 #main-menu .brand-mark {
-  width: clamp(28px, 3.4vh, 34px);
-  height: clamp(28px, 3.4vh, 34px);
+  width: 34px;
+  height: 34px;
   flex-shrink: 0;
 }
 #main-menu .brand-name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(17px, 2.1vh, 19px);
+  font-size: clamp(17px, 2.2vh, 20px);
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--text-main);
@@ -212,7 +212,7 @@ canvas#gameCanvas {
   align-items: center;
   gap: 0;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: clamp(10px, 1.2vh, 11px);
+  font-size: clamp(10.5px, 1.3vh, 11.5px);
   letter-spacing: 0.14em;
   color: var(--text-dim);
 }
@@ -224,42 +224,42 @@ canvas#gameCanvas {
   color: var(--line);
 }
 
-/* Main Layout Grid - Spread out across the screen */
+/* Main Layout Grid - Aligned heights across left and right */
 #main-menu .layout {
   width: 100%;
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(360px, 1fr) minmax(440px, 1.25fr);
-  gap: clamp(36px, 6vw, 100px);
-  padding: clamp(10px, 1.8vh, 22px) 0;
-  align-items: center;
+  grid-template-columns: minmax(420px, 1fr) minmax(520px, 1.25fr);
+  gap: clamp(40px, 6vw, 90px);
+  padding: clamp(14px, 2.2vh, 26px) 0;
+  align-items: start;
   flex: 1;
 }
 
 /* Left Column */
 #main-menu .left-col {
   width: 100%;
-  max-width: 480px;
+  max-width: 500px;
 }
 #main-menu .hero-block {
-  margin-bottom: clamp(14px, 2.2vh, 24px);
+  margin-bottom: clamp(16px, 2.4vh, 24px);
 }
 #main-menu .hero-icon {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: clamp(6px, 1vh, 10px);
+  gap: 18px;
+  margin-bottom: 8px;
 }
 #main-menu .hero-hex {
-  width: clamp(44px, 5.2vh, 54px);
-  height: clamp(44px, 5.2vh, 54px);
+  width: 52px;
+  height: 52px;
   flex-shrink: 0;
-  filter: drop-shadow(0 0 12px rgba(255, 61, 120, 0.4));
+  filter: drop-shadow(0 0 14px rgba(255, 61, 120, 0.45));
 }
 #main-menu .hero-title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(32px, 4.2vh, 42px);
+  font-size: clamp(36px, 4.5vh, 44px);
   line-height: 0.98;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -270,11 +270,11 @@ canvas#gameCanvas {
   text-shadow: 0 0 26px rgba(255,61,120,0.45);
 }
 #main-menu .hero-sub {
-  margin-top: clamp(6px, 1vh, 10px);
-  font-size: clamp(11px, 1.3vh, 12.5px);
+  margin-top: 8px;
+  font-size: clamp(11.5px, 1.4vh, 12.5px);
   color: var(--text-dim);
   line-height: 1.5;
-  max-width: 420px;
+  max-width: 440px;
   font-family: 'IBM Plex Mono', monospace;
   letter-spacing: 0.02em;
 }
@@ -282,8 +282,8 @@ canvas#gameCanvas {
 #main-menu .menu {
   display: flex;
   flex-direction: column;
-  gap: clamp(8px, 1.2vh, 11px);
-  max-width: 450px;
+  gap: clamp(9px, 1.3vh, 12px);
+  max-width: 480px;
   width: 100%;
 }
 
@@ -291,8 +291,8 @@ canvas#gameCanvas {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: clamp(10px, 1.4vh, 13px) clamp(16px, 1.8vw, 22px);
+  gap: 16px;
+  padding: clamp(12px, 1.6vh, 15px) clamp(18px, 2vw, 24px);
   background: var(--bg-panel);
   border: 1px solid var(--line);
   border-radius: 10px;
@@ -314,8 +314,8 @@ canvas#gameCanvas {
 }
 
 #main-menu .menu-btn .ic {
-  width: 19px;
-  height: 19px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   color: var(--text-dim);
   transition: color 0.2s ease;
@@ -325,13 +325,13 @@ canvas#gameCanvas {
 }
 #main-menu .menu-btn .label {
   flex: 1;
-  font-size: clamp(13.5px, 1.5vh, 14.5px);
+  font-size: clamp(14px, 1.6vh, 15px);
   font-weight: 600;
   color: var(--text-main);
 }
 #main-menu .menu-btn .tag {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 10.5px;
   letter-spacing: 0.12em;
   color: var(--text-dim);
 }
@@ -361,8 +361,8 @@ canvas#gameCanvas {
   font-weight: 600;
 }
 #main-menu .menu-btn.primary .play-tri {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: var(--antibody-cyan);
   display: flex;
@@ -376,13 +376,13 @@ canvas#gameCanvas {
   transform: scale(1.1);
 }
 
-/* RIGHT COLUMN - Positioned cleanly on the right side */
+/* RIGHT COLUMN - Sits cleanly aligned with the left column */
 #main-menu .right-col {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.6vh, 16px);
+  gap: clamp(12px, 1.8vh, 16px);
   width: 100%;
-  max-width: 580px;
+  max-width: 620px;
   justify-self: end;
 }
 
@@ -390,7 +390,7 @@ canvas#gameCanvas {
   background: var(--bg-panel);
   border: 1px solid var(--line);
   border-radius: 12px;
-  padding: clamp(13px, 1.8vh, 18px) clamp(16px, 2vw, 22px);
+  padding: clamp(14px, 2vh, 18px) clamp(18px, 2vw, 24px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
@@ -398,7 +398,7 @@ canvas#gameCanvas {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: clamp(8px, 1.2vh, 14px);
+  margin-bottom: clamp(10px, 1.4vh, 14px);
 }
 #main-menu .status-head .left {
   display: flex;
@@ -422,7 +422,7 @@ canvas#gameCanvas {
 }
 
 #main-menu .status-head .title {
-  font-size: clamp(12px, 1.4vh, 13px);
+  font-size: clamp(12.5px, 1.5vh, 13.5px);
   font-weight: 600;
   color: var(--virus-pink);
   line-height: 1.35;
@@ -438,36 +438,36 @@ canvas#gameCanvas {
 }
 #main-menu .badge-radar {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9.5px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--antibody-cyan);
   border: 1px solid var(--antibody-cyan-dim);
   border-radius: 20px;
-  padding: 3px 10px;
+  padding: 4px 11px;
   white-space: nowrap;
 }
 
 #main-menu .vitals-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 #main-menu .vital {
   background: var(--bg-panel-2);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
-  padding: clamp(8px, 1.1vh, 11px) 11px;
+  padding: clamp(9px, 1.2vh, 12px) 12px;
 }
 #main-menu .vital .k {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 8.5px;
+  font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--text-dim);
   margin-bottom: 4px;
 }
 #main-menu .vital .v {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(16px, 2.1vh, 19px);
+  font-size: clamp(17px, 2.3vh, 20px);
   font-weight: 700;
   margin-bottom: 2px;
   color: #ffffff;
@@ -482,26 +482,26 @@ canvas#gameCanvas {
 
 #main-menu .threat-title {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--text-dim);
-  margin: clamp(7px, 1.1vh, 10px) 0 clamp(4px, 0.7vh, 6px);
+  margin: 12px 0 8px;
 }
 #main-menu .threat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5px;
+  gap: 8px;
 }
 #main-menu .threat {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 9px;
   background: var(--bg-panel-2);
   border: 1px solid var(--line-soft);
   border-left: 3px solid var(--line);
-  border-radius: 6px;
-  padding: clamp(4px, 0.7vh, 6px) 8px;
-  font-size: 10.5px;
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
   font-weight: 500;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
@@ -536,16 +536,16 @@ canvas#gameCanvas {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: clamp(8px, 1.2vh, 12px) 18px clamp(5px, 0.8vh, 8px);
+  padding: 12px 20px 8px;
 }
 #main-menu .video-head .t {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
 }
 #main-menu .video-head .t small {
   display: block;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 9.5px;
   color: var(--text-dim);
   font-weight: 400;
   margin-top: 2px;
@@ -553,19 +553,19 @@ canvas#gameCanvas {
 }
 #main-menu .multivoice {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 9px;
+  font-size: 9.5px;
   letter-spacing: 0.08em;
   color: var(--plasma-purple);
   border: 1px solid #3a2f66;
   border-radius: 20px;
-  padding: 3px 8px;
+  padding: 3px 10px;
   white-space: nowrap;
 }
 #main-menu .video-frame {
   position: relative;
-  height: clamp(90px, 12.5vh, 120px);
-  margin: 0 18px clamp(7px, 1vh, 10px);
-  border-radius: 8px;
+  height: clamp(105px, 14vh, 135px);
+  margin: 0 20px 10px;
+  border-radius: 9px;
   overflow: hidden;
   background:
     radial-gradient(circle at 30% 30%, rgba(255,61,120,0.35), transparent 55%),
@@ -577,8 +577,8 @@ canvas#gameCanvas {
   justify-content: center;
 }
 #main-menu .play-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(7,12,20,0.6);
   border: 1.5px solid var(--antibody-cyan);
@@ -586,21 +586,21 @@ canvas#gameCanvas {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(2px);
-  box-shadow: 0 0 14px rgba(47, 231, 200, 0.3);
+  box-shadow: 0 0 16px rgba(47, 231, 200, 0.3);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 #main-menu .video-panel:hover .play-btn {
   transform: scale(1.1);
-  box-shadow: 0 0 18px var(--antibody-cyan);
+  box-shadow: 0 0 22px var(--antibody-cyan);
 }
 #main-menu .video-foot {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--antibody-cyan);
-  padding: 0 18px clamp(7px, 1.1vh, 11px);
+  padding: 0 20px 14px;
   letter-spacing: 0.04em;
 }
 
@@ -610,13 +610,13 @@ canvas#gameCanvas {
   position: relative;
   z-index: 2;
   margin-top: 0;
-  padding-top: clamp(8px, 1.2vh, 12px);
+  padding-top: 12px;
   border-top: 1px solid var(--line-soft);
   display: flex;
   align-items: center;
   gap: 10px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
+  font-size: 10.5px;
   color: var(--text-dim);
   letter-spacing: 0.05em;
 }
