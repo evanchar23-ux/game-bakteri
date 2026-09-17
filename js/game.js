@@ -402,13 +402,23 @@ export class Game {
 
       const toggleFullscreenMode = () => {
         if (window.sound) window.sound.playClick();
-        if (!document.fullscreenElement) {
-          const el = document.documentElement;
-          const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
-          if (rfs) rfs.call(el).catch(() => {});
-        } else {
-          const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-          if (efs) efs.call(document).catch(() => {});
+        try {
+          if (!document.fullscreenElement) {
+            const el = document.documentElement;
+            const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+            if (rfs) {
+              const res = rfs.call(el);
+              if (res && typeof res.catch === 'function') res.catch(() => {});
+            }
+          } else {
+            const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+            if (efs) {
+              const res = efs.call(document);
+              if (res && typeof res.catch === 'function') res.catch(() => {});
+            }
+          }
+        } catch (e) {
+          console.warn('Fullscreen request bypassed:', e);
         }
       };
 
@@ -863,7 +873,6 @@ export class Game {
   hideScreen(targetOverlay) {
     if (targetOverlay) targetOverlay.classList.add('hidden');
     if (this.touch) this.touch.updateControlsVisibility();
-  }
 
     // When closing a modal dialog outside active gameplay, ensure underlying screen (Main Menu, Character Select, etc.) is visible
     if (this.state !== 'PLAYING') {

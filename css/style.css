@@ -5998,11 +5998,16 @@ kbd {
   text-align: center;
 }
 
-/* Enforce only on portrait viewports on mobile/tablet */
-@media screen and (orientation: portrait) and (max-width: 900px) {
-  .portrait-warning-overlay {
+/* Enforce only on touch mobile/tablet portrait viewports */
+@media screen and (orientation: portrait) and (max-width: 900px) and (hover: none) and (pointer: coarse) {
+  .portrait-warning-overlay:not(.dismissed) {
     display: flex !important;
   }
+}
+
+.portrait-warning-overlay.dismissed {
+  display: none !important;
+  pointer-events: none !important;
 }
 
 .portrait-warning-card {
@@ -6086,6 +6091,12 @@ kbd {
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
+}
+
+.mobile-controls-overlay.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* Left Joystick Zone */

@@ -41,6 +41,7 @@ export class TouchControls {
     this.setupJoystick();
     this.setupActionButtons();
     this.setupCanvasTouchAim();
+    this.setupPortraitWarning();
     this.updateControlsVisibility();
 
     window.addEventListener('resize', () => this.updateControlsVisibility());
@@ -50,6 +51,17 @@ export class TouchControls {
         if (this.game) this.game.handleResize();
       }, 250);
     });
+  }
+
+  setupPortraitWarning() {
+    const btnDismiss = document.getElementById('btn-dismiss-portrait');
+    const warningOverlay = document.getElementById('portrait-warning-overlay');
+    if (btnDismiss && warningOverlay) {
+      btnDismiss.onclick = (e) => {
+        e.stopPropagation();
+        warningOverlay.classList.add('dismissed');
+      };
+    }
   }
 
   setAutoAim(enabled) {
@@ -68,9 +80,18 @@ export class TouchControls {
         const el = document.documentElement;
         const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
         if (rfs) {
-          rfs.call(el).then(() => {
-            this.autoFullscreenTriggered = true;
-          }).catch(() => {});
+          try {
+            const res = rfs.call(el);
+            if (res && typeof res.then === 'function') {
+              res.then(() => {
+                this.autoFullscreenTriggered = true;
+              }).catch(() => {});
+            } else {
+              this.autoFullscreenTriggered = true;
+            }
+          } catch (e) {
+            // Fullscreen not permitted or gesture missing
+          }
         }
       }
     };
