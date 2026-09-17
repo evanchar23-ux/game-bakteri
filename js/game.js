@@ -1409,6 +1409,11 @@ export class Game {
           </div>
         </div>
 
+        <div class="dossier-scroll-cue">
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+          <span>GULIR KE BAWAH UNTUK LIHAT LINGKUNGAN MIKRO &amp; INTEL PATOGEN</span>
+        </div>
+
         <p class="dossier-lore">${organ.lore}</p>
 
         <div class="dossier-grid">
@@ -1460,6 +1465,7 @@ export class Game {
       });
 
       updateDossier(organKey);
+      dossierPanel.scrollTop = 0;
     };
 
     // Render Quick Selector Chips for CURRENT SUBJECT ONLY
@@ -1490,6 +1496,11 @@ export class Game {
       chip.onmouseenter = () => { if (window.sound) window.sound.playHover(); };
       chipsContainer.appendChild(chip);
     });
+
+    // Ensure touch scrolling on organ dossier panel propagates smoothly without interruption
+    dossierPanel.addEventListener('touchmove', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
 
     // Attach click and hover to Mannequin SVG Hotspots (now dynamically rendered)
     document.querySelectorAll('.organ-hotspot-node').forEach((node) => {

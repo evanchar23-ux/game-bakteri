@@ -7091,6 +7091,7 @@ body.mobile-controls-active .telemetry-panel {
     padding: 6px 12px !important;
     display: flex !important;
     flex-direction: column !important;
+    overflow: hidden !important;
   }
 
   .scanner-header {
@@ -7111,40 +7112,41 @@ body.mobile-controls-active .telemetry-panel {
   }
 
   .scanner-host-id {
-    font-size: 9px !important;
+    font-size: 8.5px !important;
     padding: 2px 6px !important;
   }
 
   .scanner-layout {
     display: grid !important;
-    grid-template-columns: minmax(260px, 320px) 1fr !important;
-    gap: 10px !important;
-    flex: 1 1 auto !important;
+    grid-template-columns: 210px 1fr !important;
+    gap: 8px !important;
+    flex: 1 1 0px !important;
     min-height: 0 !important;
-    height: calc(100vh - 86px) !important;
-    max-height: calc(100vh - 86px) !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
   }
 
   .scanner-body-viewport {
     height: 100% !important;
-    min-height: 180px !important;
-    padding: 4px 6px !important;
-    border-radius: 10px !important;
+    min-height: 0 !important;
+    padding: 3px !important;
+    border-radius: 8px !important;
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
     align-items: center !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
   .mannequin-container {
     width: 100% !important;
     height: 100% !important;
-    min-height: 180px !important;
+    min-height: 0 !important;
     flex: 1 1 auto !important;
     position: relative !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
 
   .hologram-3d-canvas {
@@ -7154,22 +7156,21 @@ body.mobile-controls-active .telemetry-panel {
 
   .hologram-orbit-dock {
     position: absolute !important;
-    bottom: 4px !important;
+    bottom: 3px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    background: rgba(2, 9, 22, 0.85) !important;
-    backdrop-filter: blur(6px) !important;
+    background: rgba(2, 9, 22, 0.9) !important;
     border: 1px solid rgba(0, 242, 254, 0.35) !important;
     border-radius: 20px !important;
-    padding: 2px 6px !important;
-    gap: 4px !important;
+    padding: 1px 4px !important;
+    gap: 2px !important;
     z-index: 10 !important;
   }
 
   .holo-orbit-btn {
-    padding: 2px 6px !important;
-    font-size: 8.5px !important;
-    height: 20px !important;
+    padding: 1px 4px !important;
+    font-size: 7.5px !important;
+    height: 18px !important;
   }
 
   .scanner-body-hint {
@@ -7178,39 +7179,170 @@ body.mobile-controls-active .telemetry-panel {
 
   .organ-dossier-panel {
     height: 100% !important;
+    min-height: 0 !important;
     max-height: 100% !important;
-    overflow-y: auto !important;
-    padding: 6px 10px !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior: contain !important;
+    padding: 6px 8px !important;
     border-radius: 8px !important;
+    display: block !important;
+    position: relative !important;
+    background: rgba(4, 14, 28, 0.85) !important;
+    border: 1px solid rgba(0, 242, 254, 0.25) !important;
+    box-sizing: border-box !important;
+  }
+
+  .organ-dossier-panel::-webkit-scrollbar {
+    width: 6px !important;
+  }
+
+  .organ-dossier-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.35) !important;
+    border-radius: 4px !important;
+  }
+
+  .organ-dossier-panel::-webkit-scrollbar-thumb {
+    background: var(--primary-cyan, #00f2fe) !important;
+    border-radius: 4px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  }
+
+  .dossier-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 3px !important;
+    padding-bottom: 3px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .dossier-avatar {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 13px !important;
+    border-radius: 6px !important;
+  }
+
+  .dossier-titles h3 {
+    font-size: 13px !important;
+    margin: 0 !important;
+  }
+
+  .dossier-subtitle {
+    font-size: 8px !important;
+  }
+
+  .dossier-threat-badge {
+    font-size: 7.5px !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+  }
+
+  .dossier-lore {
+    font-size: 8.5px !important;
+    line-height: 1.25 !important;
+    margin: 3px 0 5px 0 !important;
+  }
+
+  .dossier-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .dossier-subbox {
+    padding: 4px 6px !important;
+    border-radius: 6px !important;
+  }
+
+  .subbox-label {
+    font-size: 7.5px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .subbox-val-title {
+    font-size: 8.5px !important;
+  }
+
+  .subbox-desc {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+  }
+
+  .pathogen-tag {
+    font-size: 7.5px !important;
+    padding: 1px 4px !important;
+  }
+
+  .dossier-funfact {
+    font-size: 8px !important;
+    line-height: 1.25 !important;
+    padding: 4px 6px !important;
+    margin-top: 4px !important;
+    border-radius: 6px !important;
   }
 
   .organ-quick-chips-wrap {
     margin-top: 2px !important;
     padding-top: 2px !important;
+    flex-shrink: 0 !important;
   }
 
   .quick-chips-title {
-    font-size: 8px !important;
+    font-size: 7.5px !important;
     margin-bottom: 2px !important;
+    letter-spacing: 0.8px !important;
   }
 
   .organ-quick-chips {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
     gap: 4px !important;
   }
 
-  .organ-chip {
+  .organ-chip-btn {
     padding: 2px 5px !important;
-    font-size: 9px !important;
+    border-radius: 6px !important;
+    gap: 4px !important;
+    height: 24px !important;
+    min-height: 0 !important;
+  }
+
+  .chip-icon-box {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .chip-icon-box svg {
+    width: 12px !important;
+    height: 12px !important;
+  }
+
+  .chip-organ-name {
+    font-size: 8px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .chip-organ-sub {
+    display: none !important;
   }
 
   .scanner-modal-actions {
     margin-top: 2px !important;
     padding-top: 2px !important;
     flex-shrink: 0 !important;
+    display: flex !important;
+    gap: 8px !important;
   }
 
   .scanner-modal-actions button {
-    padding: 4px 12px !important;
+    padding: 5px 12px !important;
     font-size: 10px !important;
   }
 
