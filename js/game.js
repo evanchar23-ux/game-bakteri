@@ -567,6 +567,7 @@ export class Game {
       this.renderSubjectUI();
       if (this.hologram3d) {
         setTimeout(() => this.hologram3d.handleResize(), 60);
+        setTimeout(() => this.hologram3d.handleResize(), 250);
       }
     };
 

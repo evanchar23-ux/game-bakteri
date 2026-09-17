@@ -6495,20 +6495,136 @@ body.mobile-controls-active .telemetry-panel {
     overflow-y: auto !important;
   }
 
+  /* ================= ORGAN SELECTION 3D SCANNER ================= */
+  .human-scanner-modal {
+    max-height: calc(100vh - 8px) !important;
+    max-width: 98vw !important;
+    width: 98vw !important;
+    padding: 6px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .scanner-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  .scanner-header h2 {
+    font-size: 13.5px !important;
+    line-height: 1 !important;
+  }
+
+  .scanner-header p,
+  .scanner-status-tag {
+    display: none !important;
+  }
+
+  .scanner-host-id {
+    font-size: 9.5px !important;
+    padding: 2px 6px !important;
+  }
+
+  /* Grid Layout: Left Viewport (min 280px, up to 340px) + Right Dossier (1fr) */
   .scanner-layout {
-    grid-template-columns: 200px 1fr !important;
-    gap: 10px !important;
+    display: grid !important;
+    grid-template-columns: minmax(280px, 340px) 1fr !important;
+    gap: 12px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: calc(100vh - 110px) !important;
+    max-height: calc(100vh - 110px) !important;
+  }
+
+  .scanner-body-viewport {
+    height: 100% !important;
+    min-height: 220px !important;
+    padding: 4px 6px !important;
+    border-radius: 10px !important;
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: visible !important;
   }
 
   .mannequin-container {
-    height: 200px !important;
-    min-height: 180px !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 220px !important;
+    flex: 1 1 auto !important;
+    position: relative !important;
+    overflow: visible !important; /* Crucial: prevent clipping hologram head and feet! */
   }
 
-  .stage-dossier-panel {
-    max-height: 210px !important;
+  .hologram-3d-canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Orbit Controls: Minimal sleek floating bottom overlay dock */
+  .hologram-orbit-dock {
+    position: absolute !important;
+    bottom: 6px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    background: rgba(2, 9, 22, 0.8) !important;
+    backdrop-filter: blur(6px) !important;
+    border: 1px solid rgba(0, 242, 254, 0.35) !important;
+    border-radius: 20px !important;
+    padding: 2px 6px !important;
+    gap: 4px !important;
+    z-index: 10 !important;
+  }
+
+  .holo-orbit-btn {
+    padding: 2px 6px !important;
+    font-size: 8.5px !important;
+    height: 20px !important;
+  }
+
+  .scanner-body-hint {
+    display: none !important; /* Hide hint text so it doesn't push the mannequin up */
+  }
+
+  /* Right Dossier Panel */
+  .organ-dossier-panel {
+    height: 100% !important;
+    max-height: 100% !important;
     overflow-y: auto !important;
-    padding: 8px 10px !important;
+    padding: 8px 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .organ-quick-chips-wrap {
+    margin-top: 3px !important;
+    padding-top: 3px !important;
+  }
+
+  .quick-chips-title {
+    font-size: 8.5px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .organ-quick-chips {
+    gap: 5px !important;
+  }
+
+  .organ-chip {
+    padding: 3px 6px !important;
+    font-size: 9.5px !important;
+  }
+
+  /* Bottom Actions */
+  .scanner-modal-actions {
+    margin-top: 3px !important;
+    padding-top: 3px !important;
+  }
+
+  .scanner-modal-actions button {
+    padding: 5px 12px !important;
+    font-size: 10.5px !important;
   }
 
   .character-grid {

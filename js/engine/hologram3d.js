@@ -46,7 +46,7 @@ export class Hologram3DViewer {
 
     // 2. Camera
     this.camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    this.camera.position.set(0, 0.95, 2.75);
+    this.camera.position.set(0, 0.88, 2.30);
 
     // 3. WebGL Renderer with 100% Transparent Alpha
     this.renderer = new THREE.WebGLRenderer({
@@ -96,8 +96,8 @@ export class Hologram3DViewer {
       this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
       this.controls.dampingFactor = 0.08;
-      this.controls.target.set(0, 0.95, 0);
-      this.controls.minDistance = 1.2;
+      this.controls.target.set(0, 0.88, 0);
+      this.controls.minDistance = 1.0;
       this.controls.maxDistance = 4.2;
       this.controls.minPolarAngle = Math.PI * 0.10; // Pitch up (inspect from top)
       this.controls.maxPolarAngle = Math.PI * 0.90; // Pitch down (inspect from bottom)
@@ -128,6 +128,18 @@ export class Hologram3DViewer {
     if (width === 0 || height === 0) return;
 
     this.camera.aspect = width / height;
+
+    // Dynamically adjust FOV and camera distance so full body is prominent and never cut off
+    if (height < 320) {
+      this.camera.fov = 42;
+      this.camera.position.set(0, 0.88, 2.25);
+      if (this.controls) this.controls.target.set(0, 0.88, 0);
+    } else {
+      this.camera.fov = 40;
+      this.camera.position.set(0, 0.88, 2.45);
+      if (this.controls) this.controls.target.set(0, 0.88, 0);
+    }
+
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
 
@@ -488,8 +500,10 @@ export class Hologram3DViewer {
   resetView() {
     if (!this.controls) return;
     this.setAutoOrbit(false);
-    this.camera.position.set(0, 0.95, 2.75);
-    this.controls.target.set(0, 0.95, 0);
+    const isShort = (this.container && this.container.clientHeight < 320);
+    const camDist = isShort ? 2.25 : 2.45;
+    this.camera.position.set(0, 0.88, camDist);
+    this.controls.target.set(0, 0.88, 0);
     this.controls.update();
   }
 
