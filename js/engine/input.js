@@ -81,6 +81,15 @@ export class InputHandler {
     if (this.keys['KeyA'] || this.keys['ArrowLeft']) dx -= 1;
     if (this.keys['KeyD'] || this.keys['ArrowRight']) dx += 1;
 
+    // Incorporate Virtual Joystick if active
+    if (this.touch && this.touch.joystickVector) {
+      if (Math.abs(this.touch.joystickVector.dx) > 0.05 || Math.abs(this.touch.joystickVector.dy) > 0.05) {
+        dx = this.touch.joystickVector.dx;
+        dy = this.touch.joystickVector.dy;
+        return { dx, dy };
+      }
+    }
+
     // Normalize diagonal
     if (dx !== 0 && dy !== 0) {
       const len = Math.sqrt(dx * dx + dy * dy);

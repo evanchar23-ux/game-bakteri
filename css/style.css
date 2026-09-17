@@ -5944,3 +5944,386 @@ kbd {
   transform: scale(1.1);
   box-shadow: 0 0 25px var(--antibody-cyan), 0 0 10px #fff;
 }
+
+/* ==========================================================================
+   MOBILE CONTROLS, PORTRAIT WARNING & LANDSCAPE OPTIMIZATIONS
+   ========================================================================== */
+
+/* 1. Floating Controls Dock (Fullscreen & Audio) */
+.floating-controls-dock {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 120;
+}
+
+.btn-floating-ctrl {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(4, 18, 38, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 242, 254, 0.35);
+  color: var(--primary-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 242, 254, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-floating-ctrl:hover, .btn-floating-ctrl.active {
+  background: rgba(0, 242, 254, 0.2);
+  border-color: var(--primary-cyan);
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+}
+
+/* 2. Mobile Portrait Orientation Enforcement Overlay */
+.portrait-warning-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #07162c, #020813 90%);
+  z-index: 999999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+/* Enforce only on portrait viewports on mobile/tablet */
+@media screen and (orientation: portrait) and (max-width: 900px) {
+  .portrait-warning-overlay {
+    display: flex !important;
+  }
+}
+
+.portrait-warning-card {
+  max-width: 380px;
+  background: rgba(4, 18, 38, 0.95);
+  border: 1.5px solid var(--primary-cyan);
+  box-shadow: 0 0 40px rgba(0, 242, 254, 0.25);
+  border-radius: 20px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: #fff;
+}
+
+.phone-rotate-animation {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.phone-icon {
+  color: var(--primary-cyan);
+  animation: phoneRotateAnim 2.5s ease-in-out infinite;
+}
+
+.rotate-arrow {
+  position: absolute;
+  color: var(--bio-green);
+  opacity: 0.85;
+  animation: spinSlow 4s linear infinite;
+}
+
+@keyframes phoneRotateAnim {
+  0%, 15% { transform: rotate(0deg); }
+  50%, 85% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.portrait-warning-card h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  margin: 0;
+}
+
+.portrait-warning-card p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.landscape-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 242, 254, 0.15);
+  border: 1px solid var(--primary-cyan);
+  color: var(--primary-cyan);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+/* 3. Mobile Touch Controls (Virtual Joystick & Buttons) */
+.mobile-controls-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* Left Joystick Zone */
+.joystick-zone {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  width: 140px;
+  height: 140px;
+  pointer-events: auto;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-base {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.12), rgba(2, 12, 28, 0.65));
+  border: 2px solid rgba(0, 242, 254, 0.45);
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.25), inset 0 0 15px rgba(0, 242, 254, 0.15);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joystick-knob {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #00f2fe, #0077cc);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 18px var(--primary-cyan), 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Right Action Buttons Cluster */
+.touch-actions-cluster {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.touch-action-btn {
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: none;
+  user-select: none;
+  border: 2px solid;
+}
+
+.touch-action-btn:active, .touch-action-btn.pressed {
+  transform: scale(0.92);
+}
+
+.touch-action-btn.fire {
+  width: 76px;
+  height: 76px;
+  background: radial-gradient(circle at 35% 35%, rgba(0, 255, 136, 0.35), rgba(4, 38, 28, 0.95));
+  border-color: var(--bio-green);
+  color: #fff;
+  box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+}
+
+.touch-action-btn.fire.active {
+  box-shadow: 0 0 35px rgba(0, 255, 136, 0.8);
+  transform: scale(0.95);
+  background: radial-gradient(circle at 35% 35%, rgba(0, 255, 136, 0.6), rgba(4, 55, 38, 0.98));
+}
+
+.touch-action-btn.dash {
+  width: 58px;
+  height: 58px;
+  background: radial-gradient(circle at 35% 35%, rgba(0, 242, 254, 0.25), rgba(4, 18, 38, 0.92));
+  border-color: var(--primary-cyan);
+  color: var(--primary-cyan);
+  margin-bottom: 24px;
+}
+
+.touch-action-btn.ult {
+  width: 58px;
+  height: 58px;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 61, 120, 0.3), rgba(38, 4, 18, 0.92));
+  border-color: #ff3d78;
+  color: #ff3d78;
+  margin-bottom: 70px;
+  margin-right: -20px;
+}
+
+.touch-btn-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  margin-top: 1px;
+}
+
+.touch-cd-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  transition: height 0.1s linear;
+}
+
+/* 4. Media Queries: Short Mobile Landscape Screen Support (max-height: 520px) */
+@media screen and (max-height: 520px) and (orientation: landscape) {
+  /* Main Menu Adjustments */
+  #main-menu .layout {
+    padding: 10px 24px;
+    gap: 16px;
+  }
+
+  #main-menu .hero-block {
+    margin-bottom: 8px;
+  }
+
+  #main-menu .hero-title {
+    font-size: 26px;
+  }
+
+  #main-menu .hero-sub {
+    font-size: 10px;
+    margin-top: 2px;
+  }
+
+  #main-menu .menu {
+    gap: 8px;
+  }
+
+  #main-menu .menu-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* Modals Compact Scaling */
+  .modal-standard, .debrief-card, .human-scanner-modal, .bio-terminal-wrapper, .upgrade-modal-card {
+    max-height: calc(100vh - 16px) !important;
+    padding: 14px 18px !important;
+    overflow-y: auto !important;
+  }
+
+  .scanner-layout {
+    grid-template-columns: 240px 1fr !important;
+    gap: 12px !important;
+  }
+
+  .mannequin-container {
+    min-height: 180px !important;
+  }
+
+  .character-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .character-card {
+    padding: 12px 10px !important;
+  }
+
+  .briefing-body {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .upgrade-choices-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .upgrade-card {
+    padding: 12px 10px !important;
+    gap: 6px !important;
+  }
+
+  .upgrade-icon {
+    font-size: 26px !important;
+  }
+
+  .upgrade-title {
+    font-size: 14px !important;
+  }
+
+  .upgrade-effect {
+    font-size: 11px !important;
+  }
+
+  .upgrade-bio-lore {
+    font-size: 9.5px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* In-Game HUD Scaling */
+  .vitals-panel {
+    transform: scale(0.85);
+    transform-origin: top left;
+  }
+
+  .organ-panel {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+
+  .telemetry-panel {
+    transform: scale(0.85);
+    transform-origin: top right;
+  }
+
+  /* When mobile controls are active, hide desktop bottom keyboard hotbar to avoid clutter */
+  .mobile-controls-overlay:not(.hidden) ~ #hud .skills-hotbar,
+  body.has-touch .skills-hotbar {
+    display: none !important;
+  }
+
+  .hud-mutation-badge {
+    bottom: 24px;
+    padding: 6px 14px;
+    font-size: 11px;
+  }
+}

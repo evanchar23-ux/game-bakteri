@@ -17,6 +17,31 @@
     <!-- Game Canvas (Active during gameplay) -->
     <canvas id="gameCanvas"></canvas>
 
+    <!-- MOBILE PORTRAIT ORIENTATION ENFORCEMENT OVERLAY -->
+    <div id="portrait-warning-overlay" class="portrait-warning-overlay">
+      <div class="portrait-warning-card">
+        <div class="phone-rotate-animation">
+          <svg class="phone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+          <div class="rotate-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="28" height="28">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+          </div>
+        </div>
+        <h2>HARAP PUTAR HP KE LANDSCAPE</h2>
+        <p>Game <strong>Viral Slayer</strong> dirancang khusus untuk dimainkan dalam <strong>Mode Landscape (Miring)</strong>.</p>
+        <div class="landscape-badge">
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
+          </svg>
+          <span>PUTAR PERANGKAT</span>
+        </div>
+      </div>
+    </div>
+
     <!-- CINEMATIC STAGE ENTRANCE OVERLAY -->
     <div id="entrance-cinematic" class="entrance-cinematic-overlay hidden">
       <!-- Widescreen Letterbox Bars -->
@@ -289,6 +314,51 @@
           <div class="emergency-title" id="hud-emergency-title">EVENT FISIOLOGIS AKTIF</div>
           <div class="emergency-desc" id="hud-emergency-desc">Respon darurat organ telah dipicu!</div>
         </div>
+      </div>
+    </div>
+
+    <!-- MOBILE TOUCH CONTROLS (Active during gameplay on touch/mobile devices) -->
+    <div id="mobile-controls" class="mobile-controls-overlay hidden">
+      <!-- Left: Virtual Joystick Zone -->
+      <div id="joystick-zone" class="joystick-zone">
+        <div id="joystick-base" class="joystick-base">
+          <div id="joystick-knob" class="joystick-knob"></div>
+        </div>
+      </div>
+
+      <!-- Right: Action Buttons Cluster -->
+      <div class="touch-actions-cluster">
+        <!-- Ultimate Skill Button (Q/E) -->
+        <button type="button" id="btn-touch-ult" class="touch-action-btn ult" title="Respons Sitokin (Ultimate)">
+          <div class="touch-cd-overlay" id="touch-cd-ult"></div>
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          <span class="touch-btn-label">ULT</span>
+        </button>
+
+        <!-- Tactical Skill Button (Dash/Space) -->
+        <button type="button" id="btn-touch-dash" class="touch-action-btn dash" title="Skill Taktis (Dash/Fagositosis)">
+          <div class="touch-cd-overlay" id="touch-cd-dash"></div>
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="22" height="22">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span class="touch-btn-label">SKILL</span>
+        </button>
+
+        <!-- Primary Fire Button (Big Circular Attack Button) -->
+        <button type="button" id="btn-touch-fire" class="touch-action-btn fire" title="Serang / Tembak Kuman">
+          <div class="touch-fire-ring"></div>
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="28" height="28">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="2" x2="12" y2="6"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="6" y2="12"/>
+            <line x1="18" y1="12" x2="22" y2="12"/>
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+          </svg>
+          <span class="touch-btn-label">TEMBAK</span>
+        </button>
       </div>
     </div>
 
@@ -1418,6 +1488,24 @@
             <input type="range" id="settings-volume-slider" min="0" max="1" step="0.1" value="1" style="width: 150px; cursor: pointer;">
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="display: block; font-weight: 600;">Bidikan Otomatis (Auto-Aim)</span>
+              <small style="color: var(--text-muted); font-size: 11px;">Bantu membidik patogen terdekat saat menembak</small>
+            </div>
+            <button type="button" id="btn-toggle-autoaim-settings" class="btn-secondary" style="padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+              <span id="autoaim-status-text">AKTIF</span>
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="display: block; font-weight: 600;">Mode Layar Penuh (Fullscreen)</span>
+              <small style="color: var(--text-muted); font-size: 11px;">Maksimalkan area landscape smartphone</small>
+            </div>
+            <button type="button" id="btn-toggle-fullscreen-settings" class="btn-secondary" style="padding: 8px 16px; display: inline-flex; align-items: center; gap: 6px;">
+              <span id="fullscreen-status-text">LAYAR PENUH</span>
+            </button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
             <span>Resolusi Partikel Darah</span>
             <span style="color: var(--primary-cyan); font-weight: 700;">TINGGI (60 FPS)</span>
           </div>
@@ -1432,10 +1520,19 @@
       </div>
     </div>
 
-    <!-- AUDIO TOGGLE FLOATING BUTTON -->
-    <button id="audio-toggle" class="btn-audio-toggle" title="Toggle Suara Biologis">
-      <span id="audio-icon"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
-    </button>
+    <!-- FLOATING CONTROLS DOCK (AUDIO & FULLSCREEN) -->
+    <div class="floating-controls-dock">
+      <button id="fullscreen-toggle" class="btn-floating-ctrl" title="Toggle Layar Penuh (Fullscreen)">
+        <span id="fullscreen-icon">
+          <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+        </span>
+      </button>
+      <button id="audio-toggle" class="btn-floating-ctrl" title="Toggle Suara Biologis">
+        <span id="audio-icon"><svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+      </button>
+    </div>
   </div>
 
   <!-- Game Scripts (ES6 Modules) -->

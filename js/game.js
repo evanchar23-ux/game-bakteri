@@ -28,6 +28,7 @@ import { Hologram3DViewer } from './engine/hologram3d.js';
 import { Cell3DViewer } from './engine/cell3d.js';
 import { CinematicIntro3D } from './engine/CinematicIntro3D.js';
 import { MenuBioSimulation } from './engine/menuBioSimulation.js';
+import { TouchControls } from './engine/touch.js';
 
 export class Game {
   constructor(canvas) {
@@ -41,6 +42,8 @@ export class Game {
     // Subsystems
     this.camera = new Camera(window.innerWidth, window.innerHeight, this.worldWidth, this.worldHeight);
     this.input = new InputHandler(this.canvas);
+    this.touch = new TouchControls(this);
+    this.input.touch = this.touch;
     this.particles = new ParticleSystem();
     this.renderer = new WorldRenderer();
 
@@ -365,6 +368,65 @@ export class Game {
           }
         };
       }
+
+      // Auto-Aim Settings Toggle
+      const btnToggleAutoAim = document.getElementById('btn-toggle-autoaim-settings');
+      const autoAimStatusText = document.getElementById('autoaim-status-text');
+      const updateAutoAimUI = () => {
+        if (!autoAimStatusText || !this.touch) return;
+        if (this.touch.autoAimEnabled) {
+          autoAimStatusText.innerText = 'AKTIF';
+          if (btnToggleAutoAim) btnToggleAutoAim.style.color = 'var(--bio-green)';
+        } else {
+          autoAimStatusText.innerText = 'NONAKTIF';
+          if (btnToggleAutoAim) btnToggleAutoAim.style.color = '#7d96b8';
+        }
+      };
+      updateAutoAimUI();
+
+      if (btnToggleAutoAim) {
+        btnToggleAutoAim.onclick = () => {
+          if (window.sound) window.sound.playClick();
+          if (this.touch) {
+            this.touch.setAutoAim(!this.touch.autoAimEnabled);
+            updateAutoAimUI();
+            this.postTelemetry(this.touch.autoAimEnabled ? '[SISTEM] Auto-Aim diaktifkan.' : '[SISTEM] Auto-Aim dinonaktifkan.');
+          }
+        };
+      }
+
+      // Fullscreen Settings & Floating Toggle
+      const btnToggleFullscreen = document.getElementById('btn-toggle-fullscreen-settings');
+      const fullscreenStatusText = document.getElementById('fullscreen-status-text');
+      const btnFloatingFullscreen = document.getElementById('fullscreen-toggle');
+
+      const toggleFullscreenMode = () => {
+        if (window.sound) window.sound.playClick();
+        if (!document.fullscreenElement) {
+          const el = document.documentElement;
+          const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+          if (rfs) rfs.call(el).catch(() => {});
+        } else {
+          const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+          if (efs) efs.call(document).catch(() => {});
+        }
+      };
+
+      const updateFullscreenUI = () => {
+        const isFs = !!document.fullscreenElement;
+        if (fullscreenStatusText) {
+          fullscreenStatusText.innerText = isFs ? 'KELUAR LAYAR PENUH' : 'LAYAR PENUH';
+        }
+        if (btnFloatingFullscreen) {
+          btnFloatingFullscreen.classList.toggle('active', isFs);
+        }
+      };
+
+      if (btnToggleFullscreen) btnToggleFullscreen.onclick = toggleFullscreenMode;
+      if (btnFloatingFullscreen) btnFloatingFullscreen.onclick = toggleFullscreenMode;
+
+      document.addEventListener('fullscreenchange', updateFullscreenUI);
+      document.addEventListener('webkitfullscreenchange', updateFullscreenUI);
     }
 
     // Trailer preview click -> Launch Educational Cinema (60s+ Multi-Voice)
@@ -794,10 +856,14 @@ export class Game {
     } else if (targetOverlay === this.uiTeaser || targetOverlay === this.uiVictory || targetOverlay === this.uiGameOver) {
       if (sound) sound.stopMenuMusic();
     }
+
+    if (this.touch) this.touch.updateControlsVisibility();
   }
 
   hideScreen(targetOverlay) {
     if (targetOverlay) targetOverlay.classList.add('hidden');
+    if (this.touch) this.touch.updateControlsVisibility();
+  }
 
     // When closing a modal dialog outside active gameplay, ensure underlying screen (Main Menu, Character Select, etc.) is visible
     if (this.state !== 'PLAYING') {
@@ -2175,6 +2241,8 @@ export class Game {
     }
 
     if (this.state !== 'PLAYING') return;
+
+    if (this.touch) this.touch.update(dt);
 
     // 0.5 Stage Entrance Cinematic Animation
     if (this.isCinematicActive) {
