@@ -5,9 +5,11 @@
 
 import { Game } from './game.js';
 
-window.addEventListener('DOMContentLoaded', () => {
+function init() {
   const canvas = document.getElementById('gameCanvas');
+  if (!canvas) return;
   const game = new Game(canvas);
+  window.gameInstance = game;
 
   let lastTime = performance.now();
 
@@ -24,4 +26,10 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   requestAnimationFrame(gameLoop);
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

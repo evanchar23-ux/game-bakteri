@@ -3325,23 +3325,6 @@ kbd {
     width: 100%;
     max-width: 320px;
   }
-  .vitals-panel, .organ-panel, .telemetry-panel {
-    position: static;
-    transform: none;
-    width: 100%;
-    margin-bottom: 8px;
-  }
-  .hud-overlay {
-    flex-direction: column;
-    overflow-y: auto;
-    pointer-events: auto;
-  }
-  .skills-hotbar {
-    position: static;
-    transform: none;
-    margin-top: 10px;
-    justify-content: center;
-  }
   .guide-body {
     grid-template-columns: 1fr;
   }
@@ -6223,118 +6206,353 @@ kbd {
   transition: height 0.1s linear;
 }
 
-/* 4. Media Queries: Short Mobile Landscape Screen Support (max-height: 520px) */
-@media screen and (max-height: 520px) and (orientation: landscape) {
-  /* Main Menu Adjustments */
+/* 4. Active Mobile Controls State */
+body.mobile-controls-active .skills-hotbar,
+body.mobile-controls-active #hud-onboarding-card,
+body.mobile-controls-active .telemetry-panel {
+  display: none !important;
+}
+
+/* 5. Media Queries: Mobile Landscape & Compact Screen Layout */
+@media screen and (max-height: 600px) and (orientation: landscape), screen and (max-width: 950px) {
+  /* ================= MAIN MENU LANDSCAPE ================= */
+  #main-menu.full-screen-theme {
+    padding: 8px 16px !important;
+    overflow-y: auto !important;
+  }
+
+  #main-menu .topbar {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+  }
+
+  #main-menu .brand-mark {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  #main-menu .brand-name {
+    font-size: 13px !important;
+  }
+
+  #main-menu .nav-strip {
+    display: none !important;
+  }
+
   #main-menu .layout {
-    padding: 10px 24px;
-    gap: 16px;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+    padding: 4px 0 !important;
+    align-items: center !important;
+  }
+
+  #main-menu .left-col {
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
   #main-menu .hero-block {
-    margin-bottom: 8px;
+    margin-bottom: 6px !important;
+  }
+
+  #main-menu .hero-icon {
+    gap: 8px !important;
+  }
+
+  #main-menu .hero-hex {
+    width: 32px !important;
+    height: 32px !important;
   }
 
   #main-menu .hero-title {
-    font-size: 26px;
+    font-size: 20px !important;
+    line-height: 1 !important;
   }
 
   #main-menu .hero-sub {
-    font-size: 10px;
-    margin-top: 2px;
+    font-size: 8.5px !important;
+    margin-top: 2px !important;
+    line-height: 1.2 !important;
+    max-width: 100% !important;
   }
 
   #main-menu .menu {
-    gap: 8px;
+    gap: 5px !important;
+    max-width: 100% !important;
   }
 
   #main-menu .menu-btn {
-    padding: 8px 14px;
-    font-size: 13px;
+    padding: 6px 12px !important;
+    gap: 8px !important;
+    border-radius: 8px !important;
   }
 
-  /* Modals Compact Scaling */
-  .modal-standard, .debrief-card, .human-scanner-modal, .bio-terminal-wrapper, .upgrade-modal-card {
-    max-height: calc(100vh - 16px) !important;
-    padding: 14px 18px !important;
+  #main-menu .menu-btn .label {
+    font-size: 11.5px !important;
+  }
+
+  #main-menu .menu-btn .tag {
+    font-size: 8.5px !important;
+    padding: 2px 5px !important;
+  }
+
+  #main-menu .menu-btn .ic, #main-menu .menu-btn .play-tri {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+  #main-menu .right-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  #main-menu .panel {
+    padding: 8px 12px !important;
+    border-radius: 10px !important;
+  }
+
+  #main-menu .status-head {
+    margin-bottom: 4px !important;
+  }
+
+  #main-menu .status-head .title {
+    font-size: 9.5px !important;
+  }
+
+  #main-menu .status-head small {
+    display: none !important;
+  }
+
+  #main-menu .badge-radar {
+    font-size: 8px !important;
+    padding: 2px 5px !important;
+  }
+
+  #main-menu .vitals-row {
+    gap: 6px !important;
+    margin-bottom: 6px !important;
+  }
+
+  #main-menu .vital {
+    padding: 3px 5px !important;
+  }
+
+  #main-menu .vital .k {
+    font-size: 7.5px !important;
+  }
+
+  #main-menu .vital .v {
+    font-size: 10.5px !important;
+  }
+
+  #main-menu .vital .d {
+    display: none !important;
+  }
+
+  #main-menu .threat-title {
+    display: none !important;
+  }
+
+  #main-menu .threat-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  #main-menu .threat {
+    font-size: 8.5px !important;
+    padding: 3px 4px !important;
+  }
+
+  #main-menu .video-panel {
+    padding: 6px 10px !important;
+  }
+
+  #main-menu .video-meta .video-title {
+    font-size: 11px !important;
+  }
+
+  #main-menu .video-meta .video-desc {
+    display: none !important;
+  }
+
+  /* ================= IN-GAME ARENA HUD ================= */
+  #hud {
+    pointer-events: none !important;
+  }
+
+  #hud .vitals-panel {
+    position: fixed !important;
+    top: 8px !important;
+    left: 10px !important;
+    transform: scale(0.75) !important;
+    transform-origin: top left !important;
+    margin: 0 !important;
+    width: auto !important;
+    pointer-events: auto !important;
+  }
+
+  #hud .organ-panel {
+    position: fixed !important;
+    top: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(0.75) !important;
+    transform-origin: top center !important;
+    margin: 0 !important;
+    width: auto !important;
+    min-width: 220px !important;
+    pointer-events: auto !important;
+  }
+
+  #hud .telemetry-panel {
+    display: none !important;
+  }
+
+  #hud #hud-onboarding-card {
+    display: none !important;
+  }
+
+  #hud .skills-hotbar {
+    display: none !important;
+  }
+
+  #hud .hud-combo-banner {
+    top: 55px !important;
+    transform: translateX(-50%) scale(0.75) !important;
+  }
+
+  #hud .hud-mutation-badge {
+    bottom: 16px !important;
+    left: 50% !important;
+    transform: translateX(-50%) scale(0.85) !important;
+    padding: 5px 12px !important;
+    font-size: 10.5px !important;
+  }
+
+  /* Floating audio & fullscreen controls dock */
+  .floating-controls-dock {
+    top: 8px !important;
+    right: 10px !important;
+    gap: 8px !important;
+  }
+
+  .btn-floating-ctrl {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  /* ================= SELECTION & MODAL DIALOGS ================= */
+  .modal-standard, .debrief-card, .human-scanner-modal, .bio-terminal-wrapper, .upgrade-modal-card, .bio-chamber-modal, .briefing-card {
+    max-height: calc(100vh - 12px) !important;
+    max-width: 96vw !important;
+    padding: 10px 16px !important;
+    overflow-y: auto !important;
+  }
+
+  .bio-chamber-header, .modal-header {
+    margin-bottom: 6px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .bio-chamber-header h2, .modal-header h2 {
+    font-size: 15px !important;
+  }
+
+  .bio-chamber-header p, .modal-header p {
+    display: none !important;
+  }
+
+  .bio-chamber-layout {
+    grid-template-columns: 200px 1fr !important;
+    gap: 10px !important;
+    height: 210px !important;
+  }
+
+  .cell-3d-pod-viewport {
+    height: 210px !important;
+    padding: 6px !important;
+  }
+
+  .cell-3d-hint {
+    display: none !important;
+  }
+
+  .cell-quick-selector {
+    gap: 6px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .cell-chip {
+    padding: 5px 8px !important;
+    font-size: 10.5px !important;
+  }
+
+  .cell-dossier-card {
+    padding: 8px 12px !important;
+    max-height: 150px !important;
     overflow-y: auto !important;
   }
 
   .scanner-layout {
-    grid-template-columns: 240px 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: 200px 1fr !important;
+    gap: 10px !important;
   }
 
   .mannequin-container {
+    height: 200px !important;
     min-height: 180px !important;
+  }
+
+  .stage-dossier-panel {
+    max-height: 210px !important;
+    overflow-y: auto !important;
+    padding: 8px 10px !important;
   }
 
   .character-grid {
     grid-template-columns: repeat(4, 1fr) !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
 
   .character-card {
-    padding: 12px 10px !important;
+    padding: 8px 6px !important;
   }
 
   .briefing-body {
     grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 10px !important;
+    gap: 8px !important;
+  }
+
+  .briefing-col {
+    padding: 8px 10px !important;
   }
 
   .upgrade-choices-grid {
     grid-template-columns: repeat(3, 1fr) !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
 
   .upgrade-card {
-    padding: 12px 10px !important;
-    gap: 6px !important;
+    padding: 10px 8px !important;
+    gap: 4px !important;
   }
 
   .upgrade-icon {
-    font-size: 26px !important;
+    font-size: 22px !important;
   }
 
   .upgrade-title {
-    font-size: 14px !important;
+    font-size: 13px !important;
   }
 
   .upgrade-effect {
-    font-size: 11px !important;
+    font-size: 10.5px !important;
   }
 
   .upgrade-bio-lore {
-    font-size: 9.5px !important;
-    line-height: 1.3 !important;
-  }
-
-  /* In-Game HUD Scaling */
-  .vitals-panel {
-    transform: scale(0.85);
-    transform-origin: top left;
-  }
-
-  .organ-panel {
-    transform: scale(0.85);
-    transform-origin: top center;
-  }
-
-  .telemetry-panel {
-    transform: scale(0.85);
-    transform-origin: top right;
-  }
-
-  /* When mobile controls are active, hide desktop bottom keyboard hotbar to avoid clutter */
-  .mobile-controls-overlay:not(.hidden) ~ #hud .skills-hotbar,
-  body.has-touch .skills-hotbar {
-    display: none !important;
-  }
-
-  .hud-mutation-badge {
-    bottom: 24px;
-    padding: 6px 14px;
-    font-size: 11px;
+    font-size: 9px !important;
+    line-height: 1.25 !important;
   }
 }

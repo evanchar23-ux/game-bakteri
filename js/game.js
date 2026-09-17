@@ -1764,6 +1764,7 @@ export class Game {
     }
 
     this.uiHUD.classList.remove('hidden');
+    if (this.touch) this.touch.updateControlsVisibility();
     this.postTelemetry(`[TEMPUR] Sel imun mendarat di jaringan. Mulai eliminasi patogen!`);
   }
 
@@ -2251,7 +2252,12 @@ export class Game {
 
     if (this.state !== 'PLAYING') return;
 
-    if (this.touch) this.touch.update(dt);
+    if (this.touch) {
+      this.touch.update(dt);
+      if (this.touch.mobileControls && this.touch.mobileControls.classList.contains('hidden') && !this.isCinematicActive) {
+        this.touch.updateControlsVisibility();
+      }
+    }
 
     // 0.5 Stage Entrance Cinematic Animation
     if (this.isCinematicActive) {

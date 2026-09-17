@@ -8,7 +8,7 @@
 export class TouchControls {
   constructor(game) {
     this.game = game;
-    this.isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 1024);
+    this.isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 1024) || (window.innerHeight <= 600);
 
     // Joystick state
     this.joystickZone = document.getElementById('joystick-zone');
@@ -102,13 +102,15 @@ export class TouchControls {
 
   updateControlsVisibility() {
     if (!this.mobileControls) return;
-    const isMobileSize = window.innerWidth <= 1024 || ('ontouchstart' in window);
+    const isMobileSize = window.innerWidth <= 1024 || ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerHeight <= 600);
     const isPlaying = this.game && this.game.state === 'PLAYING';
 
     if (isMobileSize && isPlaying) {
       this.mobileControls.classList.remove('hidden');
+      document.body.classList.add('mobile-controls-active');
     } else {
       this.mobileControls.classList.add('hidden');
+      document.body.classList.remove('mobile-controls-active');
       this.resetJoystick();
       this.isFiring = false;
     }
@@ -290,16 +292,21 @@ export class TouchControls {
       }
     }
 
-    // Handle Auto-Aiming when Firing on Mobile
-    if (this.isFiring && this.autoAimEnabled && player) {
-      const target = this.findBestTarget(player);
-      if (target && this.game.camera && this.game.input) {
-        const screenTargetX = target.x - this.game.camera.x;
-        const screenTargetY = target.y - this.game.camera.y;
-        this.game.input.mouse.x = screenTargetX;
-        this.game.input.mouse.y = screenTargetY;
+    // Handle Auto-Aiming or Joystick Aiming when Firing on Mobile
+    if (this.isFiring && player && this.game.input && this.game.camera) {
+      const target = this.autoAimEnabled ? this.findBestTarget(player) : null;
+      if (target) {
         this.game.input.mouse.worldX = target.x;
         this.game.input.mouse.worldY = target.y;
+        this.game.input.mouse.x = target.x - this.game.camera.x;
+        this.game.input.mouse.y = target.y - this.game.camera.y;
+      } else if (Math.hypot(this.joystickVector.dx, this.joystickVector.dy) > 0.05) {
+        const aimAngle = Math.atan2(this.joystickVector.dy, this.joystickVector.dx);
+        const aimDist = 260;
+        this.game.input.mouse.worldX = player.x + Math.cos(aimAngle) * aimDist;
+        this.game.input.mouse.worldY = player.y + Math.sin(aimAngle) * aimDist;
+        this.game.input.mouse.x = this.game.input.mouse.worldX - this.game.camera.x;
+        this.game.input.mouse.y = this.game.input.mouse.worldY - this.game.camera.y;
       }
     }
   }
