@@ -29,6 +29,7 @@ import { Cell3DViewer } from './engine/cell3d.js';
 import { CinematicIntro3D } from './engine/CinematicIntro3D.js';
 import { MenuBioSimulation } from './engine/menuBioSimulation.js';
 import { TouchControls } from './engine/touch.js';
+import { MonopolyEngine } from './engine/MonopolyEngine.js';
 
 export class Game {
   constructor(canvas) {
@@ -298,6 +299,7 @@ export class Game {
     this.currentUpgradeChoices = [];
 
     // Setup interactive buttons
+    this.monopoly = new MonopolyEngine(this);
     this.setupButtonEvents();
     this.renderCharacterSelectionCards();
     this.renderOrganSelectionCards();
@@ -326,6 +328,19 @@ export class Game {
         setTimeout(() => this.cell3d.handleResize(), 60);
       }
     };
+
+    // Monopoli Imun Board Game button in main menu
+    const btnOpenMonopoly = document.getElementById('btn-open-monopoly');
+    if (btnOpenMonopoly) {
+      btnOpenMonopoly.onclick = () => {
+        sound.init();
+        if (sound.playClick) sound.playClick();
+        if (this.monopoly && this.monopoly.screen) {
+          this.showScreen(this.monopoly.screen);
+          this.monopoly.openScreen();
+        }
+      };
+    }
 
     // Pilih Karakter button in main menu
     const btnMenuChar = document.getElementById('btn-menu-char-select');
@@ -1008,7 +1023,7 @@ export class Game {
   }
 
   showScreen(targetOverlay) {
-    const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiBriefing];
+    const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiBriefing, this.monopoly?.screen];
     const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && (targetOverlay.id === 'settings-modal' || targetOverlay.id === 'device-mode-modal')));
 
     if (!isModal && (targetOverlay === null || fullScreens.includes(targetOverlay))) {
@@ -1027,7 +1042,7 @@ export class Game {
     }
 
     // Manage Menu Music based on target screen
-    if (targetOverlay === this.uiMenu || targetOverlay === this.uiCharSelect || targetOverlay === this.uiOrganSelect || targetOverlay === this.uiBriefing) {
+    if (targetOverlay === this.uiMenu || targetOverlay === this.uiCharSelect || targetOverlay === this.uiOrganSelect || targetOverlay === this.uiBriefing || (this.monopoly && targetOverlay === this.monopoly.screen)) {
       if (sound) sound.startMenuMusic();
     } else if (targetOverlay === this.uiTeaser || targetOverlay === this.uiVictory || targetOverlay === this.uiGameOver) {
       if (sound) sound.stopMenuMusic();

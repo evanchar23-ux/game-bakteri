@@ -735,6 +735,14 @@
               <div class="tag">DEPLOY</div>
             </button>
 
+            <button type="button" id="btn-open-monopoly" class="menu-btn primary glow-btn" style="background: linear-gradient(135deg, rgba(0, 242, 254, 0.22), rgba(255, 61, 120, 0.28)); border-color: #00f2fe;">
+              <div class="play-tri" style="background: #00f2fe; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px;">
+                <span style="font-size: 13px; line-height: 1;">🎲</span>
+              </div>
+              <div class="label" style="font-weight: 700; color: #fff;">Monopoli Imun</div>
+              <div class="tag" style="background: #ff3d78; color: #fff; font-weight: 800;">BARU / BOARD GAME</div>
+            </button>
+
             <button type="button" id="btn-menu-char-select" class="menu-btn">
               <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-4 3.1-6.5 7-6.5S19 16 19 20"/></svg>
               <div class="label">Pilih Sel Imun</div>
@@ -1614,6 +1622,195 @@
         <div class="modal-actions">
           <button id="btn-ok-settings" class="btn-primary glow-btn">SIMPAN</button>
         </div>
+      </div>
+    </div>
+
+    <!-- BIO-MONOPOLY SCREEN (PAPAN STRATEGI IMUNOLOGIS 20 PETAK) -->
+    <div id="monopoly-screen" class="screen-overlay full-screen-theme hidden">
+      <div class="monopoly-container">
+        <!-- Topbar -->
+        <div class="monopoly-topbar">
+          <div class="mono-brand">
+            <span class="mono-dice-icon">🎲</span>
+            <div class="mono-titles">
+              <h2>BIO-MONOPOLY</h2>
+              <span>PAPAN STRATEGI &amp; EDUKASI PERTAHANAN SELULAR</span>
+            </div>
+          </div>
+          <div class="mono-turn-banner" id="monopoly-turn-banner">
+            <span class="pulse-beacon"></span>
+            <span>MEMULAI SESI MONOPOLI...</span>
+          </div>
+          <div class="mono-topbar-actions">
+            <button type="button" id="btn-close-monopoly" class="btn-icon-close" title="Keluar ke Menu Utama">
+              <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Content: Sidebar + Circuit Board -->
+        <div class="monopoly-layout">
+          <!-- Left Sidebar: Players Info & Activity Log -->
+          <div class="monopoly-sidebar">
+            <div class="mono-sidebar-block">
+              <div class="mono-block-head">
+                <span>STATUS PEMAIN &amp; ENERGI</span>
+              </div>
+              <div class="mono-players-list" id="monopoly-players-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <div class="mono-sidebar-block flex-log">
+              <div class="mono-block-head">
+                <span>HISTORI PERJALANAN &amp; EVENT</span>
+              </div>
+              <div class="mono-log-list" id="monopoly-log-list">
+                <!-- Log entries injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Board Viewport with Central Hub -->
+          <div class="monopoly-board-viewport">
+            <div class="monopoly-board-wrapper">
+              <div class="monopoly-board" id="monopoly-board">
+                <!-- 20 Tiles Injected via JS -->
+              </div>
+
+              <!-- Central Hub (Dice, Roll Action, Vitals) -->
+              <div class="monopoly-center-hub">
+                <div class="mono-hub-decor">
+                  <span class="hub-tag">BIO-ENGINE CONTROL</span>
+                </div>
+                <div class="mono-dice-stage">
+                  <div class="mono-dice-cube" id="monopoly-dice-cube" data-value="1">
+                    1
+                  </div>
+                </div>
+                <button type="button" id="btn-monopoly-roll" class="btn-primary glow-btn btn-roll-dice">
+                  <span>KOCOK DADU IMUN! 🎲</span>
+                </button>
+                <div class="mono-hub-hint">
+                  <span>Kocok dadu untuk menjelajahi 20 petak organ inang &amp; mensterilkan infeksi!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- POPUP MODALS INSIDE MONOPOLY -->
+
+        <!-- 1. Mode Setup Modal -->
+        <div id="monopoly-setup-modal" class="mono-overlay-modal hidden">
+          <div class="mono-modal-card glass-card">
+            <div class="mono-modal-head">
+              <span class="modal-subtitle-tag">KONFIGURASI MODE PERMAINAN</span>
+              <h2>PILIH MODE MONOPOLI IMUN</h2>
+              <p>Pilih apakah ingin bertanding melawan AI Patogen atau bermain bergantian di satu perangkat bersama teman (Pass &amp; Play).</p>
+            </div>
+            <div class="mono-setup-options">
+              <div class="mono-mode-card" id="btn-mono-start-ai">
+                <div class="mode-icon-wrap">🤖</div>
+                <h3>1 PEMAIN VS AI</h3>
+                <span class="mode-sub">Tanding Melawan Superbug Komputer</span>
+                <p>Uji kecerdasan sains dan monopolimu melawan AI Patogen cerdas!</p>
+                <button type="button" class="btn-primary glow-btn" style="width: 100%; margin-top: 10px;">MULAI VS AI</button>
+              </div>
+              <div class="mono-mode-card" id="btn-mono-start-pass">
+                <div class="mode-icon-wrap">👥</div>
+                <h3>2 PEMAIN (PASS &amp; PLAY)</h3>
+                <span class="mode-sub">Mabar Bergantian 1 Layar</span>
+                <p>Main bareng teman di satu HP / Laptop bergantian melempar dadu dan menjawab kuis!</p>
+                <button type="button" class="btn-secondary glow-btn" style="width: 100%; margin-top: 10px;">MULAI PASS &amp; PLAY</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Q&A Quiz Modal -->
+        <div id="monopoly-quiz-modal" class="mono-overlay-modal hidden">
+          <div class="mono-modal-card glass-card quiz-card">
+            <div class="mono-quiz-header">
+              <div class="quiz-head-left">
+                <span class="quiz-badge">TANTANGAN KUIS SAINS IMUNOLOGI</span>
+                <span class="quiz-category" id="mono-quiz-category">BIOLOGI // UMUM</span>
+              </div>
+              <div class="quiz-timer-badge">
+                <span>⏱️</span> <span id="mono-quiz-timer">18s</span>
+              </div>
+            </div>
+            <h3 class="quiz-question-text" id="mono-quiz-text">Pertanyaan kuis akan muncul di sini...</h3>
+            <div class="mono-quiz-options-grid" id="mono-quiz-options">
+              <!-- Choices A, B, C, D -->
+            </div>
+            <div class="mono-quiz-feedback hidden" id="mono-quiz-feedback">
+              <!-- Feedback & Science Explanation -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Bio-Hazard Event Modal -->
+        <div id="monopoly-event-modal" class="mono-overlay-modal hidden">
+          <div class="mono-modal-card glass-card event-card">
+            <div class="event-icon-circle" id="mono-event-icon">⚡</div>
+            <span class="event-header-badge">KARTU KEJADIAN MEDIS &amp; BIO-HAZARD</span>
+            <h3 class="event-title" id="mono-event-title">Judul Event</h3>
+            <p class="event-desc" id="mono-event-desc">Deskripsi event...</p>
+            <div class="event-effect-box">
+              <span id="mono-event-effect" class="mono-event-effect-pill positive">+100 ATP</span>
+            </div>
+            <button type="button" id="btn-mono-event-ok" class="btn-primary glow-btn" style="margin-top: 16px; padding: 8px 24px;">TERAPKAN EFEK</button>
+          </div>
+        </div>
+
+        <!-- 4. Property Buy / Upgrade Modal -->
+        <div id="monopoly-property-modal" class="mono-overlay-modal hidden">
+          <div class="mono-modal-card glass-card prop-card">
+            <div class="prop-modal-badge">SEKTOR ANATOMI TARGET</div>
+            <h3 class="prop-modal-title" id="mono-prop-title">Alveolus Paru-Paru</h3>
+            <p class="prop-modal-desc" id="mono-prop-desc">Deskripsi wilayah organ...</p>
+            <div class="prop-stats-row">
+              <div class="prop-stat-box">
+                <span class="ps-label">BIAYA POS:</span>
+                <span class="ps-val" id="mono-prop-price">200 ATP</span>
+              </div>
+              <div class="prop-stat-box">
+                <span class="ps-label">BIAYA SEWA LAWAN:</span>
+                <span class="ps-val" id="mono-prop-rent">50 ATP</span>
+              </div>
+            </div>
+            <div class="prop-modal-actions">
+              <button type="button" id="btn-mono-prop-skip" class="btn-secondary" style="padding: 8px 18px;">LEWATI</button>
+              <button type="button" id="btn-mono-prop-buy" class="btn-primary glow-btn" style="padding: 8px 24px;">DIRIKAN POS PERTAHANAN</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Winner Podium Modal -->
+        <div id="monopoly-winner-modal" class="mono-overlay-modal hidden">
+          <div class="mono-modal-card glass-card winner-card">
+            <div class="winner-trophy">🏆</div>
+            <span class="winner-subtitle">MISI STERILISASI MONOPOLI BERAKHIR!</span>
+            <h2 class="winner-title" id="mono-winner-name">PEMAIN (SEL IMUN)</h2>
+            <p class="winner-reason" id="mono-winner-reason">Berhasil mengumpulkan 2500 ATP!</p>
+            <div class="winner-stats-summary">
+              <div class="ws-box">
+                <span class="ws-label">TOTAL ENERGI:</span>
+                <span class="ws-val" id="mono-winner-atp">2550 ATP</span>
+              </div>
+              <div class="ws-box">
+                <span class="ws-label">ORGAN DIKUASAI:</span>
+                <span class="ws-val" id="mono-winner-props">6 Pos Organ</span>
+              </div>
+            </div>
+            <div class="winner-actions-row">
+              <button type="button" id="btn-mono-winner-again" class="btn-primary glow-btn" style="padding: 9px 20px;">MAIN LAGI 🎲</button>
+              <button type="button" id="btn-mono-winner-menu" class="btn-secondary" style="padding: 9px 20px;">MENU UTAMA</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
