@@ -2310,6 +2310,12 @@ button {
   margin-top: 4px;
 }
 
+.victory-content-body,
+.victory-content-left,
+.victory-content-right {
+  display: contents;
+}
+
 /* Grade & Medal Honorary Section */
 .victory-honor-section {
   display: grid;
@@ -6443,61 +6449,134 @@ body.mobile-controls-active .telemetry-panel {
     height: 34px !important;
   }
 
-  /* ================= SELECTION & MODAL DIALOGS ================= */
-  .modal-standard, .debrief-card, .human-scanner-modal, .bio-terminal-wrapper, .upgrade-modal-card, .bio-chamber-modal, .briefing-card {
-    max-height: calc(100vh - 12px) !important;
-    max-width: 96vw !important;
-    padding: 10px 16px !important;
+  /* ================= OVERLAY & MODAL CONTAINERS ================= */
+  .screen-overlay:not(#main-menu) {
+    padding: 4px 6px !important;
+    align-items: center !important;
+    justify-content: center !important;
     overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
-  .bio-chamber-header, .modal-header {
-    margin-bottom: 6px !important;
-    padding-bottom: 4px !important;
+  .screen-overlay:not(#main-menu) > .modal-content,
+  .screen-overlay:not(#main-menu) > .bio-terminal-wrapper {
+    margin: 2px auto !important;
+    max-height: calc(100vh - 6px) !important;
+    flex-shrink: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
 
-  .bio-chamber-header h2, .modal-header h2 {
-    font-size: 15px !important;
+  .modal-standard, .debrief-card, .human-scanner-modal, .bio-terminal-wrapper,
+  .upgrade-modal-card, .bio-chamber-modal, .mission-briefing-card, .guide-card,
+  .settings-card, .edu-cinema-card {
+    max-height: calc(100vh - 8px) !important;
+    max-width: 98vw !important;
+    box-sizing: border-box !important;
   }
 
-  .bio-chamber-header p, .modal-header p {
+  /* ================= 1. CHARACTER SELECTION (BIO-CHAMBER) ================= */
+  .bio-chamber-modal {
+    height: calc(100vh - 8px) !important;
+    max-height: calc(100vh - 8px) !important;
+    width: 98vw !important;
+    padding: 6px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .bio-chamber-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .bio-chamber-header h2 {
+    font-size: 13px !important;
+    margin: 0 !important;
+  }
+
+  .bio-chamber-header p,
+  .bio-chamber-id-tag,
+  .bio-chamber-header .scanner-status-tag {
     display: none !important;
   }
 
   .bio-chamber-layout {
-    grid-template-columns: 200px 1fr !important;
-    gap: 10px !important;
-    height: 210px !important;
+    display: grid !important;
+    grid-template-columns: 170px 1fr !important;
+    gap: 8px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: calc(100% - 66px) !important;
+    max-height: calc(100% - 66px) !important;
   }
 
   .cell-3d-pod-viewport {
-    height: 210px !important;
-    padding: 6px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    padding: 4px !important;
+    border-radius: 8px !important;
+  }
+
+  .cell-telemetry-top {
+    font-size: 8.5px !important;
+    padding: 2px 6px !important;
   }
 
   .cell-3d-hint {
     display: none !important;
   }
 
+  .cell-roster-dossier-col {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
   .cell-quick-selector {
-    gap: 6px !important;
-    margin-bottom: 6px !important;
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
   }
 
   .cell-chip {
-    padding: 5px 8px !important;
-    font-size: 10.5px !important;
+    padding: 3px 4px !important;
+    font-size: 9px !important;
+    border-radius: 6px !important;
   }
 
   .cell-dossier-card {
-    padding: 8px 12px !important;
-    max-height: 150px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
     overflow-y: auto !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
   }
 
-  /* ================= ORGAN SELECTION 3D SCANNER ================= */
+  .bio-chamber-actions {
+    margin-top: 3px !important;
+    padding-top: 3px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .bio-chamber-actions button {
+    padding: 5px 12px !important;
+    font-size: 10.5px !important;
+  }
+
+  /* ================= 2. ORGAN SELECTION 3D SCANNER ================= */
   .human-scanner-modal {
     max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
     max-width: 98vw !important;
     width: 98vw !important;
     padding: 6px 12px !important;
@@ -6508,11 +6587,13 @@ body.mobile-controls-active .telemetry-panel {
   .scanner-header {
     margin-bottom: 2px !important;
     padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
   }
 
   .scanner-header h2 {
-    font-size: 13.5px !important;
+    font-size: 13px !important;
     line-height: 1 !important;
+    margin: 0 !important;
   }
 
   .scanner-header p,
@@ -6521,24 +6602,23 @@ body.mobile-controls-active .telemetry-panel {
   }
 
   .scanner-host-id {
-    font-size: 9.5px !important;
+    font-size: 9px !important;
     padding: 2px 6px !important;
   }
 
-  /* Grid Layout: Left Viewport (min 280px, up to 340px) + Right Dossier (1fr) */
   .scanner-layout {
     display: grid !important;
-    grid-template-columns: minmax(280px, 340px) 1fr !important;
-    gap: 12px !important;
+    grid-template-columns: minmax(260px, 320px) 1fr !important;
+    gap: 10px !important;
     flex: 1 1 auto !important;
     min-height: 0 !important;
-    height: calc(100vh - 110px) !important;
-    max-height: calc(100vh - 110px) !important;
+    height: calc(100vh - 86px) !important;
+    max-height: calc(100vh - 86px) !important;
   }
 
   .scanner-body-viewport {
     height: 100% !important;
-    min-height: 220px !important;
+    min-height: 180px !important;
     padding: 4px 6px !important;
     border-radius: 10px !important;
     position: relative !important;
@@ -6552,10 +6632,10 @@ body.mobile-controls-active .telemetry-panel {
   .mannequin-container {
     width: 100% !important;
     height: 100% !important;
-    min-height: 220px !important;
+    min-height: 180px !important;
     flex: 1 1 auto !important;
     position: relative !important;
-    overflow: visible !important; /* Crucial: prevent clipping hologram head and feet! */
+    overflow: visible !important;
   }
 
   .hologram-3d-canvas {
@@ -6563,13 +6643,12 @@ body.mobile-controls-active .telemetry-panel {
     height: 100% !important;
   }
 
-  /* Orbit Controls: Minimal sleek floating bottom overlay dock */
   .hologram-orbit-dock {
     position: absolute !important;
-    bottom: 6px !important;
+    bottom: 4px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    background: rgba(2, 9, 22, 0.8) !important;
+    background: rgba(2, 9, 22, 0.85) !important;
     backdrop-filter: blur(6px) !important;
     border: 1px solid rgba(0, 242, 254, 0.35) !important;
     border-radius: 20px !important;
@@ -6585,90 +6664,907 @@ body.mobile-controls-active .telemetry-panel {
   }
 
   .scanner-body-hint {
-    display: none !important; /* Hide hint text so it doesn't push the mannequin up */
+    display: none !important;
   }
 
-  /* Right Dossier Panel */
   .organ-dossier-panel {
     height: 100% !important;
     max-height: 100% !important;
     overflow-y: auto !important;
-    padding: 8px 12px !important;
-    border-radius: 10px !important;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
   }
 
   .organ-quick-chips-wrap {
-    margin-top: 3px !important;
-    padding-top: 3px !important;
+    margin-top: 2px !important;
+    padding-top: 2px !important;
   }
 
   .quick-chips-title {
-    font-size: 8.5px !important;
+    font-size: 8px !important;
     margin-bottom: 2px !important;
   }
 
   .organ-quick-chips {
-    gap: 5px !important;
+    gap: 4px !important;
   }
 
   .organ-chip {
-    padding: 3px 6px !important;
-    font-size: 9.5px !important;
+    padding: 2px 5px !important;
+    font-size: 9px !important;
   }
 
-  /* Bottom Actions */
   .scanner-modal-actions {
-    margin-top: 3px !important;
-    padding-top: 3px !important;
+    margin-top: 2px !important;
+    padding-top: 2px !important;
+    flex-shrink: 0 !important;
   }
 
   .scanner-modal-actions button {
+    padding: 4px 12px !important;
+    font-size: 10px !important;
+  }
+
+  /* ================= 3. MISSION BRIEFING MODAL ================= */
+  .mission-briefing-card {
+    max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
+    max-width: 98vw !important;
+    width: 98vw !important;
+    padding: 6px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .briefing-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .briefing-tag, .briefing-header p {
+    display: none !important;
+  }
+
+  .briefing-header h2 {
+    font-size: 13px !important;
+    margin: 0 !important;
+  }
+
+  .briefing-body {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding-right: 2px !important;
+  }
+
+  .briefing-deploy-summary {
+    padding: 3px 8px !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  .unit-icon-box, .organ-icon-box {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 6px !important;
+  }
+
+  .unit-icon-box svg, .organ-icon-box svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .unit-role, .organ-role {
+    font-size: 7.5px !important;
+  }
+
+  .unit-name, .organ-name {
+    font-size: 10px !important;
+  }
+
+  .briefing-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .briefing-col {
+    padding: 5px 8px !important;
+    border-radius: 8px !important;
+    font-size: 9px !important;
+  }
+
+  .briefing-col-head {
+    font-size: 9.5px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .briefing-list {
+    gap: 3px !important;
+  }
+
+  .briefing-list li {
+    font-size: 8.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  .rule-box {
+    padding: 3px 5px !important;
+    margin-bottom: 3px !important;
+    font-size: 8px !important;
+  }
+
+  .controls-roster {
+    gap: 2px !important;
+  }
+
+  .controls-roster .ctrl-item {
+    font-size: 8px !important;
+  }
+
+  .briefing-tip {
+    display: none !important;
+  }
+
+  .briefing-actions {
+    margin-top: 3px !important;
+    padding-top: 3px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .skip-briefing-label {
+    font-size: 9px !important;
+  }
+
+  .btn-deploy-large {
+    padding: 5px 14px !important;
+    font-size: 10.5px !important;
+    border-radius: 8px !important;
+  }
+
+  .btn-shortcut-hint {
+    display: none !important;
+  }
+
+  /* ================= 4. LEVEL UP / UPGRADE MUTATION ================= */
+  .upgrade-modal-card {
+    max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
+    max-width: 96vw !important;
+    width: 96vw !important;
+    padding: 6px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .upgrade-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .upgrade-header .upgrade-tag {
+    font-size: 8.5px !important;
+    padding: 2px 6px !important;
+    display: inline-block !important;
+  }
+
+  .upgrade-header h2 {
+    font-size: 12px !important;
+    margin: 1px 0 !important;
+  }
+
+  .upgrade-header p {
+    display: none !important;
+  }
+
+  .upgrade-choices-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    margin: 3px 0 !important;
+  }
+
+  .upgrade-card {
+    padding: 6px 8px !important;
+    gap: 3px !important;
+    border-radius: 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .upgrade-icon {
+    font-size: 18px !important;
+  }
+
+  .upgrade-title {
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+
+  .upgrade-effect {
+    font-size: 9px !important;
+    line-height: 1.2 !important;
+  }
+
+  .upgrade-bio-lore {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .upgrade-modal-footer {
+    display: none !important;
+  }
+
+  /* ================= 5. VICTORY REWARD & DEBRIEF MODAL ================= */
+  .victory-reward-card {
+    max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
+    max-width: 96vw !important;
+    width: 96vw !important;
+    padding: 6px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    overflow: hidden !important;
+  }
+
+  .debrief-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .debrief-header h2 {
+    font-size: 12px !important;
+    margin: 0 !important;
+  }
+
+  .victory-glory-badge, .debrief-organ-cleared {
+    display: none !important;
+  }
+
+  .victory-content-body {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    margin: 2px 0 !important;
+  }
+
+  .victory-content-left, .victory-content-right {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+  }
+
+  .victory-honor-section {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 3px 8px !important;
+    margin: 0 !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .honor-grade-box {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .grade-letter {
+    font-size: 16px !important;
+  }
+
+  .grade-title {
+    font-size: 6px !important;
+  }
+
+  .honor-medal-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .medal-icon-wrap svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .medal-tag {
+    display: none !important;
+  }
+
+  .medal-name {
+    font-size: 9.5px !important;
+    margin: 0 !important;
+  }
+
+  .medal-desc {
+    font-size: 7.5px !important;
+    line-height: 1.15 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .debrief-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+  }
+
+  .debrief-stat-box {
+    padding: 2px 4px !important;
+    border-radius: 6px !important;
+  }
+
+  .debrief-val {
+    font-size: 10.5px !important;
+  }
+
+  .debrief-lbl {
+    font-size: 7px !important;
+    line-height: 1.1 !important;
+  }
+
+  .victory-rewards-container {
+    margin: 0 !important;
+    padding: 2px 6px !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .rewards-section-title {
+    font-size: 8px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .reward-claimable-tag {
+    display: none !important;
+  }
+
+  .rewards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  .reward-item-card {
+    padding: 2px 4px !important;
+    border-radius: 6px !important;
+    gap: 4px !important;
+  }
+
+  .reward-icon svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .reward-qty {
+    font-size: 8.5px !important;
+  }
+
+  .reward-sub {
+    font-size: 7px !important;
+  }
+
+  .medical-fun-fact-box {
+    padding: 2px 6px !important;
+    margin: 0 !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .fact-title {
+    font-size: 8px !important;
+    margin-bottom: 1px !important;
+  }
+
+  .fact-content {
+    font-size: 7.5px !important;
+    line-height: 1.2 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .victory-actions {
+    margin-top: auto !important;
+    padding-top: 3px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    gap: 6px !important;
+  }
+
+  .victory-actions button {
+    padding: 4px 10px !important;
+    font-size: 10px !important;
+  }
+
+  /* ================= 6. GAME OVER / DEFEAT MODAL ================= */
+  .debrief-card.failure {
+    max-height: calc(100vh - 8px) !important;
+    max-width: 520px !important;
+    padding: 8px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .debrief-header.failure h2 {
+    font-size: 13px !important;
+    margin: 0 !important;
+    color: #ff3366 !important;
+  }
+
+  .debrief-header.failure .alert-badge {
+    font-size: 8px !important;
+    padding: 2px 6px !important;
+  }
+
+  #gameover-cause {
+    font-size: 9px !important;
+    margin-top: 2px !important;
+  }
+
+  #gameover-modal .medical-fun-fact-box {
+    padding: 4px 8px !important;
+    margin: 4px 0 !important;
+  }
+
+  #gameover-fact {
+    font-size: 8.5px !important;
+    line-height: 1.25 !important;
+  }
+
+  #gameover-modal .modal-actions {
+    margin-top: 6px !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  #gameover-modal .modal-actions button {
     padding: 5px 12px !important;
     font-size: 10.5px !important;
   }
 
-  .character-grid {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 8px !important;
+  /* ================= 7. IMMUNOPEDIA TERMINAL ================= */
+  .bio-terminal-wrapper {
+    min-height: 0 !important;
+    height: calc(100vh - 6px) !important;
+    max-height: calc(100vh - 6px) !important;
+    width: 98vw !important;
+    max-width: 98vw !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 2px auto !important;
+    overflow: hidden !important;
   }
 
-  .character-card {
-    padding: 8px 6px !important;
+  .bio-terminal-header {
+    height: 26px !important;
+    padding: 0 8px !important;
+    flex-shrink: 0 !important;
   }
 
-  .briefing-body {
-    grid-template-columns: 1fr 1fr 1fr !important;
-    gap: 8px !important;
+  .terminal-badge {
+    display: none !important;
   }
 
-  .briefing-col {
-    padding: 8px 10px !important;
+  .terminal-title {
+    font-size: 10px !important;
   }
 
-  .upgrade-choices-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px !important;
+  .terminal-filters {
+    gap: 3px !important;
   }
 
-  .upgrade-card {
-    padding: 10px 8px !important;
+  .terminal-filter-btn {
+    padding: 1px 5px !important;
+    font-size: 8px !important;
+    height: 20px !important;
+  }
+
+  .terminal-filter-btn svg {
+    display: none !important;
+  }
+
+  .terminal-close-btn {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .bio-terminal-deck {
+    display: grid !important;
+    grid-template-columns: 140px 1fr !important;
+    gap: 6px !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: calc(100% - 64px) !important;
+    max-height: calc(100% - 64px) !important;
+    padding: 2px 6px !important;
+  }
+
+  .specimen-pod-container {
+    height: 100% !important;
+    min-height: 0 !important;
+    position: relative !important;
+  }
+
+  .pod-glass-chamber {
+    height: 100% !important;
+    min-height: 0 !important;
+    border-radius: 8px !important;
+  }
+
+  .pod-top-status, .pod-bottom-scale {
+    display: none !important;
+  }
+
+  .pod-specimen-display {
+    padding: 4px !important;
+  }
+
+  .pod-specimen-display svg {
+    max-height: 100px !important;
+    max-width: 100px !important;
+  }
+
+  .terminal-paddle {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .terminal-dossier-panel {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    padding: 4px 8px !important;
+    border-radius: 8px !important;
+  }
+
+  .dossier-category-tag {
+    font-size: 7.5px !important;
+    margin-bottom: 1px !important;
+  }
+
+  .dossier-spec-name {
+    font-size: 11.5px !important;
+  }
+
+  .dossier-latin-name {
+    font-size: 8px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .dossier-metrics-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2px !important;
+    margin: 2px 0 !important;
+  }
+
+  .metric-cell {
+    padding: 2px 4px !important;
+  }
+
+  .mc-label {
+    font-size: 7px !important;
+  }
+
+  .mc-val {
+    font-size: 8px !important;
+  }
+
+  .dossier-desc {
+    font-size: 8px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+  }
+
+  .dossier-mechanism-box, .dossier-fact-box {
+    padding: 2px 5px !important;
+    margin: 2px 0 !important;
+    border-radius: 5px !important;
+  }
+
+  .dossier-box-title, .fact-box-title {
+    font-size: 7.5px !important;
+    margin-bottom: 1px !important;
+  }
+
+  .dossier-box-text, .fact-box-text {
+    font-size: 7.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  .bio-terminal-dock {
+    height: 36px !important;
+    min-height: 0 !important;
+    padding: 2px 6px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .dock-header-bar {
+    display: none !important;
+  }
+
+  .dock-cards-scroller {
     gap: 4px !important;
+    padding: 0 !important;
   }
 
-  .upgrade-icon {
-    font-size: 22px !important;
+  .dock-specimen-card {
+    width: 30px !important;
+    height: 28px !important;
+    padding: 2px !important;
+    border-radius: 5px !important;
+    flex-shrink: 0 !important;
   }
 
-  .upgrade-title {
+  .dock-card-thumb svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .dock-card-name {
+    display: none !important;
+  }
+
+  /* ================= 8. HOW TO PLAY (GUIDE MODAL) ================= */
+  .guide-card {
+    max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
+    max-width: 740px !important;
+    width: 96vw !important;
+    padding: 6px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .guide-card .modal-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .guide-card .modal-subtitle-tag, .guide-card .modal-header p {
+    display: none !important;
+  }
+
+  .guide-card .modal-header h2 {
     font-size: 13px !important;
+    margin: 0 !important;
   }
 
-  .upgrade-effect {
+  .guide-body {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin: 4px 0 !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+
+  .guide-col h3 {
+    font-size: 10px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .guide-list {
+    gap: 2px !important;
+    font-size: 8.5px !important;
+    margin-top: 2px !important;
+  }
+
+  .guide-list li {
+    line-height: 1.2 !important;
+  }
+
+  .guide-card .modal-actions {
+    padding: 2px 0 !important;
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  #btn-ok-howtoplay {
+    padding: 4px 16px !important;
     font-size: 10.5px !important;
   }
 
-  .upgrade-bio-lore {
+  /* ================= 9. TEASER CINEMA MODAL ================= */
+  .edu-cinema-card {
+    max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
+    max-width: 96vw !important;
+    width: 96vw !important;
+    padding: 4px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .edu-cinema-card .modal-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .edu-cinema-card .modal-header h2 {
+    font-size: 11px !important;
+    margin: 0 !important;
+  }
+
+  .teaser-live-tag {
+    display: none !important;
+  }
+
+  .edu-video-container {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 82px) !important;
+    width: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    margin: 0 auto !important;
+  }
+
+  .edu-chapter-tag-pill {
+    font-size: 8px !important;
+    padding: 2px 6px !important;
+    top: 4px !important;
+    left: 6px !important;
+  }
+
+  .edu-hosts-stage {
+    transform: scale(0.6) !important;
+    transform-origin: bottom right !important;
+    right: 4px !important;
+    bottom: 24px !important;
+  }
+
+  .edu-subtitle-box {
+    padding: 3px 6px !important;
+    bottom: 3px !important;
+    left: 4px !important;
+    right: 4px !important;
+  }
+
+  .edu-speaker-badge {
+    font-size: 8px !important;
+  }
+
+  .edu-subtitle-text {
+    font-size: 8.5px !important;
+    line-height: 1.15 !important;
+  }
+
+  .edu-player-controls {
+    padding: 2px 0 !important;
+    margin-top: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .edu-timeline-row {
+    margin-bottom: 2px !important;
+  }
+
+  .edu-time-display {
+    font-size: 8.5px !important;
+  }
+
+  .edu-ctrl-btn {
+    padding: 2px 6px !important;
+    height: 20px !important;
+  }
+
+  #btn-play-from-teaser {
+    padding: 4px 10px !important;
+    font-size: 9.5px !important;
+  }
+
+  /* ================= 10. SETTINGS MODAL ================= */
+  .settings-card {
+    max-width: 580px !important;
+    max-height: calc(100vh - 8px) !important;
+    height: calc(100vh - 8px) !important;
+    width: 96vw !important;
+    padding: 6px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+  }
+
+  .settings-card .modal-header {
+    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .settings-card .modal-subtitle-tag, .settings-card .modal-header p {
+    display: none !important;
+  }
+
+  .settings-card .modal-header h2 {
+    font-size: 13px !important;
+    margin: 0 !important;
+  }
+
+  .settings-card > div[style*="display: flex"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px 8px !important;
+    margin: 4px 0 !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    align-content: center !important;
+  }
+
+  .settings-card > div[style*="display: flex"] > div {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     font-size: 9px !important;
-    line-height: 1.25 !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    padding: 3px 6px !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .settings-card small {
+    display: none !important;
+  }
+
+  .settings-card button {
+    padding: 2px 6px !important;
+    font-size: 8.5px !important;
+  }
+
+  .settings-card input[type="range"] {
+    width: 80px !important;
+  }
+
+  .settings-card .modal-actions {
+    padding: 2px 0 !important;
+    margin-top: auto !important;
+    flex-shrink: 0 !important;
+  }
+
+  #btn-ok-settings {
+    padding: 4px 18px !important;
+    font-size: 10.5px !important;
   }
 }
