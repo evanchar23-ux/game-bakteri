@@ -412,7 +412,7 @@ export class MonopolyEngine {
         this.isRolling = false;
         setTimeout(() => this.handleTileLanding(player), 500);
       }
-    }, 240);
+    }, 480);
   }
 
   handleTileLanding(player) {
@@ -674,12 +674,14 @@ export class MonopolyEngine {
     }
 
     const catEl = document.getElementById('mono-quiz-category');
+    const kisiEl = document.getElementById('mono-quiz-kisi-text');
     const textEl = document.getElementById('mono-quiz-text');
     const optionsEl = document.getElementById('mono-quiz-options');
     const feedbackEl = document.getElementById('mono-quiz-feedback');
     const timerEl = document.getElementById('mono-quiz-timer');
 
     if (catEl) catEl.innerText = `${question.category} // ${question.difficulty.toUpperCase()}`;
+    if (kisiEl) kisiEl.innerText = question.kisiKisi || 'Ensiklopedia Imunologi';
     if (textEl) textEl.innerText = question.question;
     if (feedbackEl) {
       feedbackEl.classList.add('hidden');
@@ -749,7 +751,11 @@ export class MonopolyEngine {
         <div class="feedback-badge ${isCorrect ? 'correct' : 'wrong'}">
           ${isCorrect ? 'JAWABAN ANDA TEPAT!' : 'JAWABAN KURANG TEPAT!'}
         </div>
-        <p class="feedback-explanation"><b>FAKTA SAINS:</b> ${question.explanation}</p>
+        <div class="feedback-kisi-ref">
+          <span class="fk-tag">KISI-KISI DOSEN // IMUNPEDIA:</span>
+          <span class="fk-val">${question.kisiKisi || 'Ensiklopedia Imun'}</span>
+        </div>
+        <p class="feedback-explanation"><b>BEDAH SAINS:</b> ${question.explanation}</p>
         <button type="button" id="btn-mono-quiz-continue" class="btn-primary glow-btn" style="margin-top: 10px; width: 100%; padding: 8px;">
           LANJUTKAN PERMAINAN
         </button>
