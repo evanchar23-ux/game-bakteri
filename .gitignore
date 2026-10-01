@@ -1,6 +1,5 @@
-# Media files (large video files kept locally)
-*.mp4
-*.webm
+# Root duplicate video (kept locally)
+/animasi main menu.mp4
 
 # Temporary / scratch scripts
 scratch/
