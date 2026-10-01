@@ -319,26 +319,73 @@ export class Game {
   }
 
   setupButtonEvents() {
-    // Start Game -> Character Selection FIRST!
-    document.getElementById('btn-start-expedition').onclick = () => {
+    // Game Mode Selection Modal (Aksi vs Monopoli)
+    const modalGameMode = document.getElementById('modal-select-gamemode');
+    const btnStartExpedition = document.getElementById('btn-start-expedition');
+    if (btnStartExpedition) {
+      btnStartExpedition.onclick = () => {
+        sound.init();
+        if (window.sound && window.sound.playClick) window.sound.playClick();
+        if (modalGameMode) {
+          this.showScreen(modalGameMode);
+        } else {
+          this.showScreen(this.uiCharSelect);
+          this.renderCharacterSelectionCards();
+          if (this.cell3d) setTimeout(() => this.cell3d.handleResize(), 60);
+        }
+      };
+    }
+
+    const btnCloseGameMode = document.getElementById('btn-close-gamemode');
+    if (btnCloseGameMode && modalGameMode) {
+      btnCloseGameMode.onclick = () => {
+        if (window.sound && window.sound.playClick) window.sound.playClick();
+        this.hideScreen(modalGameMode);
+      };
+    }
+
+    const launchAction = () => {
       sound.init();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      if (modalGameMode) this.hideScreen(modalGameMode);
       this.showScreen(this.uiCharSelect);
       this.renderCharacterSelectionCards();
-      if (this.cell3d) {
-        setTimeout(() => this.cell3d.handleResize(), 60);
+      if (this.cell3d) setTimeout(() => this.cell3d.handleResize(), 60);
+    };
+
+    const cardModeAction = document.getElementById('card-mode-action');
+    const btnLaunchAction = document.getElementById('btn-launch-action-mode');
+    if (cardModeAction) cardModeAction.onclick = launchAction;
+    if (btnLaunchAction) btnLaunchAction.onclick = (e) => { e.stopPropagation(); launchAction(); };
+
+    const launchMonopoly = () => {
+      sound.init();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      if (modalGameMode) this.hideScreen(modalGameMode);
+      if (this.monopoly && this.monopoly.screen) {
+        this.showScreen(this.monopoly.screen);
+        this.monopoly.openScreen();
       }
     };
 
-    // Monopoli Imun Board Game button in main menu
+    const cardModeMonopoly = document.getElementById('card-mode-monopoly');
+    const btnLaunchMonopoly = document.getElementById('btn-launch-monopoly-mode');
+    if (cardModeMonopoly) cardModeMonopoly.onclick = launchMonopoly;
+    if (btnLaunchMonopoly) btnLaunchMonopoly.onclick = (e) => { e.stopPropagation(); launchMonopoly(); };
+
+    // Monopoli Imun Board Game button in main menu (direct fallback)
     const btnOpenMonopoly = document.getElementById('btn-open-monopoly');
     if (btnOpenMonopoly) {
-      btnOpenMonopoly.onclick = () => {
+      btnOpenMonopoly.onclick = launchMonopoly;
+    }
+
+    // Corner Audio Toggle on Main Menu
+    const btnMenuAudioToggle = document.getElementById('btn-menu-audio-toggle');
+    if (btnMenuAudioToggle) {
+      btnMenuAudioToggle.onclick = () => {
         sound.init();
-        if (sound.playClick) sound.playClick();
-        if (this.monopoly && this.monopoly.screen) {
-          this.showScreen(this.monopoly.screen);
-          this.monopoly.openScreen();
-        }
+        const muted = sound.toggleMute();
+        this.updateAudioIcons(muted);
       };
     }
 
@@ -1020,11 +1067,20 @@ export class Game {
     if (audioIcon) {
       audioIcon.innerHTML = muted ? volMuteSvg : `<svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
     }
+    const btnMenuAudioToggle = document.getElementById('btn-menu-audio-toggle');
+    if (btnMenuAudioToggle) {
+      const iconOn = btnMenuAudioToggle.querySelector('.audio-on-icon');
+      const iconOff = btnMenuAudioToggle.querySelector('.audio-off-icon');
+      if (iconOn && iconOff) {
+        iconOn.classList.toggle('hidden', muted);
+        iconOff.classList.toggle('hidden', !muted);
+      }
+    }
   }
 
   showScreen(targetOverlay) {
     const fullScreens = [this.uiPrologue, this.uiMenu, this.uiCharSelect, this.uiOrganSelect, this.uiVictory, this.uiGameOver, this.uiTeaser, this.uiBriefing, this.monopoly?.screen];
-    const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && (targetOverlay.id === 'settings-modal' || targetOverlay.id === 'device-mode-modal')));
+    const isModal = (targetOverlay === this.uiHowToPlay || targetOverlay === this.uiImmunopedia || targetOverlay === this.uiUpgrade || (targetOverlay && (targetOverlay.id === 'settings-modal' || targetOverlay.id === 'device-mode-modal' || targetOverlay.id === 'modal-select-gamemode')));
 
     if (!isModal && (targetOverlay === null || fullScreens.includes(targetOverlay))) {
       this.currentScreen = targetOverlay;
@@ -1032,6 +1088,16 @@ export class Game {
         if (el && el !== targetOverlay) el.classList.add('hidden');
       });
       if (this.uiEntranceCinematic) this.uiEntranceCinematic.classList.remove('active');
+
+      // Video background pause/resume to optimize performance
+      const menuVideo = document.getElementById('menu-video-bg');
+      if (menuVideo) {
+        if (targetOverlay === this.uiMenu) {
+          menuVideo.play().catch(() => {});
+        } else {
+          menuVideo.pause();
+        }
+      }
     }
 
     if (targetOverlay) {

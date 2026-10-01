@@ -13,6 +13,11 @@ $mimeMap = @{
     ".png"  = "image/png"
     ".jpg"  = "image/jpeg"
     ".svg"  = "image/svg+xml"
+    ".mp4"  = "video/mp4"
+    ".webm" = "video/webm"
+    ".mp3"  = "audio/mpeg"
+    ".wav"  = "audio/wav"
+    ".glb"  = "model/gltf-binary"
 }
 
 try {

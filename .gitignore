@@ -1,0 +1,6 @@
+# Media files (large video files kept locally)
+*.mp4
+*.webm
+
+# Temporary / scratch scripts
+scratch/
