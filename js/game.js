@@ -1043,6 +1043,12 @@ export class Game {
           this.uiMenu.style.opacity = '1';
         }
       }, 980);
+
+      const menuVideo = document.getElementById('menu-video-bg');
+      if (menuVideo) {
+        menuVideo.muted = true;
+        menuVideo.play().catch(() => {});
+      }
     }
     sound.init();
     sound.playCinematicMenuWhoosh();

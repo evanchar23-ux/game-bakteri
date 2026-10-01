@@ -245,6 +245,7 @@
   text-transform: uppercase;
   background: linear-gradient(180deg, #fff368 0%, #ffc600 48%, #ff8500 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 3px 0 #994700) drop-shadow(0 5px 0 #132448) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
   -webkit-text-stroke: 3px #132448;
@@ -258,6 +259,7 @@
   text-transform: uppercase;
   background: linear-gradient(180deg, #ffffff 0%, #76d0ff 48%, #1c7beb 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 3px 0 #0f4691) drop-shadow(0 5px 0 #132448) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
   -webkit-text-stroke: 3px #132448;
