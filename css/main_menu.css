@@ -192,103 +192,64 @@
   max-width: 95vw;
 }
 
-/* 3D Bubbly Cartoon Title Logo */
+/* 3D Bubbly Cartoon Title Logo (Matching User Screenshot 2) */
 .menu-hero-logo-box {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(10px, 2vw, 18px);
+  width: clamp(285px, 35vw, 420px);
+  max-width: 90vw;
+  margin: 0 auto 4px;
+  user-select: none;
+  animation: heroLogoFloat 4.2s ease-in-out infinite;
+}
+
+@keyframes heroLogoFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.logo-main-title-img {
   position: relative;
-  margin-bottom: 2px;
-}
-
-.bouncy-logo-virus {
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
-  animation: logoFloatLeft 3.6s ease-in-out infinite alternate;
-}
-
-.bouncy-logo-green {
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
-  animation: logoFloatRight 4s ease-in-out infinite alternate;
-}
-
-@keyframes logoFloatLeft {
-  0% { transform: translateY(0) rotate(-4deg); }
-  100% { transform: translateY(-7px) rotate(3deg); }
-}
-
-@keyframes logoFloatRight {
-  0% { transform: translateY(0) rotate(4deg); }
-  100% { transform: translateY(-6px) rotate(-3deg); }
-}
-
-.logo-title-cluster {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.logo-text-stack {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 0.84;
-  position: relative;
-}
-
-.logo-title-viral {
-  font-family: 'Outfit', 'Space Grotesk', sans-serif;
-  font-size: clamp(48px, 9vh, 72px);
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #fff368 0%, #ffc600 48%, #ff8500 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 3px 0 #994700) drop-shadow(0 5px 0 #132448) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
-  -webkit-text-stroke: 3px #132448;
-}
-
-.logo-title-slayer {
-  font-family: 'Outfit', 'Space Grotesk', sans-serif;
-  font-size: clamp(56px, 10.5vh, 84px);
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  background: linear-gradient(180deg, #ffffff 0%, #76d0ff 48%, #1c7beb 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 3px 0 #0f4691) drop-shadow(0 5px 0 #132448) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.5));
-  -webkit-text-stroke: 3px #132448;
-  margin-top: -6px;
-}
-
-.logo-shield-badge {
-  position: absolute;
-  right: -24px;
-  top: 36%;
-  transform: translateY(-50%) rotate(12deg);
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
   z-index: 2;
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.48));
+  pointer-events: none;
 }
 
-.logo-subtitle-ribbon {
-  background: #142a58;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  border-radius: 999px;
-  padding: 4px 18px;
-  margin-top: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(10px, 1.4vh, 12px);
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  white-space: nowrap;
+/* Animated Peeking Pink Virus behind letter 'V' */
+.logo-peeking-virus-wrap {
+  position: absolute;
+  top: 13%;
+  left: 1.5%;
+  width: 27%;
+  z-index: 1;
+  pointer-events: none;
+  transform-origin: center bottom;
+  animation: peekingVirusBob 2.6s ease-in-out infinite;
+}
+
+.logo-peeking-virus {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes peekingVirusBob {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(2deg);
+  }
 }
 
 /* Action Buttons Deck */
