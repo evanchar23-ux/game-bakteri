@@ -192,64 +192,36 @@
   max-width: 95vw;
 }
 
-/* 3D Bubbly Cartoon Title Logo (Matching User Screenshot 2) */
+/* Unified Ultra-HD 3D Cartoon Title Logo */
 .menu-hero-logo-box {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(285px, 35vw, 420px);
+  width: clamp(290px, 35vw, 440px);
   max-width: 90vw;
   margin: 0 auto 4px;
   user-select: none;
-  animation: heroLogoFloat 4.2s ease-in-out infinite;
+  animation: heroLogoFloatBob 3.6s ease-in-out infinite;
+  transform-origin: center center;
 }
 
-@keyframes heroLogoFloat {
+@keyframes heroLogoFloatBob {
   0%, 100% {
-    transform: translateY(0px);
+    transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-5px);
+    transform: translateY(-8px) rotate(0.6deg);
   }
 }
 
 .logo-main-title-img {
   position: relative;
-  z-index: 2;
   width: 100%;
   height: auto;
   display: block;
-  filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.48));
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45));
   pointer-events: none;
-}
-
-/* Animated Peeking Pink Virus behind letter 'V' */
-.logo-peeking-virus-wrap {
-  position: absolute;
-  top: 13%;
-  left: 1.5%;
-  width: 27%;
-  z-index: 1;
-  pointer-events: none;
-  transform-origin: center bottom;
-  animation: peekingVirusBob 2.6s ease-in-out infinite;
-}
-
-.logo-peeking-virus {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
-}
-
-@keyframes peekingVirusBob {
-  0%, 100% {
-    transform: translateY(0px) rotate(-1.5deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(2deg);
-  }
 }
 
 /* Action Buttons Deck */
