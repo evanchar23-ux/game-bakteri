@@ -570,6 +570,13 @@ export class Game {
         this.hideDeviceModeModal();
       };
     }
+    const btnCloseDeviceModeTop = document.getElementById('btn-close-device-mode-top');
+    if (btnCloseDeviceModeTop) {
+      btnCloseDeviceModeTop.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.hideDeviceModeModal();
+      };
+    }
 
     // Trailer preview click -> Launch Educational Cinema (60s+ Multi-Voice)
     const trailerBox = document.getElementById('trailer-box');
