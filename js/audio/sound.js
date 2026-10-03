@@ -826,8 +826,9 @@ class SoundEngine {
   }
 
   // =========================================================================
-  // CINEMATIC TENSION & SUSPENSE SOUNDTRACK SYNTHESIZER (IN-VIVO BIO-THRILLER)
-  // Menghasilkan musik latar menegangkan bernuansa dark sci-fi thriller (Hans Zimmer / Cyberpunk)
+  // PLAYFUL CARTOON ARCADE SOUNDTRACK SYNTHESIZER ("HAVE FUN" VIBES)
+  // Musik ceria, upbeat, bouncy & energetic bernuansa kartun 3D retro-modern
+  // (F Major, 120 BPM, Bouncy Bass, Marimba Lead, Bubble Pops & Skank Chords)
   // =========================================================================
 
   startMenuMusic() {
@@ -842,7 +843,7 @@ class SoundEngine {
 
     const t = this.ctx.currentTime;
 
-    // Music master gain node with fast, loud presence
+    // Music master gain node with balanced, warm presence
     if (!this.musicGain) {
       this.musicGain = this.ctx.createGain();
       this.musicGain.connect(this.masterGain);
@@ -850,13 +851,10 @@ class SoundEngine {
 
     this.musicGain.gain.cancelScheduledValues(t);
     this.musicGain.gain.setValueAtTime(this.musicGain.gain.value || 0.0001, t);
-    this.musicGain.gain.linearRampToValueAtTime(0.88, t + 0.6);
+    this.musicGain.gain.linearRampToValueAtTime(0.82, t + 0.5);
 
-    // 1. Start rich audible bass drone (D2 + D3 registers)
-    this.startTensionDrone();
-
-    // 2. Start rhythmic tension sequencer (heartbeat + clock ticks + cyberpunk synth arp + sonar)
-    this.startTensionSequencer();
+    // Start upbeat fun cartoon sequencer
+    this.startFunCartoonSequencer();
   }
 
   stopMenuMusic() {
@@ -867,236 +865,160 @@ class SoundEngine {
       const t = this.ctx.currentTime;
       this.musicGain.gain.cancelScheduledValues(t);
       this.musicGain.gain.setValueAtTime(this.musicGain.gain.value, t);
-      this.musicGain.gain.linearRampToValueAtTime(0.0001, t + 0.8);
+      this.musicGain.gain.linearRampToValueAtTime(0.0001, t + 0.6);
     }
 
     setTimeout(() => {
       if (!this.isMenuMusicPlaying) {
-        this.stopTensionDrone();
-        this.stopTensionSequencer();
+        this.stopFunCartoonSequencer();
       }
-    }, 850);
+    }, 650);
   }
 
   playAmbientLoop() {
     this.startMenuMusic();
   }
 
-  // --- Rich Audible Tension Bass Drone (D2 73.4Hz + D3 146.8Hz) ---
-  startTensionDrone() {
-    this.stopTensionDrone();
+  // --- Upbeat Fun Cartoon Sequencer (120 BPM, 8-Bar Melodic Arcade Loop) ---
+  startFunCartoonSequencer() {
+    this.stopFunCartoonSequencer();
     if (!this.ctx || !this.musicGain) return;
 
-    const t = this.ctx.currentTime;
-
-    // Dual detuned oscillators: Sawtooth + Triangle for rich mid-range harmonic audibility
-    const osc1 = this.ctx.createOscillator();
-    const osc2 = this.ctx.createOscillator();
-    osc1.type = 'sawtooth';
-    osc2.type = 'triangle';
-
-    // D2 note (73.42 Hz) and D3 octave (146.83 Hz) with detuning
-    osc1.frequency.setValueAtTime(73.42, t);
-    osc2.frequency.setValueAtTime(146.83, t);
-    osc2.detune.setValueAtTime(8, t);
-
-    // Resonant lowpass filter with prominent cutoff for phone/laptop speaker presence
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(320, t);
-    filter.Q.setValueAtTime(3.2, t);
-
-    // Sinister slow breathing LFO
-    const lfo = this.ctx.createOscillator();
-    const lfoGain = this.ctx.createGain();
-    lfo.type = 'sine';
-    lfo.frequency.setValueAtTime(0.2, t);
-    lfoGain.gain.setValueAtTime(110, t); // modulates cutoff between 210Hz and 430Hz
-    lfo.connect(lfoGain);
-    lfoGain.connect(filter.frequency);
-    lfo.start(t);
-
-    const droneGain = this.ctx.createGain();
-    droneGain.gain.setValueAtTime(0.0001, t);
-    droneGain.gain.linearRampToValueAtTime(0.65, t + 0.8);
-
-    osc1.connect(filter);
-    osc2.connect(filter);
-    filter.connect(droneGain);
-    droneGain.connect(this.musicGain);
-
-    osc1.start(t);
-    osc2.start(t);
-
-    this.droneNodes = { osc1, osc2, lfo, droneGain };
-  }
-
-  stopTensionDrone() {
-    if (this.droneNodes) {
-      try {
-        const t = this.ctx ? this.ctx.currentTime : 0;
-        if (this.droneNodes.droneGain && this.ctx) {
-          this.droneNodes.droneGain.gain.linearRampToValueAtTime(0.0001, t + 0.4);
-        }
-        setTimeout(() => {
-          try {
-            if (this.droneNodes) {
-              if (this.droneNodes.osc1) this.droneNodes.osc1.stop();
-              if (this.droneNodes.osc2) this.droneNodes.osc2.stop();
-              if (this.droneNodes.lfo) this.droneNodes.lfo.stop();
-              this.droneNodes = null;
-            }
-          } catch (e) {}
-        }, 450);
-      } catch (e) {
-        this.droneNodes = null;
-      }
-    }
-  }
-
-  // --- Rhythmic Tension Sequencer (Heartbeat + Clock Ticks + Cyberpunk Plucks + Sonar) ---
-  startTensionSequencer() {
-    this.stopTensionSequencer();
-    if (!this.ctx || !this.musicGain) return;
-
-    // Tempo: 66 BPM, 16th-note clock grid
-    const stepDuration = (60 / 66) / 4; // 0.2272s
+    // Tempo: 120 BPM -> 16th-note step is 0.125s (125ms)
+    const stepDuration = 0.125;
     let nextStepTime = this.ctx.currentTime + 0.05;
     let stepIndex = 0;
 
-    // Audible Mid-Range D Phrygian Melodic Pattern (D3 to D4 octave: 146Hz to 293Hz)
-    const D3 = 146.83, Eb3 = 155.56, F3 = 174.61, G3 = 196.00, A3 = 220.00, Bb3 = 233.08, C4 = 261.63, D4 = 293.66;
-    const arpPattern = [
-      D3, D3, F3, D3,
-      Eb3, D3, A3, D3,
-      D3, F3, D3, G3,
-      Bb3, A3, F3, Eb3,
-      D3, D3, F3, D3,
-      Eb3, D3, C4, D3,
-      D3, F3, G3, Bb3,
-      A3, G3, F3, Eb3
-    ];
+    // Frequencies (F Major Scale)
+    const D2 = 73.42, F2 = 87.31, G2 = 98.00, A2 = 110.00, Bb2 = 116.54, C3 = 130.81, D3 = 146.83, E3 = 164.81;
+    const F3 = 174.61, G3 = 196.00, A3 = 220.00, Bb3 = 233.08, C4 = 261.63, D4 = 293.66, E4 = 329.63;
+    const F4 = 349.23, G4 = 392.00, A4 = 440.00, Bb4 = 466.16, C5 = 523.25, D5 = 587.33, E5 = 659.25, F5 = 698.46, G5 = 783.99, A5 = 880.00, C6 = 1046.50;
 
-    const scheduleAheadTime = 0.22;
+    // 128-step / 8-bar Bouncy Bassline (null when silent)
+    const bassTrack = new Array(128).fill(null);
+    // Bar 1 (F Maj): Steps 0-15
+    bassTrack[0] = F2; bassTrack[3] = F2; bassTrack[6] = C3; bassTrack[8] = F2; bassTrack[11] = A2; bassTrack[14] = C3;
+    // Bar 2 (Bb Maj): Steps 16-31
+    bassTrack[16] = Bb2; bassTrack[19] = Bb2; bassTrack[22] = F3; bassTrack[24] = Bb2; bassTrack[27] = D3; bassTrack[30] = F3;
+    // Bar 3 (C Maj): Steps 32-47
+    bassTrack[32] = C3; bassTrack[35] = C3; bassTrack[38] = G2; bassTrack[40] = C3; bassTrack[43] = E3; bassTrack[46] = G3;
+    // Bar 4 (F Maj Turnaround): Steps 48-63
+    bassTrack[48] = F2; bassTrack[51] = F2; bassTrack[54] = C3; bassTrack[56] = F2; bassTrack[58] = A2; bassTrack[60] = Bb2; bassTrack[62] = C3;
+    // Bar 5 (D min): Steps 64-79
+    bassTrack[64] = D2; bassTrack[67] = D2; bassTrack[70] = A2; bassTrack[72] = D3; bassTrack[75] = F3; bassTrack[78] = D3;
+    // Bar 6 (Bb Maj): Steps 80-95
+    bassTrack[80] = Bb2; bassTrack[83] = Bb2; bassTrack[86] = F3; bassTrack[88] = Bb2; bassTrack[91] = D3; bassTrack[94] = F3;
+    // Bar 7 (G min): Steps 96-111
+    bassTrack[96] = G2; bassTrack[99] = G2; bassTrack[102] = D3; bassTrack[104] = G2; bassTrack[107] = Bb2; bassTrack[110] = D3;
+    // Bar 8 (C7 to F): Steps 112-127
+    bassTrack[112] = C3; bassTrack[115] = C3; bassTrack[118] = E3; bassTrack[120] = G2; bassTrack[122] = Bb2; bassTrack[124] = C3;
+
+    // 128-step / 8-bar Playful Marimba Melody
+    const melodyTrack = new Array(128).fill(null);
+    // Phrase 1 (Bars 1-2):
+    melodyTrack[0] = C5; melodyTrack[2] = A4; melodyTrack[4] = F4; melodyTrack[6] = G4; melodyTrack[8] = A4; melodyTrack[11] = C5;
+    melodyTrack[16] = D5; melodyTrack[18] = D5; melodyTrack[20] = F5; melodyTrack[22] = D5; melodyTrack[24] = C5; melodyTrack[27] = A4;
+    // Phrase 2 (Bars 3-4):
+    melodyTrack[32] = G4; melodyTrack[34] = A4; melodyTrack[36] = C5; melodyTrack[38] = E5; melodyTrack[40] = D5; melodyTrack[43] = C5;
+    melodyTrack[48] = F5; melodyTrack[52] = C5; melodyTrack[56] = A4;
+    // Phrase 3 (Bars 5-6):
+    melodyTrack[64] = F5; melodyTrack[66] = E5; melodyTrack[68] = D5; melodyTrack[70] = E5; melodyTrack[72] = F5; melodyTrack[75] = A5;
+    melodyTrack[80] = G5; melodyTrack[82] = F5; melodyTrack[84] = D5; melodyTrack[86] = F5; melodyTrack[88] = G5; melodyTrack[91] = D5;
+    // Phrase 4 (Bars 7-8):
+    melodyTrack[96] = E5; melodyTrack[98] = D5; melodyTrack[100] = C5; melodyTrack[102] = D5; melodyTrack[104] = E5; melodyTrack[107] = G5;
+    melodyTrack[112] = F5; // Bar 8 concludes with glockenspiel fanfare
+
+    // Chord Stabs (Upbeat off-beat skank on steps 2, 6, 10, 14 of each 16-step bar)
+    const chordMap = {
+      0: [A3, C4, F4],   // Bar 1: F Major
+      1: [Bb3, D4, F4],  // Bar 2: Bb Major
+      2: [G3, C4, E4],   // Bar 3: C Major
+      3: [A3, C4, F4],   // Bar 4: F Major
+      4: [A3, D4, F4],   // Bar 5: D minor
+      5: [Bb3, D4, F4],  // Bar 6: Bb Major
+      6: [Bb3, D4, G4],  // Bar 7: G minor
+      7: [Bb3, C4, E4]   // Bar 8: C7
+    };
+
+    const scheduleAheadTime = 0.25;
 
     this.musicInterval = setInterval(() => {
       if (!this.ctx || !this.isMenuMusicPlaying) return;
 
       const currentTime = this.ctx.currentTime;
       while (nextStepTime < currentTime + scheduleAheadTime) {
-        const stepInBar = stepIndex % 16;
-        const totalStep = stepIndex % 64;
+        const stepIn128 = stepIndex % 128;
+        const stepIn16 = stepIndex % 16;
+        const barIndex = Math.floor(stepIn128 / 16);
 
-        // 1. RELENTLESS TENSION CLOCKWORK TICKING (Hans Zimmer / Dunkirk suspense pulse)
-        // High-frequency tick audible on every laptop/phone speaker
-        const isTickAccent = (stepInBar === 0 || stepInBar === 4 || stepInBar === 8 || stepInBar === 12);
-        this.playSynthesizedClockTick(nextStepTime, isTickAccent);
-
-        // 2. HEAVY CARDIAC SUB-KICK WITH MID PUNCH ("LUB... DUB...")
-        // Beats at 0 and 3 of each 16-step bar
-        if (stepInBar === 0 || stepInBar === 3) {
-          const isDub = stepInBar === 3;
-          this.playSynthesizedHeartbeat(nextStepTime, isDub);
+        // 1. BOUNCY CARTOON BASSLINE (Rubber/Slap Arcade Bass)
+        const bassNote = bassTrack[stepIn128];
+        if (bassNote) {
+          const isAccent = (stepIn16 === 0 || stepIn16 === 8);
+          this.playCartoonBouncyBass(nextStepTime, bassNote, isAccent);
         }
 
-        // 3. AGGRESSIVE CYBERPUNK SYNTH ARPEGGIO PLUCK (LOUD & CRISP)
-        const noteFreq = arpPattern[stepIndex % arpPattern.length];
-        const isArpAccent = (stepInBar === 0 || stepInBar === 6 || stepInBar === 10 || stepInBar === 14);
-        this.playSynthesizedTensionPluck(nextStepTime, noteFreq, isArpAccent);
-
-        // 4. EERIE BIO-HAZARD DUAL-TONE SONAR CHIME (Every 32 steps / 2 bars)
-        if (totalStep % 32 === 0) {
-          this.playSynthesizedSonarPing(nextStepTime);
+        // 2. PLAYFUL OFF-BEAT CHORD STABS (Ska/Arcade Sunshine Bounce on steps 2, 6, 10, 14)
+        if (stepIn16 === 2 || stepIn16 === 6 || stepIn16 === 10 || stepIn16 === 14) {
+          const chord = chordMap[barIndex];
+          if (chord) {
+            this.playCartoonChordStab(nextStepTime, chord);
+          }
         }
 
-        // 5. DRAMATIC CINEMATIC BIO-STAB IMPACT (On bar 1 of every 64-step loop)
-        if (totalStep === 0) {
-          this.playSynthesizedBioStab(nextStepTime);
+        // 3. CUTE MARIMBA / XYLOPHONE CARTOON MELODY
+        const melodyNote = melodyTrack[stepIn128];
+        if (melodyNote) {
+          this.playCartoonMarimbaMelody(nextStepTime, melodyNote, 0.2);
         }
 
-        // 6. LIQUID AIR BREATH SWELL (at steps 22-28)
-        if (totalStep % 32 === 22) {
-          this.playSynthesizedBreathSwell(nextStepTime, stepDuration * 6);
+        // 4. FUN CARTOON PERCUSSION GROOVE
+        // Bouncy Kick on beats 1 and 3 (step 0 and 8), plus syncopated bounce on step 14
+        if (stepIn16 === 0 || stepIn16 === 8 || stepIn16 === 14) {
+          this.playCartoonKick(nextStepTime, stepIn16 === 14);
+        }
+
+        // Snappy Clap / Snare on beats 2 and 4 (step 4 and 12)
+        if (stepIn16 === 4 || stepIn16 === 12) {
+          this.playCartoonSnare(nextStepTime);
+        }
+
+        // Crisp Shaker / Hi-Hat on every 8th note (steps 0, 2, 4, 6, 8, 10, 12, 14)
+        if (stepIn16 % 2 === 0) {
+          const isHatAccent = (stepIn16 === 2 || stepIn16 === 6 || stepIn16 === 10 || stepIn16 === 14);
+          this.playCartoonHiHat(nextStepTime, isHatAccent);
+        }
+
+        // 5. CUTE BUBBLE POPS & CARTOON ACCENTS
+        // Soap bubble pop at turnaround of bar 4 (steps 59, 61, 63)
+        if (stepIn128 === 59) this.playCartoonBubblePop(nextStepTime, 520, 1100);
+        if (stepIn128 === 61) this.playCartoonBubblePop(nextStepTime, 680, 1380);
+        if (stepIn128 === 63) this.playCartoonBubblePop(nextStepTime, 880, 1720);
+
+        // Ascending Cartoon Glockenspiel Flourish at turnaround of bar 8 (steps 116..126)
+        if (stepIn128 >= 116 && stepIn128 <= 126 && stepIn128 % 2 === 0) {
+          const runNotes = [C5, D5, E5, F5, G5, A5, C6];
+          const runIdx = (stepIn128 - 116) / 2;
+          if (runIdx < runNotes.length) {
+            this.playCartoonGlockenspiel(nextStepTime, runNotes[runIdx]);
+          }
         }
 
         nextStepTime += stepDuration;
         stepIndex++;
       }
-    }, 25);
+    }, 30);
   }
 
-  stopTensionSequencer() {
+  stopFunCartoonSequencer() {
     if (this.musicInterval) {
       clearInterval(this.musicInterval);
       this.musicInterval = null;
     }
   }
 
-  // 1. Relentless Suspense Clockwork Tick (Highpass filtered click)
-  playSynthesizedClockTick(time, isAccent = false) {
-    if (!this.ctx || !this.musicGain) return;
-
-    const bufferSize = Math.floor(this.ctx.sampleRate * 0.03);
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.28));
-    }
-
-    const noise = this.ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'highpass';
-    filter.frequency.setValueAtTime(isAccent ? 3800 : 4800, time);
-
-    const gain = this.ctx.createGain();
-    const vol = isAccent ? 0.38 : 0.22;
-    gain.gain.setValueAtTime(vol, time);
-    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.028);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(this.musicGain);
-
-    noise.start(time);
-    noise.stop(time + 0.035);
-  }
-
-  // 2. Punchy Visceral Heartbeat Thump (Punch at 180Hz dropping to 42Hz)
-  playSynthesizedHeartbeat(time, isDub = false) {
-    if (!this.ctx || !this.musicGain) return;
-
-    const osc = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-    const filter = this.ctx.createBiquadFilter();
-
-    osc.type = 'sine';
-    const startFreq = isDub ? 140 : 185;
-    const endFreq = isDub ? 36 : 42;
-    const dur = isDub ? 0.17 : 0.24;
-
-    osc.frequency.setValueAtTime(startFreq, time);
-    osc.frequency.exponentialRampToValueAtTime(endFreq, time + dur);
-
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(320, time);
-
-    const vol = isDub ? 0.72 : 0.95;
-    gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(vol, time + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
-
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(this.musicGain);
-
-    osc.start(time);
-    osc.stop(time + dur + 0.02);
-  }
-
-  // 3. Crisp, Punchy Cyberpunk Synth Arpeggio Pluck (Dual Saw+Square in D3-D4 register)
-  playSynthesizedTensionPluck(time, freq, isAccent = false) {
+  // --- Instrument 1: Bouncy Rubber/Slap Cartoon Bass (Triangle + Square with Snappy Filter) ---
+  playCartoonBouncyBass(time, freq, isAccent = false) {
     if (!this.ctx || !this.musicGain) return;
 
     const osc1 = this.ctx.createOscillator();
@@ -1104,28 +1026,32 @@ class SoundEngine {
     const filter = this.ctx.createBiquadFilter();
     const gain = this.ctx.createGain();
 
-    osc1.type = 'sawtooth';
+    osc1.type = 'triangle';
     osc2.type = 'square';
     osc1.frequency.setValueAtTime(freq, time);
     osc2.frequency.setValueAtTime(freq, time);
-    osc2.detune.setValueAtTime(7, time);
 
-    // Resonant bandpass filter opening wide for bite and snap
-    filter.type = 'bandpass';
-    const startCutoff = isAccent ? 1650 : 1150;
+    // Warm snappy lowpass sweep
+    filter.type = 'lowpass';
+    const startCutoff = isAccent ? 980 : 750;
     filter.frequency.setValueAtTime(startCutoff, time);
-    filter.frequency.exponentialRampToValueAtTime(320, time + 0.16);
-    filter.Q.setValueAtTime(3.6, time);
+    filter.frequency.exponentialRampToValueAtTime(160, time + 0.14);
+    filter.Q.setValueAtTime(2.2, time);
 
-    const dur = 0.17;
-    const vol = isAccent ? 0.78 : 0.54;
+    const dur = 0.16;
+    const vol = isAccent ? 0.65 : 0.48;
 
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(vol, time + 0.009);
+    gain.gain.linearRampToValueAtTime(vol, time + 0.008);
     gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
 
+    // Mix 75% triangle, 25% square for warm rubbery cartoon bite
+    const subGain = this.ctx.createGain();
+    subGain.gain.setValueAtTime(0.32, time);
+    osc2.connect(subGain);
+    subGain.connect(filter);
     osc1.connect(filter);
-    osc2.connect(filter);
+
     filter.connect(gain);
     gain.connect(this.musicGain);
 
@@ -1135,99 +1061,213 @@ class SoundEngine {
     osc2.stop(time + dur + 0.02);
   }
 
-  // 4. Bio-Hazard Sonar Chime (D5 + D6 Dual Tone)
-  playSynthesizedSonarPing(time) {
+  // --- Instrument 2: Cheerful Marimba / Toy Mallet Melody ---
+  playCartoonMarimbaMelody(time, freq, dur = 0.2) {
     if (!this.ctx || !this.musicGain) return;
 
-    const osc1 = this.ctx.createOscillator();
-    const osc2 = this.ctx.createOscillator();
-    const gain = this.ctx.createGain();
-
-    osc1.type = 'sine';
-    osc2.type = 'sine';
-    osc1.frequency.setValueAtTime(587.33, time); // D5
-    osc2.frequency.setValueAtTime(1174.66, time); // D6
-    osc2.frequency.exponentialRampToValueAtTime(1080, time + 1.8);
-
-    gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.38, time + 0.035);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 1.9);
-
-    osc1.connect(gain);
-    osc2.connect(gain);
-    gain.connect(this.musicGain);
-
-    osc1.start(time);
-    osc2.start(time);
-    osc1.stop(time + 1.95);
-    osc2.stop(time + 1.95);
-  }
-
-  // 5. Cinematic Bio-Stab Impact (Low Brassy Synth Hit on loop turnaround)
-  playSynthesizedBioStab(time) {
-    if (!this.ctx || !this.musicGain) return;
-
-    const osc = this.ctx.createOscillator();
+    const fundamental = this.ctx.createOscillator();
+    const overtone = this.ctx.createOscillator();
     const filter = this.ctx.createBiquadFilter();
     const gain = this.ctx.createGain();
 
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(73.42, time); // D2
-    osc.frequency.exponentialRampToValueAtTime(36.71, time + 0.8);
+    fundamental.type = 'sine';
+    overtone.type = 'triangle';
 
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(750, time);
-    filter.frequency.exponentialRampToValueAtTime(120, time + 0.7);
-    filter.Q.setValueAtTime(4.2, time);
+    // Inharmonic wooden bar mallet resonance (ratio 2.76)
+    fundamental.frequency.setValueAtTime(freq, time);
+    overtone.frequency.setValueAtTime(freq * 2.76, time);
+
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(Math.min(3200, freq * 1.8), time);
+    filter.Q.setValueAtTime(1.8, time);
 
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.75, time + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.85);
+    gain.gain.linearRampToValueAtTime(0.55, time + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
 
-    osc.connect(filter);
+    const overGain = this.ctx.createGain();
+    overGain.gain.setValueAtTime(0.18, time);
+    overtone.connect(overGain);
+    overGain.connect(filter);
+    fundamental.connect(filter);
+
     filter.connect(gain);
     gain.connect(this.musicGain);
 
-    osc.start(time);
-    osc.stop(time + 0.9);
+    fundamental.start(time);
+    overtone.start(time);
+    fundamental.stop(time + dur + 0.02);
+    overtone.stop(time + dur + 0.02);
   }
 
-  // 6. Fluidic Respirator Breath Swell
-  playSynthesizedBreathSwell(time, duration) {
+  // --- Instrument 3: Upbeat Cartoon Reggae/Arcade Skank Chords ---
+  playCartoonChordStab(time, chordNotes) {
+    if (!this.ctx || !this.musicGain || !chordNotes) return;
+
+    const chordGain = this.ctx.createGain();
+    chordGain.gain.setValueAtTime(0.0001, time);
+    chordGain.gain.linearRampToValueAtTime(0.24, time + 0.005);
+    chordGain.gain.exponentialRampToValueAtTime(0.0001, time + 0.085);
+    chordGain.connect(this.musicGain);
+
+    chordNotes.forEach((freq) => {
+      const osc = this.ctx.createOscillator();
+      const filter = this.ctx.createBiquadFilter();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, time);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(1600, time);
+      filter.frequency.exponentialRampToValueAtTime(450, time + 0.08);
+
+      osc.connect(filter);
+      filter.connect(chordGain);
+
+      osc.start(time);
+      osc.stop(time + 0.095);
+    });
+  }
+
+  // --- Instrument 4: Cheerful Punchy Arcade Kick ---
+  playCartoonKick(time, isLight = false) {
     if (!this.ctx || !this.musicGain) return;
 
-    const bufferSize = Math.floor(this.ctx.sampleRate * duration);
-    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = noiseBuffer.getChannelData(0);
-    let last = 0;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    const startFreq = isLight ? 115 : 135;
+    const endFreq = isLight ? 48 : 52;
+    const dur = isLight ? 0.07 : 0.09;
+
+    osc.frequency.setValueAtTime(startFreq, time);
+    osc.frequency.exponentialRampToValueAtTime(endFreq, time + dur);
+
+    const vol = isLight ? 0.42 : 0.62;
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(vol, time + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+
+    osc.connect(gain);
+    gain.connect(this.musicGain);
+
+    osc.start(time);
+    osc.stop(time + dur + 0.01);
+  }
+
+  // --- Instrument 5: Snappy Pop Snare / Clap ---
+  playCartoonSnare(time) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.07);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
     for (let i = 0; i < bufferSize; i++) {
-      const white = Math.random() * 2 - 1;
-      last = (last + 0.02 * white) / 1.02;
-      data[i] = last * 2.2;
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35));
     }
 
     const noise = this.ctx.createBufferSource();
-    noise.buffer = noiseBuffer;
+    noise.buffer = buffer;
 
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(320, time);
-    filter.frequency.linearRampToValueAtTime(850, time + duration * 0.5);
-    filter.frequency.linearRampToValueAtTime(280, time + duration);
-    filter.Q.setValueAtTime(2.4, time);
+    filter.frequency.setValueAtTime(1750, time);
+    filter.Q.setValueAtTime(1.6, time);
 
     const gain = this.ctx.createGain();
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.linearRampToValueAtTime(0.28, time + duration * 0.45);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+    gain.gain.linearRampToValueAtTime(0.38, time + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.065);
 
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(this.musicGain);
 
     noise.start(time);
-    noise.stop(time + duration);
+    noise.stop(time + 0.075);
   }
+
+  // --- Instrument 6: Crisp Cheerful Shaker / Hi-Hat ---
+  playCartoonHiHat(time, isAccent = false) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.025);
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+    }
+
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(isAccent ? 7200 : 8500, time);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(isAccent ? 0.22 : 0.12, time);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.022);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.musicGain);
+
+    noise.start(time);
+    noise.stop(time + 0.03);
+  }
+
+  // --- Instrument 7: Cute Soap Bubble Pop (Upward Sine Sweep) ---
+  playCartoonBubblePop(time, startFreq = 550, endFreq = 1200) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(startFreq, time);
+    osc.frequency.exponentialRampToValueAtTime(endFreq, time + 0.045);
+
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(0.35, time + 0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.05);
+
+    osc.connect(gain);
+    gain.connect(this.musicGain);
+
+    osc.start(time);
+    osc.stop(time + 0.06);
+  }
+
+  // --- Instrument 8: Bright Cartoon Glockenspiel Chime ---
+  playCartoonGlockenspiel(time, freq) {
+    if (!this.ctx || !this.musicGain) return;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, time);
+
+    gain.gain.setValueAtTime(0.0001, time);
+    gain.gain.linearRampToValueAtTime(0.42, time + 0.004);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.35);
+
+    osc.connect(gain);
+    gain.connect(this.musicGain);
+
+    osc.start(time);
+    osc.stop(time + 0.38);
+  }
+
+  // --- Legacy Compatibility Stubs (Clean No-Ops) ---
+  startTensionDrone() {}
+  stopTensionDrone() {}
+  startTensionSequencer() {}
+  stopTensionSequencer() {}
 }
 
 export const sound = new SoundEngine();
+if (typeof window !== 'undefined') {
+  window.sound = sound;
+}
