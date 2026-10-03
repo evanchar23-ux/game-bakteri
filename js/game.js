@@ -410,12 +410,17 @@ export class Game {
         sound.init();
         this.showScreen(uiSettings);
       };
-      document.getElementById('btn-close-settings').onclick = () => this.hideScreen(uiSettings);
-      document.getElementById('btn-ok-settings').onclick = () => this.hideScreen(uiSettings);
-      document.getElementById('btn-toggle-sound-settings').onclick = (e) => {
-        const muted = sound.toggleMute();
-        this.updateAudioIcons(muted);
-      };
+      const btnCloseSettings = document.getElementById('btn-close-settings');
+      if (btnCloseSettings) btnCloseSettings.onclick = () => this.hideScreen(uiSettings);
+      const btnOkSettings = document.getElementById('btn-ok-settings');
+      if (btnOkSettings) btnOkSettings.onclick = () => this.hideScreen(uiSettings);
+      const btnToggleSoundSettings = document.getElementById('btn-toggle-sound-settings');
+      if (btnToggleSoundSettings) {
+        btnToggleSoundSettings.onclick = (e) => {
+          const muted = sound.toggleMute();
+          this.updateAudioIcons(muted);
+        };
+      }
       
       const volumeSlider = document.getElementById('settings-volume-slider');
       if (volumeSlider) {
@@ -660,18 +665,27 @@ export class Game {
     }
 
     // Open How To Play
-    document.getElementById('btn-open-howtoplay').onclick = () => {
-      sound.init();
-      this.showScreen(this.uiHowToPlay);
-    };
-    document.getElementById('btn-close-howtoplay').onclick = () => {
-      this.hideScreen(this.uiHowToPlay);
-      if (window.sound && window.sound.playClick) window.sound.playClick();
-    };
-    document.getElementById('btn-ok-howtoplay').onclick = () => {
-      this.hideScreen(this.uiHowToPlay);
-      if (window.sound && window.sound.playClick) window.sound.playClick();
-    };
+    const btnOpenHowToPlay = document.getElementById('btn-open-howtoplay');
+    if (btnOpenHowToPlay) {
+      btnOpenHowToPlay.onclick = () => {
+        sound.init();
+        this.showScreen(this.uiHowToPlay);
+      };
+    }
+    const btnCloseHowToPlay = document.getElementById('btn-close-howtoplay');
+    if (btnCloseHowToPlay) {
+      btnCloseHowToPlay.onclick = () => {
+        this.hideScreen(this.uiHowToPlay);
+        if (window.sound && window.sound.playClick) window.sound.playClick();
+      };
+    }
+    const btnOkHowToPlay = document.getElementById('btn-ok-howtoplay');
+    if (btnOkHowToPlay) {
+      btnOkHowToPlay.onclick = () => {
+        this.hideScreen(this.uiHowToPlay);
+        if (window.sound && window.sound.playClick) window.sound.playClick();
+      };
+    }
 
     // Character Select navigation
     const btnBackToMain = document.getElementById('btn-back-to-main');
@@ -689,29 +703,39 @@ export class Game {
       };
     }
 
-    document.getElementById('btn-proceed-to-organ').onclick = () => {
-      this.showScreen(this.uiOrganSelect);
-      this.renderSubjectUI();
-      if (this.hologram3d) {
-        setTimeout(() => this.hologram3d.handleResize(), 60);
-        setTimeout(() => this.hologram3d.handleResize(), 250);
-      }
-    };
+    const btnProceedToOrgan = document.getElementById('btn-proceed-to-organ');
+    if (btnProceedToOrgan) {
+      btnProceedToOrgan.onclick = () => {
+        if (window.sound && window.sound.playClick) window.sound.playClick();
+        this.showScreen(this.uiOrganSelect);
+        this.renderSubjectUI();
+        if (this.hologram3d) {
+          setTimeout(() => this.hologram3d.handleResize(), 60);
+          setTimeout(() => this.hologram3d.handleResize(), 250);
+        }
+      };
+    }
 
     // Subject Selection
-    document.getElementById('btn-prev-subject').onclick = () => {
-      this.currentSubjectIndex--;
-      if (this.currentSubjectIndex < 0) this.currentSubjectIndex = SUBJECT_DATA.length - 1;
-      this.renderSubjectUI();
-      if (window.sound) window.sound.playClick();
-    };
+    const btnPrevSubject = document.getElementById('btn-prev-subject');
+    if (btnPrevSubject) {
+      btnPrevSubject.onclick = () => {
+        this.currentSubjectIndex--;
+        if (this.currentSubjectIndex < 0) this.currentSubjectIndex = SUBJECT_DATA.length - 1;
+        this.renderSubjectUI();
+        if (window.sound) window.sound.playClick();
+      };
+    }
     
-    document.getElementById('btn-next-subject').onclick = () => {
-      this.currentSubjectIndex++;
-      if (this.currentSubjectIndex >= SUBJECT_DATA.length) this.currentSubjectIndex = 0;
-      this.renderSubjectUI();
-      if (window.sound) window.sound.playClick();
-    };
+    const btnNextSubject = document.getElementById('btn-next-subject');
+    if (btnNextSubject) {
+      btnNextSubject.onclick = () => {
+        this.currentSubjectIndex++;
+        if (this.currentSubjectIndex >= SUBJECT_DATA.length) this.currentSubjectIndex = 0;
+        this.renderSubjectUI();
+        if (window.sound) window.sound.playClick();
+      };
+    }
 
     // Organ Select navigation
     const btnBackToChar = document.getElementById('btn-back-to-char');
@@ -795,12 +819,18 @@ export class Game {
       };
     }
 
-    document.getElementById('btn-retry').onclick = () => {
-      this.startMission();
-    };
-    document.getElementById('btn-gameover-home').onclick = () => {
-      this.showScreen(this.uiMenu);
-    };
+    const btnRetry = document.getElementById('btn-retry');
+    if (btnRetry) {
+      btnRetry.onclick = () => {
+        this.startMission();
+      };
+    }
+    const btnGameoverHome = document.getElementById('btn-gameover-home');
+    if (btnGameoverHome) {
+      btnGameoverHome.onclick = () => {
+        this.showScreen(this.uiMenu);
+      };
+    }
     const btnCloseGameover = document.getElementById('btn-close-gameover');
     if (btnCloseGameover) {
       btnCloseGameover.onclick = () => {
@@ -828,11 +858,14 @@ export class Game {
     }
 
     // Audio toggle
-    document.getElementById('audio-toggle').onclick = () => {
-      sound.init();
-      const muted = sound.toggleMute();
-      this.updateAudioIcons(muted);
-    };
+    const audioToggle = document.getElementById('audio-toggle');
+    if (audioToggle) {
+      audioToggle.onclick = () => {
+        sound.init();
+        const muted = sound.toggleMute();
+        this.updateAudioIcons(muted);
+      };
+    }
 
     // Immunopedia Bio-Terminal Category Filters
     document.querySelectorAll('.terminal-filter-btn').forEach((btn) => {
