@@ -319,6 +319,28 @@ export class Game {
   }
 
   setupButtonEvents() {
+    const toggleFullscreenMode = () => {
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      try {
+        if (!document.fullscreenElement) {
+          const el = document.documentElement;
+          const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+          if (rfs) {
+            const res = rfs.call(el);
+            if (res && typeof res.catch === 'function') res.catch(() => {});
+          }
+        } else {
+          const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+          if (efs) {
+            const res = efs.call(document);
+            if (res && typeof res.catch === 'function') res.catch(() => {});
+          }
+        }
+      } catch (e) {
+        console.warn('Fullscreen request bypassed:', e);
+      }
+    };
+
     // Game Mode Selection Modal (Aksi vs Monopoli)
     const modalGameMode = document.getElementById('modal-select-gamemode');
     const btnStartExpedition = document.getElementById('btn-start-expedition');
@@ -468,28 +490,6 @@ export class Game {
       const fullscreenStatusText = document.getElementById('fullscreen-status-text');
       const btnFloatingFullscreen = document.getElementById('fullscreen-toggle');
 
-      const toggleFullscreenMode = () => {
-        if (window.sound) window.sound.playClick();
-        try {
-          if (!document.fullscreenElement) {
-            const el = document.documentElement;
-            const rfs = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
-            if (rfs) {
-              const res = rfs.call(el);
-              if (res && typeof res.catch === 'function') res.catch(() => {});
-            }
-          } else {
-            const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-            if (efs) {
-              const res = efs.call(document);
-              if (res && typeof res.catch === 'function') res.catch(() => {});
-            }
-          }
-        } catch (e) {
-          console.warn('Fullscreen request bypassed:', e);
-        }
-      };
-
       const updateFullscreenUI = () => {
         const isFs = !!document.fullscreenElement;
         if (fullscreenStatusText) {
@@ -516,6 +516,69 @@ export class Game {
       };
     }
 
+    const btnTopDeviceMode = document.getElementById('btn-top-device-mode');
+    if (btnTopDeviceMode) {
+      btnTopDeviceMode.onclick = () => {
+        if (window.sound) window.sound.playClick();
+        this.showDeviceModeModal();
+      };
+    }
+
+    // Top Actions (EDUKASI, AKSI, IMUN, FULLSCREEN)
+    const launchEduCinema = () => {
+      sound.init();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      if (this.uiTeaser && this.eduCinema) {
+        this.showScreen(this.uiTeaser);
+        this.eduCinema.start();
+      }
+    };
+    const btnTopEdukasi = document.getElementById('btn-top-edukasi');
+    if (btnTopEdukasi) btnTopEdukasi.onclick = launchEduCinema;
+
+    const btnPlayEduCinema = document.getElementById('btn-play-edu-cinema');
+    if (btnPlayEduCinema) btnPlayEduCinema.onclick = launchEduCinema;
+
+    const btnTopAksi = document.getElementById('btn-top-aksi');
+    if (btnTopAksi) btnTopAksi.onclick = launchAction;
+
+    const openCharSelectFromMenu = () => {
+      sound.init();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      this.showScreen(this.uiCharSelect);
+      this.renderCharacterSelectionCards();
+      if (this.cell3d) setTimeout(() => this.cell3d.handleResize(), 60);
+    };
+    const btnTopImun = document.getElementById('btn-top-imun');
+    if (btnTopImun) btnTopImun.onclick = openCharSelectFromMenu;
+
+    const btnDockHero = document.getElementById('btn-dock-hero-select');
+    if (btnDockHero) btnDockHero.onclick = openCharSelectFromMenu;
+
+    const btnTopFullscreen = document.getElementById('btn-top-fullscreen');
+    if (btnTopFullscreen) {
+      btnTopFullscreen.onclick = toggleFullscreenMode;
+    }
+
+    // Organ Threat Cards Click -> Open Human Scanner Modal
+    ['card-threat-pulmo', 'card-threat-usus', 'card-threat-vaskular', 'card-threat-dermis'].forEach((cardId) => {
+      const cardEl = document.getElementById(cardId);
+      if (cardEl) {
+        cardEl.onclick = () => {
+          if (window.sound) window.sound.playClick();
+          const organModal = document.getElementById('human-scanner');
+          if (organModal) {
+            this.showScreen(organModal);
+            if (this.scannerVisualizer) {
+              setTimeout(() => this.scannerVisualizer.handleResize(), 60);
+            }
+          } else {
+            this.showScreen(this.uiOrganSelect);
+          }
+        };
+      }
+    });
+
     const btnToggleModeSettings = document.getElementById('btn-toggle-device-mode-settings');
     if (btnToggleModeSettings) {
       btnToggleModeSettings.onclick = () => {
@@ -524,59 +587,51 @@ export class Game {
       };
     }
 
+    const modalDevice = document.getElementById('device-mode-modal');
+    if (modalDevice) {
+      modalDevice.onclick = (e) => {
+        if (e.target === modalDevice) {
+          if (window.sound && window.sound.playClick) window.sound.playClick();
+          this.hideDeviceModeModal();
+        }
+      };
+    }
+
     const btnSelectMobile = document.getElementById('btn-select-mobile-mode');
     const btnSelectDesktop = document.getElementById('btn-select-desktop-mode');
     const btnCloseDeviceMode = document.getElementById('btn-close-device-mode');
+    const btnCloseDeviceModeTop = document.getElementById('btn-close-device-mode-top');
     const cardMobile = document.getElementById('card-mode-mobile');
     const cardDesktop = document.getElementById('card-mode-desktop');
 
-    if (btnSelectMobile) {
-      btnSelectMobile.onclick = (e) => {
-        e.stopPropagation();
-        if (window.sound) window.sound.playClick();
-        this.setDeviceMode('mobile', true);
-        this.hideDeviceModeModal();
-        this.postTelemetry('[SISTEM] Mode Smartphone Aktif: Kontrol sentuh & layout landscape dioptimalkan.');
-      };
-    }
-    if (cardMobile) {
-      cardMobile.onclick = () => {
-        if (window.sound) window.sound.playClick();
-        this.setDeviceMode('mobile', true);
-        this.hideDeviceModeModal();
-        this.postTelemetry('[SISTEM] Mode Smartphone Aktif: Kontrol sentuh & layout landscape dioptimalkan.');
-      };
-    }
-    if (btnSelectDesktop) {
-      btnSelectDesktop.onclick = (e) => {
-        e.stopPropagation();
-        if (window.sound) window.sound.playClick();
-        this.setDeviceMode('desktop', true);
-        this.hideDeviceModeModal();
-        this.postTelemetry('[SISTEM] Mode Desktop Aktif: Keyboard WASD & Mouse dioptimalkan.');
-      };
-    }
-    if (cardDesktop) {
-      cardDesktop.onclick = () => {
-        if (window.sound) window.sound.playClick();
-        this.setDeviceMode('desktop', true);
-        this.hideDeviceModeModal();
-        this.postTelemetry('[SISTEM] Mode Desktop Aktif: Keyboard WASD & Mouse dioptimalkan.');
-      };
-    }
-    if (btnCloseDeviceMode) {
-      btnCloseDeviceMode.onclick = () => {
-        if (window.sound) window.sound.playClick();
-        this.hideDeviceModeModal();
-      };
-    }
-    const btnCloseDeviceModeTop = document.getElementById('btn-close-device-mode-top');
-    if (btnCloseDeviceModeTop) {
-      btnCloseDeviceModeTop.onclick = () => {
-        if (window.sound) window.sound.playClick();
-        this.hideDeviceModeModal();
-      };
-    }
+    const handleSelectMobile = (e) => {
+      if (e) e.stopPropagation();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      this.setDeviceMode('mobile', true);
+      this.hideDeviceModeModal();
+      this.postTelemetry('[SISTEM] Mode Smartphone Aktif: Kontrol sentuh & layout landscape dioptimalkan.');
+    };
+
+    const handleSelectDesktop = (e) => {
+      if (e) e.stopPropagation();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      this.setDeviceMode('desktop', true);
+      this.hideDeviceModeModal();
+      this.postTelemetry('[SISTEM] Mode Desktop Aktif: Keyboard WASD & Mouse dioptimalkan.');
+    };
+
+    const handleCloseDeviceModal = (e) => {
+      if (e) e.stopPropagation();
+      if (window.sound && window.sound.playClick) window.sound.playClick();
+      this.hideDeviceModeModal();
+    };
+
+    if (btnSelectMobile) btnSelectMobile.onclick = handleSelectMobile;
+    if (cardMobile) cardMobile.onclick = handleSelectMobile;
+    if (btnSelectDesktop) btnSelectDesktop.onclick = handleSelectDesktop;
+    if (cardDesktop) cardDesktop.onclick = handleSelectDesktop;
+    if (btnCloseDeviceMode) btnCloseDeviceMode.onclick = handleCloseDeviceModal;
+    if (btnCloseDeviceModeTop) btnCloseDeviceModeTop.onclick = handleCloseDeviceModal;
 
     // Trailer preview click -> Launch Educational Cinema (60s+ Multi-Voice)
     const trailerBox = document.getElementById('trailer-box');
@@ -1012,6 +1067,11 @@ export class Game {
         topbarIcon.innerText = '💻';
         topbarText.innerText = 'MODE PC';
       }
+    }
+
+    const btnTopModeSpan = document.querySelector('#btn-top-device-mode span');
+    if (btnTopModeSpan) {
+      btnTopModeSpan.innerText = mode === 'mobile' ? 'MODE HP' : 'MODE PC';
     }
 
     // Update Settings

@@ -6267,12 +6267,21 @@ body.mobile-controls-active .telemetry-panel {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   padding: 16px;
+  pointer-events: auto !important;
+}
+
+.device-mode-overlay.hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .device-mode-card {
   position: relative;
   max-width: 820px;
   width: 94vw;
+  pointer-events: auto !important;
   max-height: 94vh;
   background: linear-gradient(175deg, rgba(16, 32, 60, 0.96) 0%, rgba(9, 18, 36, 0.98) 100%);
   border: 3.5px solid rgba(255, 255, 255, 0.16);
